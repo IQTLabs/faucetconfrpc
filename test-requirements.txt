@@ -1,3 +1,7 @@
 -r requirements.txt
 pylint==2.5.3
 pytype==2020.6.1
+codecov
+concurrencytest
+packaging
+pytest-cov
