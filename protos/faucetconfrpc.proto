@@ -3,14 +3,29 @@
 
 syntax = "proto3";
 
+package faucetconfserver;
+
 service FaucetConfServer {
-  rpc Placeholder (PlaceholderRequest) returns (PlaceholderReply) {}
+  rpc GetConfigFile(GetConfigFileRequest) returns (GetConfigFileReply) {}
+  rpc SetConfigFile(SetConfigFileRequest) returns (SetConfigFileReply) {}
 }
 
-message PlaceholderRequest {
-  string placeholder = 1;
+message GetConfigFileRequest {
+  string config_filename = 1;
 }
 
-message PlaceholderReply {
-  string placeholder = 1;
+message GetConfigFileReply {
+  bool success = 1;
+  string error_text = 2;
+  string config_yaml = 3;
+}
+
+message SetConfigFileRequest {
+  string config_filename = 1;
+  string config_yaml = 2;
+}
+
+message SetConfigFileReply {
+  bool success = 1;
+  string error_text = 2;
 }
