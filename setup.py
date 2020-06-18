@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(
-    name='faucetconf',
+    name='faucetconfrpc',
     version=open('VERSION', 'r').read().strip(),
     include_package_data=True,
     install_requires=open('requirements.txt', 'r').read().splitlines(),
