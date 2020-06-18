@@ -11,6 +11,6 @@ jobs:
       run: |
         pip3 install setuptools wheel && \
         pip3 install -r test-requirements.txt && \
-        pytype *py && \
-        pylint *py && \
+        python3 -m pytype *py && \
+        python3 -m pylint *py && \
         docker build -f Dockerfile.server .
