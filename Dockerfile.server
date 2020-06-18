@@ -1,0 +1,16 @@
+FROM alpine:3.12
+
+ENV PYTHONUNBUFFERED 1
+COPY requirements.txt requirements.txt
+
+RUN apk upgrade --no-cache && \
+    apk add --no-cache build-base python3-dev py3-pip linux-headers && \
+    pip3 install --no-cache-dir --upgrade -r requirements.txt && \
+    apk del build-base && \
+    rm -rf /var/cache/* && \
+    rm -rf /root/.cache/*
+
+COPY . /faucetconfrpc
+WORKDIR /faucetconfrpc
+
+RUN pip3 install .

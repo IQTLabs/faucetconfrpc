@@ -1,0 +1,16 @@
+// From directory with this definition, run this to regenerate python libraries:
+// python -m grpc_tools.protoc --python_out=.. --grpc_python_out=.. -I . faucetconfrpc.proto
+
+syntax = "proto3";
+
+service FaucetConfServer {
+  rpc Placeholder (PlaceholderRequest) returns (PlaceholderReply) {}
+}
+
+message PlaceholderRequest {
+  string placeholder = 1;
+}
+
+message PlaceholderReply {
+  string placeholder = 1;
+}
