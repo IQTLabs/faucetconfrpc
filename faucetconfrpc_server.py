@@ -1,15 +1,18 @@
-from concurrent import futures
+"""Manage FAUCET config files via RPC."""
+
+from concurrent import futures  # pytype: disable=pyi-error
+
 import logging
 
 import grpc
 
-import faucetconfrpc_pb2
-import faucetconfrpc_pb2_grpc
+from protos import faucetconfrpc_pb2
+from protos import faucetconfrpc_pb2_grpc
 
 
 class Server(faucetconfrpc_pb2_grpc.FaucetConfServer):
 
-    def Placeholder(self, request, context):
+    def Placeholder(self, request, _context):
         return faucetconfrpc_pb2.PlaceholderReply(message='OK')
 
 

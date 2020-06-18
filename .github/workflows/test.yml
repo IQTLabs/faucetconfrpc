@@ -1,0 +1,16 @@
+name: test
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: tests
+      run: |
+        pip3 install setuptools && \
+        pip3 install -r test-requirements.txt && \
+        pytype *py && \
+        pylint *py && \
+        docker build -f Dockerfile.server .

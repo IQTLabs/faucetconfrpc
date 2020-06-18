@@ -1,0 +1,14 @@
+{
+  "separateMajorMinor": false,
+  "schedule": [
+    "after 10pm every weekday",
+    "before 5am every weekday",
+    "every weekend"
+  ],
+  "extends": [
+    "config:base",
+    ":prHourlyLimit1",
+    ":preserveSemverRanges",
+    "docker:enableMajor"
+  ]
+}
