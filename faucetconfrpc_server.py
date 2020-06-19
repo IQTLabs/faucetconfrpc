@@ -36,11 +36,11 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
                     success=False, error_text=str(err), config_yaml='')
 
     def SetConfigFile(self, request, _context):  # pylint: disable=invalid-name
-        """Overwrite existing config file contents with provided YAML."""
+        """Overwrite config file contents with provided YAML."""
         with self.lock:
             try:
                 config_filename = os.path.basename(request.config_filename)
-                if not (os.path.exists(config_filename) and os.path.isfile(config_filename)):
+                if os.path.exists(config_filename) and not os.path.isfile(config_filename):
                     return faucetconfrpc_pb2.SetConfigFileReply(
                         success=False, error_text='%s is not an existing file' % config_filename)
 
@@ -48,7 +48,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
                 new_file_name = new_file.name
                 new_file.write(yaml.dump(yaml.safe_load(request.config_yaml)))
                 new_file.close()
-                os.rename(new_file_name, os.path.basename(config_filename))
+                os.rename(new_file_name, config_filename)
                 return faucetconfrpc_pb2.SetConfigFileReply(
                     success=True, error_text='')
             except (FileNotFoundError, PermissionError) as err:
@@ -64,11 +64,31 @@ def serve():
     parser.add_argument(
         '--port', help='port to serve rpc requests', action='store',
         default=59999, type=int)
+    parser.add_argument(
+        '--key', help='server private key', action='store',
+        default='/tmp/server.key')
+    parser.add_argument(
+        '--cert', help='server public cert', action='store',
+        default='/tmp/server.crt')
+    parser.add_argument(
+        '--cacert', help='CA public cert', action='store',
+        default='/tmp/ca.crt')
+    parser.add_argument(
+        '--host', help='host address to serve rpc requests',
+        default='localhost')
     args = parser.parse_args()
+    with open(args.key, 'r') as keyfile:
+        private_key = keyfile.read().encode('utf8')
+    with open(args.cert, 'r') as keyfile:
+        certificate_chain = keyfile.read().encode('utf8')
+    with open(args.cacert, 'r') as keyfile:
+        root_certificate = keyfile.read().encode('utf8')
+    server_credentials = grpc.ssl_server_credentials(
+        ((private_key, certificate_chain),), root_certificate, require_client_auth=True)
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
     faucetconfrpc_pb2_grpc.add_FaucetConfServerServicer_to_server(
         Server(args.config_dir), server)
-    server.add_insecure_port('[::]:%u' % args.port)
+    server.add_secure_port('%s:%u' % (args.host, args.port), server_credentials)
     server.start()
     server.wait_for_termination()
 
