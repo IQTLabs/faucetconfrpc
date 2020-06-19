@@ -9,10 +9,11 @@ jobs:
     - uses: actions/checkout@v2
     - name: tests
       run: |
+        GO111MODULE=on go get github.com/square/certstrap && \
+        PATH=~/go/bin:$PATH certstrap -v && \
         sudo pip3 install setuptools && \
         sudo pip3 install -r test-requirements.txt && \
         pytype --exclude=faucetconfrpc_pb2_grpc.py --exclude=faucetconfrpc_pb2.py . && \
         pylint --ignore=faucetconfrpc_pb2_grpc.py,faucetconfrpc_pb2.py *py && \
-        pytest test_faucetconfrpc.py && \
-        ./test_faucetconfrpc.py && \
+        PATH=~/go/bin:$PATH pytest ./test_faucetconfrpc.py && \
         docker build -f Dockerfile.server .
