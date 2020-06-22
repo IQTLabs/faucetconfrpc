@@ -18,6 +18,7 @@ $ cat<<EOD>faucet.yaml
           native_vlan: 100
 EOD
 $ ./faucetconfrpc_server.py --config_dir=.
+```
 
 In another terminal:
 
