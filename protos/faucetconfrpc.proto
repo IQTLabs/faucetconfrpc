@@ -1,5 +1,5 @@
 // From directory with this definition, run this to regenerate python libraries:
-// python -m grpc_tools.protoc --python_out=. --grpc_python_out=. -I . faucetconfrpc.proto
+// python -m grpc_tools.protoc --python_out=.. --grpc_python_out=.. -I . faucetconfrpc.proto
 
 syntax = "proto3";
 
@@ -8,6 +8,7 @@ package faucetconfserver;
 service FaucetConfServer {
   rpc GetConfigFile(GetConfigFileRequest) returns (GetConfigFileReply) {}
   rpc SetConfigFile(SetConfigFileRequest) returns (SetConfigFileReply) {}
+  rpc DelConfigFromFile(DelConfigFromFileRequest) returns (DelConfigFromFileReply) {}
 }
 
 message GetConfigFileRequest {
@@ -15,17 +16,22 @@ message GetConfigFileRequest {
 }
 
 message GetConfigFileReply {
-  bool success = 1;
-  string error_text = 2;
-  string config_yaml = 3;
+  string config_yaml = 1;
 }
 
 message SetConfigFileRequest {
   string config_filename = 1;
   string config_yaml = 2;
+  bool merge = 3;
 }
 
 message SetConfigFileReply {
-  bool success = 1;
-  string error_text = 2;
+}
+
+message DelConfigFromFileRequest {
+  string config_filename = 1;
+  string config_yaml_keys = 2;
+}
+
+message DelConfigFromFileReply {
 }
