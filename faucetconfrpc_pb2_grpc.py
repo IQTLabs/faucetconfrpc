@@ -23,6 +23,11 @@ class FaucetConfServerStub(object):
                 request_serializer=faucetconfrpc__pb2.SetConfigFileRequest.SerializeToString,
                 response_deserializer=faucetconfrpc__pb2.SetConfigFileReply.FromString,
                 )
+        self.DelConfigFromFile = channel.unary_unary(
+                '/faucetconfserver.FaucetConfServer/DelConfigFromFile',
+                request_serializer=faucetconfrpc__pb2.DelConfigFromFileRequest.SerializeToString,
+                response_deserializer=faucetconfrpc__pb2.DelConfigFromFileReply.FromString,
+                )
 
 
 class FaucetConfServerServicer(object):
@@ -40,6 +45,12 @@ class FaucetConfServerServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def DelConfigFromFile(self, request, context):
+        """Missing associated documentation comment in .proto file"""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_FaucetConfServerServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -52,6 +63,11 @@ def add_FaucetConfServerServicer_to_server(servicer, server):
                     servicer.SetConfigFile,
                     request_deserializer=faucetconfrpc__pb2.SetConfigFileRequest.FromString,
                     response_serializer=faucetconfrpc__pb2.SetConfigFileReply.SerializeToString,
+            ),
+            'DelConfigFromFile': grpc.unary_unary_rpc_method_handler(
+                    servicer.DelConfigFromFile,
+                    request_deserializer=faucetconfrpc__pb2.DelConfigFromFileRequest.FromString,
+                    response_serializer=faucetconfrpc__pb2.DelConfigFromFileReply.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -92,5 +108,21 @@ class FaucetConfServer(object):
         return grpc.experimental.unary_unary(request, target, '/faucetconfserver.FaucetConfServer/SetConfigFile',
             faucetconfrpc__pb2.SetConfigFileRequest.SerializeToString,
             faucetconfrpc__pb2.SetConfigFileReply.FromString,
+            options, channel_credentials,
+            call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def DelConfigFromFile(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/faucetconfserver.FaucetConfServer/DelConfigFromFile',
+            faucetconfrpc__pb2.DelConfigFromFileRequest.SerializeToString,
+            faucetconfrpc__pb2.DelConfigFromFileReply.FromString,
             options, channel_credentials,
             call_credentials, compression, wait_for_ready, timeout, metadata)

@@ -18,7 +18,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='faucetconfserver',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=b'\n\x13\x66\x61ucetconfrpc.proto\x12\x10\x66\x61ucetconfserver\"/\n\x14GetConfigFileRequest\x12\x17\n\x0f\x63onfig_filename\x18\x01 \x01(\t\"N\n\x12GetConfigFileReply\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\x12\n\nerror_text\x18\x02 \x01(\t\x12\x13\n\x0b\x63onfig_yaml\x18\x03 \x01(\t\"D\n\x14SetConfigFileRequest\x12\x17\n\x0f\x63onfig_filename\x18\x01 \x01(\t\x12\x13\n\x0b\x63onfig_yaml\x18\x02 \x01(\t\"9\n\x12SetConfigFileReply\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\x12\n\nerror_text\x18\x02 \x01(\t2\xd4\x01\n\x10\x46\x61ucetConfServer\x12_\n\rGetConfigFile\x12&.faucetconfserver.GetConfigFileRequest\x1a$.faucetconfserver.GetConfigFileReply\"\x00\x12_\n\rSetConfigFile\x12&.faucetconfserver.SetConfigFileRequest\x1a$.faucetconfserver.SetConfigFileReply\"\x00\x62\x06proto3'
+  serialized_pb=b'\n\x13\x66\x61ucetconfrpc.proto\x12\x10\x66\x61ucetconfserver\"/\n\x14GetConfigFileRequest\x12\x17\n\x0f\x63onfig_filename\x18\x01 \x01(\t\")\n\x12GetConfigFileReply\x12\x13\n\x0b\x63onfig_yaml\x18\x01 \x01(\t\"S\n\x14SetConfigFileRequest\x12\x17\n\x0f\x63onfig_filename\x18\x01 \x01(\t\x12\x13\n\x0b\x63onfig_yaml\x18\x02 \x01(\t\x12\r\n\x05merge\x18\x03 \x01(\x08\"\x14\n\x12SetConfigFileReply\"M\n\x18\x44\x65lConfigFromFileRequest\x12\x17\n\x0f\x63onfig_filename\x18\x01 \x01(\t\x12\x18\n\x10\x63onfig_yaml_keys\x18\x02 \x01(\t\"\x18\n\x16\x44\x65lConfigFromFileReply2\xc1\x02\n\x10\x46\x61ucetConfServer\x12_\n\rGetConfigFile\x12&.faucetconfserver.GetConfigFileRequest\x1a$.faucetconfserver.GetConfigFileReply\"\x00\x12_\n\rSetConfigFile\x12&.faucetconfserver.SetConfigFileRequest\x1a$.faucetconfserver.SetConfigFileReply\"\x00\x12k\n\x11\x44\x65lConfigFromFile\x12*.faucetconfserver.DelConfigFromFileRequest\x1a(.faucetconfserver.DelConfigFromFileReply\"\x00\x62\x06proto3'
 )
 
 
@@ -63,22 +63,8 @@ _GETCONFIGFILEREPLY = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='success', full_name='faucetconfserver.GetConfigFileReply.success', index=0,
-      number=1, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='error_text', full_name='faucetconfserver.GetConfigFileReply.error_text', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='config_yaml', full_name='faucetconfserver.GetConfigFileReply.config_yaml', index=2,
-      number=3, type=9, cpp_type=9, label=1,
+      name='config_yaml', full_name='faucetconfserver.GetConfigFileReply.config_yaml', index=0,
+      number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -96,7 +82,7 @@ _GETCONFIGFILEREPLY = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=90,
-  serialized_end=168,
+  serialized_end=131,
 )
 
 
@@ -121,6 +107,13 @@ _SETCONFIGFILEREQUEST = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='merge', full_name='faucetconfserver.SetConfigFileRequest.merge', index=2,
+      number=3, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -133,8 +126,8 @@ _SETCONFIGFILEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=170,
-  serialized_end=238,
+  serialized_start=133,
+  serialized_end=216,
 )
 
 
@@ -145,15 +138,39 @@ _SETCONFIGFILEREPLY = _descriptor.Descriptor(
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=218,
+  serialized_end=238,
+)
+
+
+_DELCONFIGFROMFILEREQUEST = _descriptor.Descriptor(
+  name='DelConfigFromFileRequest',
+  full_name='faucetconfserver.DelConfigFromFileRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
     _descriptor.FieldDescriptor(
-      name='success', full_name='faucetconfserver.SetConfigFileReply.success', index=0,
-      number=1, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
+      name='config_filename', full_name='faucetconfserver.DelConfigFromFileRequest.config_filename', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='error_text', full_name='faucetconfserver.SetConfigFileReply.error_text', index=1,
+      name='config_yaml_keys', full_name='faucetconfserver.DelConfigFromFileRequest.config_yaml_keys', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -172,13 +189,39 @@ _SETCONFIGFILEREPLY = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=240,
-  serialized_end=297,
+  serialized_end=317,
+)
+
+
+_DELCONFIGFROMFILEREPLY = _descriptor.Descriptor(
+  name='DelConfigFromFileReply',
+  full_name='faucetconfserver.DelConfigFromFileReply',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=319,
+  serialized_end=343,
 )
 
 DESCRIPTOR.message_types_by_name['GetConfigFileRequest'] = _GETCONFIGFILEREQUEST
 DESCRIPTOR.message_types_by_name['GetConfigFileReply'] = _GETCONFIGFILEREPLY
 DESCRIPTOR.message_types_by_name['SetConfigFileRequest'] = _SETCONFIGFILEREQUEST
 DESCRIPTOR.message_types_by_name['SetConfigFileReply'] = _SETCONFIGFILEREPLY
+DESCRIPTOR.message_types_by_name['DelConfigFromFileRequest'] = _DELCONFIGFROMFILEREQUEST
+DESCRIPTOR.message_types_by_name['DelConfigFromFileReply'] = _DELCONFIGFROMFILEREPLY
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 GetConfigFileRequest = _reflection.GeneratedProtocolMessageType('GetConfigFileRequest', (_message.Message,), {
@@ -209,6 +252,20 @@ SetConfigFileReply = _reflection.GeneratedProtocolMessageType('SetConfigFileRepl
   })
 _sym_db.RegisterMessage(SetConfigFileReply)
 
+DelConfigFromFileRequest = _reflection.GeneratedProtocolMessageType('DelConfigFromFileRequest', (_message.Message,), {
+  'DESCRIPTOR' : _DELCONFIGFROMFILEREQUEST,
+  '__module__' : 'faucetconfrpc_pb2'
+  # @@protoc_insertion_point(class_scope:faucetconfserver.DelConfigFromFileRequest)
+  })
+_sym_db.RegisterMessage(DelConfigFromFileRequest)
+
+DelConfigFromFileReply = _reflection.GeneratedProtocolMessageType('DelConfigFromFileReply', (_message.Message,), {
+  'DESCRIPTOR' : _DELCONFIGFROMFILEREPLY,
+  '__module__' : 'faucetconfrpc_pb2'
+  # @@protoc_insertion_point(class_scope:faucetconfserver.DelConfigFromFileReply)
+  })
+_sym_db.RegisterMessage(DelConfigFromFileReply)
+
 
 
 _FAUCETCONFSERVER = _descriptor.ServiceDescriptor(
@@ -217,8 +274,8 @@ _FAUCETCONFSERVER = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=300,
-  serialized_end=512,
+  serialized_start=346,
+  serialized_end=667,
   methods=[
   _descriptor.MethodDescriptor(
     name='GetConfigFile',
@@ -236,6 +293,15 @@ _FAUCETCONFSERVER = _descriptor.ServiceDescriptor(
     containing_service=None,
     input_type=_SETCONFIGFILEREQUEST,
     output_type=_SETCONFIGFILEREPLY,
+    serialized_options=None,
+  ),
+  _descriptor.MethodDescriptor(
+    name='DelConfigFromFile',
+    full_name='faucetconfserver.FaucetConfServer.DelConfigFromFile',
+    index=2,
+    containing_service=None,
+    input_type=_DELCONFIGFROMFILEREQUEST,
+    output_type=_DELCONFIGFROMFILEREPLY,
     serialized_options=None,
   ),
 ])
