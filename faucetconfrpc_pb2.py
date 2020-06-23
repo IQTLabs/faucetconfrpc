@@ -18,7 +18,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='faucetconfserver',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=b'\n\x13\x66\x61ucetconfrpc.proto\x12\x10\x66\x61ucetconfserver\"/\n\x14GetConfigFileRequest\x12\x17\n\x0f\x63onfig_filename\x18\x01 \x01(\t\")\n\x12GetConfigFileReply\x12\x13\n\x0b\x63onfig_yaml\x18\x01 \x01(\t\"S\n\x14SetConfigFileRequest\x12\x17\n\x0f\x63onfig_filename\x18\x01 \x01(\t\x12\x13\n\x0b\x63onfig_yaml\x18\x02 \x01(\t\x12\r\n\x05merge\x18\x03 \x01(\x08\"\x14\n\x12SetConfigFileReply\"M\n\x18\x44\x65lConfigFromFileRequest\x12\x17\n\x0f\x63onfig_filename\x18\x01 \x01(\t\x12\x18\n\x10\x63onfig_yaml_keys\x18\x02 \x01(\t\"\x18\n\x16\x44\x65lConfigFromFileReply2\xc1\x02\n\x10\x46\x61ucetConfServer\x12_\n\rGetConfigFile\x12&.faucetconfserver.GetConfigFileRequest\x1a$.faucetconfserver.GetConfigFileReply\"\x00\x12_\n\rSetConfigFile\x12&.faucetconfserver.SetConfigFileRequest\x1a$.faucetconfserver.SetConfigFileReply\"\x00\x12k\n\x11\x44\x65lConfigFromFile\x12*.faucetconfserver.DelConfigFromFileRequest\x1a(.faucetconfserver.DelConfigFromFileReply\"\x00\x62\x06proto3'
+  serialized_pb=b'\n\x13\x66\x61ucetconfrpc.proto\x12\x10\x66\x61ucetconfserver\"/\n\x14GetConfigFileRequest\x12\x17\n\x0f\x63onfig_filename\x18\x01 \x01(\t\")\n\x12GetConfigFileReply\x12\x13\n\x0b\x63onfig_yaml\x18\x01 \x01(\t\"S\n\x14SetConfigFileRequest\x12\x17\n\x0f\x63onfig_filename\x18\x01 \x01(\t\x12\x13\n\x0b\x63onfig_yaml\x18\x02 \x01(\t\x12\r\n\x05merge\x18\x03 \x01(\x08\"\x14\n\x12SetConfigFileReply\"M\n\x18\x44\x65lConfigFromFileRequest\x12\x17\n\x0f\x63onfig_filename\x18\x01 \x01(\t\x12\x18\n\x10\x63onfig_yaml_keys\x18\x02 \x01(\t\"\x18\n\x16\x44\x65lConfigFromFileReply\"P\n\x14\x41\x64\x64PortMirrorRequest\x12\x0f\n\x07\x64p_name\x18\x01 \x01(\t\x12\x0f\n\x07port_no\x18\x02 \x01(\x05\x12\x16\n\x0emirror_port_no\x18\x03 \x01(\x05\"\x14\n\x12\x41\x64\x64PortMirrorReply\"S\n\x17RemovePortMirrorRequest\x12\x0f\n\x07\x64p_name\x18\x01 \x01(\t\x12\x0f\n\x07port_no\x18\x02 \x01(\x05\x12\x16\n\x0emirror_port_no\x18\x03 \x01(\x05\"\x17\n\x15RemovePortMirrorReply\"B\n\x11\x41\x64\x64PortAclRequest\x12\x0f\n\x07\x64p_name\x18\x01 \x01(\t\x12\x0f\n\x07port_no\x18\x02 \x01(\x05\x12\x0b\n\x03\x61\x63l\x18\x03 \x01(\t\"\x11\n\x0f\x41\x64\x64PortAclReply\"E\n\x14RemovePortAclRequest\x12\x0f\n\x07\x64p_name\x18\x01 \x01(\t\x12\x0f\n\x07port_no\x18\x02 \x01(\x05\x12\x0b\n\x03\x61\x63l\x18\x03 \x01(\t\"\x14\n\x12RemovePortAclReply2\xc5\x05\n\x10\x46\x61ucetConfServer\x12_\n\rGetConfigFile\x12&.faucetconfserver.GetConfigFileRequest\x1a$.faucetconfserver.GetConfigFileReply\"\x00\x12_\n\rSetConfigFile\x12&.faucetconfserver.SetConfigFileRequest\x1a$.faucetconfserver.SetConfigFileReply\"\x00\x12k\n\x11\x44\x65lConfigFromFile\x12*.faucetconfserver.DelConfigFromFileRequest\x1a(.faucetconfserver.DelConfigFromFileReply\"\x00\x12_\n\rAddPortMirror\x12&.faucetconfserver.AddPortMirrorRequest\x1a$.faucetconfserver.AddPortMirrorReply\"\x00\x12h\n\x10RemovePortMirror\x12).faucetconfserver.RemovePortMirrorRequest\x1a\'.faucetconfserver.RemovePortMirrorReply\"\x00\x12V\n\nAddPortAcl\x12#.faucetconfserver.AddPortAclRequest\x1a!.faucetconfserver.AddPortAclReply\"\x00\x12_\n\rRemovePortAcl\x12&.faucetconfserver.RemovePortAclRequest\x1a$.faucetconfserver.RemovePortAclReply\"\x00\x62\x06proto3'
 )
 
 
@@ -216,12 +216,296 @@ _DELCONFIGFROMFILEREPLY = _descriptor.Descriptor(
   serialized_end=343,
 )
 
+
+_ADDPORTMIRRORREQUEST = _descriptor.Descriptor(
+  name='AddPortMirrorRequest',
+  full_name='faucetconfserver.AddPortMirrorRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='dp_name', full_name='faucetconfserver.AddPortMirrorRequest.dp_name', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='port_no', full_name='faucetconfserver.AddPortMirrorRequest.port_no', index=1,
+      number=2, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='mirror_port_no', full_name='faucetconfserver.AddPortMirrorRequest.mirror_port_no', index=2,
+      number=3, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=345,
+  serialized_end=425,
+)
+
+
+_ADDPORTMIRRORREPLY = _descriptor.Descriptor(
+  name='AddPortMirrorReply',
+  full_name='faucetconfserver.AddPortMirrorReply',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=427,
+  serialized_end=447,
+)
+
+
+_REMOVEPORTMIRRORREQUEST = _descriptor.Descriptor(
+  name='RemovePortMirrorRequest',
+  full_name='faucetconfserver.RemovePortMirrorRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='dp_name', full_name='faucetconfserver.RemovePortMirrorRequest.dp_name', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='port_no', full_name='faucetconfserver.RemovePortMirrorRequest.port_no', index=1,
+      number=2, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='mirror_port_no', full_name='faucetconfserver.RemovePortMirrorRequest.mirror_port_no', index=2,
+      number=3, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=449,
+  serialized_end=532,
+)
+
+
+_REMOVEPORTMIRRORREPLY = _descriptor.Descriptor(
+  name='RemovePortMirrorReply',
+  full_name='faucetconfserver.RemovePortMirrorReply',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=534,
+  serialized_end=557,
+)
+
+
+_ADDPORTACLREQUEST = _descriptor.Descriptor(
+  name='AddPortAclRequest',
+  full_name='faucetconfserver.AddPortAclRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='dp_name', full_name='faucetconfserver.AddPortAclRequest.dp_name', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='port_no', full_name='faucetconfserver.AddPortAclRequest.port_no', index=1,
+      number=2, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='acl', full_name='faucetconfserver.AddPortAclRequest.acl', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=559,
+  serialized_end=625,
+)
+
+
+_ADDPORTACLREPLY = _descriptor.Descriptor(
+  name='AddPortAclReply',
+  full_name='faucetconfserver.AddPortAclReply',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=627,
+  serialized_end=644,
+)
+
+
+_REMOVEPORTACLREQUEST = _descriptor.Descriptor(
+  name='RemovePortAclRequest',
+  full_name='faucetconfserver.RemovePortAclRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='dp_name', full_name='faucetconfserver.RemovePortAclRequest.dp_name', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='port_no', full_name='faucetconfserver.RemovePortAclRequest.port_no', index=1,
+      number=2, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='acl', full_name='faucetconfserver.RemovePortAclRequest.acl', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=646,
+  serialized_end=715,
+)
+
+
+_REMOVEPORTACLREPLY = _descriptor.Descriptor(
+  name='RemovePortAclReply',
+  full_name='faucetconfserver.RemovePortAclReply',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=717,
+  serialized_end=737,
+)
+
 DESCRIPTOR.message_types_by_name['GetConfigFileRequest'] = _GETCONFIGFILEREQUEST
 DESCRIPTOR.message_types_by_name['GetConfigFileReply'] = _GETCONFIGFILEREPLY
 DESCRIPTOR.message_types_by_name['SetConfigFileRequest'] = _SETCONFIGFILEREQUEST
 DESCRIPTOR.message_types_by_name['SetConfigFileReply'] = _SETCONFIGFILEREPLY
 DESCRIPTOR.message_types_by_name['DelConfigFromFileRequest'] = _DELCONFIGFROMFILEREQUEST
 DESCRIPTOR.message_types_by_name['DelConfigFromFileReply'] = _DELCONFIGFROMFILEREPLY
+DESCRIPTOR.message_types_by_name['AddPortMirrorRequest'] = _ADDPORTMIRRORREQUEST
+DESCRIPTOR.message_types_by_name['AddPortMirrorReply'] = _ADDPORTMIRRORREPLY
+DESCRIPTOR.message_types_by_name['RemovePortMirrorRequest'] = _REMOVEPORTMIRRORREQUEST
+DESCRIPTOR.message_types_by_name['RemovePortMirrorReply'] = _REMOVEPORTMIRRORREPLY
+DESCRIPTOR.message_types_by_name['AddPortAclRequest'] = _ADDPORTACLREQUEST
+DESCRIPTOR.message_types_by_name['AddPortAclReply'] = _ADDPORTACLREPLY
+DESCRIPTOR.message_types_by_name['RemovePortAclRequest'] = _REMOVEPORTACLREQUEST
+DESCRIPTOR.message_types_by_name['RemovePortAclReply'] = _REMOVEPORTACLREPLY
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 GetConfigFileRequest = _reflection.GeneratedProtocolMessageType('GetConfigFileRequest', (_message.Message,), {
@@ -266,6 +550,62 @@ DelConfigFromFileReply = _reflection.GeneratedProtocolMessageType('DelConfigFrom
   })
 _sym_db.RegisterMessage(DelConfigFromFileReply)
 
+AddPortMirrorRequest = _reflection.GeneratedProtocolMessageType('AddPortMirrorRequest', (_message.Message,), {
+  'DESCRIPTOR' : _ADDPORTMIRRORREQUEST,
+  '__module__' : 'faucetconfrpc_pb2'
+  # @@protoc_insertion_point(class_scope:faucetconfserver.AddPortMirrorRequest)
+  })
+_sym_db.RegisterMessage(AddPortMirrorRequest)
+
+AddPortMirrorReply = _reflection.GeneratedProtocolMessageType('AddPortMirrorReply', (_message.Message,), {
+  'DESCRIPTOR' : _ADDPORTMIRRORREPLY,
+  '__module__' : 'faucetconfrpc_pb2'
+  # @@protoc_insertion_point(class_scope:faucetconfserver.AddPortMirrorReply)
+  })
+_sym_db.RegisterMessage(AddPortMirrorReply)
+
+RemovePortMirrorRequest = _reflection.GeneratedProtocolMessageType('RemovePortMirrorRequest', (_message.Message,), {
+  'DESCRIPTOR' : _REMOVEPORTMIRRORREQUEST,
+  '__module__' : 'faucetconfrpc_pb2'
+  # @@protoc_insertion_point(class_scope:faucetconfserver.RemovePortMirrorRequest)
+  })
+_sym_db.RegisterMessage(RemovePortMirrorRequest)
+
+RemovePortMirrorReply = _reflection.GeneratedProtocolMessageType('RemovePortMirrorReply', (_message.Message,), {
+  'DESCRIPTOR' : _REMOVEPORTMIRRORREPLY,
+  '__module__' : 'faucetconfrpc_pb2'
+  # @@protoc_insertion_point(class_scope:faucetconfserver.RemovePortMirrorReply)
+  })
+_sym_db.RegisterMessage(RemovePortMirrorReply)
+
+AddPortAclRequest = _reflection.GeneratedProtocolMessageType('AddPortAclRequest', (_message.Message,), {
+  'DESCRIPTOR' : _ADDPORTACLREQUEST,
+  '__module__' : 'faucetconfrpc_pb2'
+  # @@protoc_insertion_point(class_scope:faucetconfserver.AddPortAclRequest)
+  })
+_sym_db.RegisterMessage(AddPortAclRequest)
+
+AddPortAclReply = _reflection.GeneratedProtocolMessageType('AddPortAclReply', (_message.Message,), {
+  'DESCRIPTOR' : _ADDPORTACLREPLY,
+  '__module__' : 'faucetconfrpc_pb2'
+  # @@protoc_insertion_point(class_scope:faucetconfserver.AddPortAclReply)
+  })
+_sym_db.RegisterMessage(AddPortAclReply)
+
+RemovePortAclRequest = _reflection.GeneratedProtocolMessageType('RemovePortAclRequest', (_message.Message,), {
+  'DESCRIPTOR' : _REMOVEPORTACLREQUEST,
+  '__module__' : 'faucetconfrpc_pb2'
+  # @@protoc_insertion_point(class_scope:faucetconfserver.RemovePortAclRequest)
+  })
+_sym_db.RegisterMessage(RemovePortAclRequest)
+
+RemovePortAclReply = _reflection.GeneratedProtocolMessageType('RemovePortAclReply', (_message.Message,), {
+  'DESCRIPTOR' : _REMOVEPORTACLREPLY,
+  '__module__' : 'faucetconfrpc_pb2'
+  # @@protoc_insertion_point(class_scope:faucetconfserver.RemovePortAclReply)
+  })
+_sym_db.RegisterMessage(RemovePortAclReply)
+
 
 
 _FAUCETCONFSERVER = _descriptor.ServiceDescriptor(
@@ -274,8 +614,8 @@ _FAUCETCONFSERVER = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=346,
-  serialized_end=667,
+  serialized_start=740,
+  serialized_end=1449,
   methods=[
   _descriptor.MethodDescriptor(
     name='GetConfigFile',
@@ -302,6 +642,42 @@ _FAUCETCONFSERVER = _descriptor.ServiceDescriptor(
     containing_service=None,
     input_type=_DELCONFIGFROMFILEREQUEST,
     output_type=_DELCONFIGFROMFILEREPLY,
+    serialized_options=None,
+  ),
+  _descriptor.MethodDescriptor(
+    name='AddPortMirror',
+    full_name='faucetconfserver.FaucetConfServer.AddPortMirror',
+    index=3,
+    containing_service=None,
+    input_type=_ADDPORTMIRRORREQUEST,
+    output_type=_ADDPORTMIRRORREPLY,
+    serialized_options=None,
+  ),
+  _descriptor.MethodDescriptor(
+    name='RemovePortMirror',
+    full_name='faucetconfserver.FaucetConfServer.RemovePortMirror',
+    index=4,
+    containing_service=None,
+    input_type=_REMOVEPORTMIRRORREQUEST,
+    output_type=_REMOVEPORTMIRRORREPLY,
+    serialized_options=None,
+  ),
+  _descriptor.MethodDescriptor(
+    name='AddPortAcl',
+    full_name='faucetconfserver.FaucetConfServer.AddPortAcl',
+    index=5,
+    containing_service=None,
+    input_type=_ADDPORTACLREQUEST,
+    output_type=_ADDPORTACLREPLY,
+    serialized_options=None,
+  ),
+  _descriptor.MethodDescriptor(
+    name='RemovePortAcl',
+    full_name='faucetconfserver.FaucetConfServer.RemovePortAcl',
+    index=6,
+    containing_service=None,
+    input_type=_REMOVEPORTACLREQUEST,
+    output_type=_REMOVEPORTACLREPLY,
     serialized_options=None,
   ),
 ])
