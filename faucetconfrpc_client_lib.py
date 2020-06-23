@@ -29,7 +29,7 @@ class FaucetConfRpcClient:
             logging.error(err)
             return None
 
-    def get_config_file(self, config_filename):
+    def get_config_file(self, config_filename=None):
         """Get a YAML config file."""
         response = self._call(self.stub.GetConfigFile, faucetconfrpc_pb2.GetConfigFileRequest(
             config_filename=config_filename))
@@ -37,7 +37,7 @@ class FaucetConfRpcClient:
             return yaml.safe_load(response.config_yaml)
         return None
 
-    def set_config_file(self, config_filename, config_yaml, merge=True):
+    def set_config_file(self, config_yaml, config_filename=None, merge=True):
         """Set a YAML config file."""
         if isinstance(config_yaml, dict):
             config_yaml = yaml.dump(config_yaml)
@@ -46,10 +46,30 @@ class FaucetConfRpcClient:
             config_yaml=config_yaml,
             merge=merge))
 
-    def del_config_from_file(self, config_filename, config_yaml_keys):
+    def del_config_from_file(self, config_yaml_keys, config_filename=None):
         """Delete a key from YAML config file."""
         if isinstance(config_yaml_keys, list):
             config_yaml_keys = yaml.dump(config_yaml_keys)
         return self._call(self.stub.DelConfigFromFile, faucetconfrpc_pb2.DelConfigFromFileRequest(
             config_filename=config_filename,
             config_yaml_keys=config_yaml_keys))
+
+    def add_port_mirror(self, dp_name, port_no, mirror_port_no):
+        """Add port mirroring."""
+        return self._call(self.stub.AddPortMirror, faucetconfrpc_pb2.AddPortMirrorRequest(
+            dp_name=dp_name, port_no=port_no, mirror_port_no=mirror_port_no))
+
+    def remove_port_mirror(self, dp_name, port_no, mirror_port_no):
+        """Remove port mirroring."""
+        return self._call(self.stub.RemovePortMirror, faucetconfrpc_pb2.RemovePortMirrorRequest(
+            dp_name=dp_name, port_no=port_no, mirror_port_no=mirror_port_no))
+
+    def add_port_acl(self, dp_name, port_no, acl):
+        """Add port ACL."""
+        return self._call(self.stub.AddPortAcl, faucetconfrpc_pb2.AddPortAclRequest(
+            dp_name=dp_name, port_no=port_no, acl=acl))
+
+    def remove_port_acl(self, dp_name, port_no, acl):
+        """Remove port ACL."""
+        return self._call(self.stub.RemovePortAcl, faucetconfrpc_pb2.RemovePortAclRequest(
+            dp_name=dp_name, port_no=port_no, acl=acl))

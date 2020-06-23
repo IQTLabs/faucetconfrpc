@@ -13,7 +13,7 @@ import yaml
 from faucetconfrpc_client_lib import FaucetConfRpcClient
 
 
-def test_faucetconfrpc():  # pylint: disable=too-many-locals
+def test_faucetconfrpc():  # pylint: disable=too-many-locals,disable=too-many-statements
     """Test faucetconfrpc RPCs."""
 
     def wait_for_port(host, port, timeout=10):
@@ -43,14 +43,22 @@ def test_faucetconfrpc():  # pylint: disable=too-many-locals
         server_cert = os.path.join(tmpdir, '%s.crt' % host)
         ca_cert = os.path.join(tmpdir, 'ca.crt')
 
-        test_yaml_str = '{key1: [1, 2, 3], key2: [4, 5, 6]}'
-        with open(os.path.join(tmpdir, 'test.yaml'), 'w') as test_yaml_file:
+        test_yaml = yaml.safe_load(
+            '{dps: {ovs: {dp_id: 1, hardware: Open vSwitch, interfaces: '
+            '{1: {native_vlan: 100, acls_in: []}, 2: {native_vlan: 100}, '
+            '3: {output_only: true, mirror: [1]}}}},'
+            'acls: {test: [{rule: {actions: {allow: 0}}}]}}')
+        test_yaml_str = yaml.dump(test_yaml)
+        default_config = 'test.yaml'
+
+        with open(os.path.join(tmpdir, default_config), 'w') as test_yaml_file:
             test_yaml_file.write(test_yaml_str)  # pytype: disable=wrong-arg-types
         server = subprocess.Popen(
             ['timeout',
              '10s',
              './faucetconfrpc_server.py',
              '--config_dir=%s' % tmpdir,
+             '--default_config=%s' % default_config,
              '--port=%u' % port,
              '--host=%s' % host,
              '--key=%s' % server_key,
@@ -62,37 +70,77 @@ def test_faucetconfrpc():  # pylint: disable=too-many-locals
         client = FaucetConfRpcClient(client_key, client_cert, ca_cert, server_addr)
 
         # Get of non-existent file.
-        response = client.get_config_file('nosuchfile.yaml')
+        response = client.get_config_file(config_filename='nosuchfile.yaml')
         assert response is None
         # Get existing file
-        response = client.get_config_file('test.yaml')
+        response = client.get_config_file(config_filename=default_config)
         assert response == yaml.safe_load(test_yaml_str)
 
         # Remove item from list.
-        response = client.del_config_from_file('test.yaml', ['key2', 5])
+        response = client.del_config_from_file(
+            ['dps', 'ovs', 'interfaces', 3, 'mirror', 1], config_filename=default_config)
         assert response is not None
-        del_test_yaml = yaml.safe_load('{key1: [1, 2, 3], key2: [4, 6]}')
-        assert del_test_yaml == client.get_config_file('test.yaml')
+        del_test_yaml = yaml.safe_load(
+            '{dps: {ovs: {dp_id: 1, hardware: Open vSwitch, interfaces: '
+            '{1: {native_vlan: 100, acls_in: []}, 2: {native_vlan: 100}, '
+            '3: {output_only: true, mirror: []}}}},'
+            'acls: {test: [{rule: {actions: {allow: 0}}}]}}')
+        assert del_test_yaml == client.get_config_file(config_filename=default_config)
         # Remove entire key
-        response = client.del_config_from_file('test.yaml', ['key2'])
+        response = client.del_config_from_file(
+            ['dps', 'ovs', 'interfaces', 3, 'mirror'], config_filename=default_config)
         assert response is not None
-        del_test_yaml = yaml.safe_load('{key1: [1, 2, 3]}')
-        assert del_test_yaml == client.get_config_file('test.yaml')
+        del_test_yaml = yaml.safe_load(
+            '{dps: {ovs: {dp_id: 1, hardware: Open vSwitch, interfaces: '
+            '{1: {native_vlan: 100, acls_in: []}, 2: {native_vlan: 100}, 3: {output_only: true}}}},'
+            'acls: {test: [{rule: {actions: {allow: 0}}}]}}')
+        assert del_test_yaml == client.get_config_file(config_filename=default_config)
 
         # Replace existing file with new content
-        new_test_yaml = yaml.safe_load('{key1: [a, b, c], key2: [4, 5, 6]}')
-        response = client.set_config_file('test.yaml', new_test_yaml, merge=False)
+        response = client.set_config_file(
+            test_yaml_str, config_filename=default_config, merge=False)
         assert response is not None
-        assert new_test_yaml == client.get_config_file('test.yaml')
+        assert test_yaml == client.get_config_file(default_config)
+
+        # Replace existing file with broken content
+        response = client.set_config_file(
+            '{dps: {ovs: {dp_id: NO, hardware: xyz vSwitch, interfaces: {1: {blah: 100}}}}}',
+            config_filename=default_config, merge=False)
+        assert response is None
+        # File didn't change.
+        assert test_yaml == client.get_config_file(default_config)
 
         # Merge new content into existing file
-        response = client.set_config_file('test.yaml', new_test_yaml, merge=True)
+        response = client.set_config_file(
+            test_yaml_str, config_filename=default_config, merge=True)
         assert response is not None
-        assert new_test_yaml == client.get_config_file('test.yaml')
-        new_test_yaml = yaml.safe_load('{key2: [4, 5, 6, 7]}')
-        response = client.set_config_file('test.yaml', new_test_yaml, merge=True)
+        assert test_yaml == client.get_config_file(config_filename=default_config)
+        new_test_yaml = yaml.safe_load('{dps: {ovs: {interfaces: {3: {description: test}}}}}')
+        response = client.set_config_file(
+            new_test_yaml, config_filename=default_config, merge=True)
         assert response is not None
-        new_test_yaml = yaml.safe_load('{key1: [a, b, c], key2: [4, 5, 6, 7]}')
-        assert new_test_yaml == client.get_config_file('test.yaml')
+        new_test_yaml = yaml.safe_load(
+            '{dps: {ovs: {dp_id: 1, hardware: Open vSwitch, interfaces: '
+            '{1: {native_vlan: 100, acls_in: []}, 2: {native_vlan: 100}, '
+            '3: {output_only: true, mirror: [1], description: test}}}},'
+            'acls: {test: [{rule: {actions: {allow: 0}}}]}}')
+        assert new_test_yaml == client.get_config_file(config_filename=default_config)
+
+        # Add and remove port mirroring.
+        response = client.add_port_mirror('ovs', 2, 3)
+        assert response is not None
+        assert new_test_yaml != client.get_config_file(config_filename=default_config)
+        response = client.remove_port_mirror('ovs', 2, 3)
+        assert response is not None
+        assert new_test_yaml == client.get_config_file(config_filename=default_config)
+
+        # Add and remove port ACLs
+        response = client.add_port_acl('ovs', 1, 'test')
+        assert response is not None
+        assert new_test_yaml != client.get_config_file(config_filename=default_config)
+        response = client.remove_port_acl('ovs', 1, 'test')
+        assert response is not None
+        assert new_test_yaml == client.get_config_file(config_filename=default_config)
+
         server.terminate()
         server.wait()

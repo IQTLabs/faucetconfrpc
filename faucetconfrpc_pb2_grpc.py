@@ -28,6 +28,26 @@ class FaucetConfServerStub(object):
                 request_serializer=faucetconfrpc__pb2.DelConfigFromFileRequest.SerializeToString,
                 response_deserializer=faucetconfrpc__pb2.DelConfigFromFileReply.FromString,
                 )
+        self.AddPortMirror = channel.unary_unary(
+                '/faucetconfserver.FaucetConfServer/AddPortMirror',
+                request_serializer=faucetconfrpc__pb2.AddPortMirrorRequest.SerializeToString,
+                response_deserializer=faucetconfrpc__pb2.AddPortMirrorReply.FromString,
+                )
+        self.RemovePortMirror = channel.unary_unary(
+                '/faucetconfserver.FaucetConfServer/RemovePortMirror',
+                request_serializer=faucetconfrpc__pb2.RemovePortMirrorRequest.SerializeToString,
+                response_deserializer=faucetconfrpc__pb2.RemovePortMirrorReply.FromString,
+                )
+        self.AddPortAcl = channel.unary_unary(
+                '/faucetconfserver.FaucetConfServer/AddPortAcl',
+                request_serializer=faucetconfrpc__pb2.AddPortAclRequest.SerializeToString,
+                response_deserializer=faucetconfrpc__pb2.AddPortAclReply.FromString,
+                )
+        self.RemovePortAcl = channel.unary_unary(
+                '/faucetconfserver.FaucetConfServer/RemovePortAcl',
+                request_serializer=faucetconfrpc__pb2.RemovePortAclRequest.SerializeToString,
+                response_deserializer=faucetconfrpc__pb2.RemovePortAclReply.FromString,
+                )
 
 
 class FaucetConfServerServicer(object):
@@ -51,6 +71,30 @@ class FaucetConfServerServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def AddPortMirror(self, request, context):
+        """Missing associated documentation comment in .proto file"""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def RemovePortMirror(self, request, context):
+        """Missing associated documentation comment in .proto file"""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def AddPortAcl(self, request, context):
+        """Missing associated documentation comment in .proto file"""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def RemovePortAcl(self, request, context):
+        """Missing associated documentation comment in .proto file"""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_FaucetConfServerServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -68,6 +112,26 @@ def add_FaucetConfServerServicer_to_server(servicer, server):
                     servicer.DelConfigFromFile,
                     request_deserializer=faucetconfrpc__pb2.DelConfigFromFileRequest.FromString,
                     response_serializer=faucetconfrpc__pb2.DelConfigFromFileReply.SerializeToString,
+            ),
+            'AddPortMirror': grpc.unary_unary_rpc_method_handler(
+                    servicer.AddPortMirror,
+                    request_deserializer=faucetconfrpc__pb2.AddPortMirrorRequest.FromString,
+                    response_serializer=faucetconfrpc__pb2.AddPortMirrorReply.SerializeToString,
+            ),
+            'RemovePortMirror': grpc.unary_unary_rpc_method_handler(
+                    servicer.RemovePortMirror,
+                    request_deserializer=faucetconfrpc__pb2.RemovePortMirrorRequest.FromString,
+                    response_serializer=faucetconfrpc__pb2.RemovePortMirrorReply.SerializeToString,
+            ),
+            'AddPortAcl': grpc.unary_unary_rpc_method_handler(
+                    servicer.AddPortAcl,
+                    request_deserializer=faucetconfrpc__pb2.AddPortAclRequest.FromString,
+                    response_serializer=faucetconfrpc__pb2.AddPortAclReply.SerializeToString,
+            ),
+            'RemovePortAcl': grpc.unary_unary_rpc_method_handler(
+                    servicer.RemovePortAcl,
+                    request_deserializer=faucetconfrpc__pb2.RemovePortAclRequest.FromString,
+                    response_serializer=faucetconfrpc__pb2.RemovePortAclReply.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -124,5 +188,69 @@ class FaucetConfServer(object):
         return grpc.experimental.unary_unary(request, target, '/faucetconfserver.FaucetConfServer/DelConfigFromFile',
             faucetconfrpc__pb2.DelConfigFromFileRequest.SerializeToString,
             faucetconfrpc__pb2.DelConfigFromFileReply.FromString,
+            options, channel_credentials,
+            call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def AddPortMirror(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/faucetconfserver.FaucetConfServer/AddPortMirror',
+            faucetconfrpc__pb2.AddPortMirrorRequest.SerializeToString,
+            faucetconfrpc__pb2.AddPortMirrorReply.FromString,
+            options, channel_credentials,
+            call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def RemovePortMirror(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/faucetconfserver.FaucetConfServer/RemovePortMirror',
+            faucetconfrpc__pb2.RemovePortMirrorRequest.SerializeToString,
+            faucetconfrpc__pb2.RemovePortMirrorReply.FromString,
+            options, channel_credentials,
+            call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def AddPortAcl(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/faucetconfserver.FaucetConfServer/AddPortAcl',
+            faucetconfrpc__pb2.AddPortAclRequest.SerializeToString,
+            faucetconfrpc__pb2.AddPortAclReply.FromString,
+            options, channel_credentials,
+            call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def RemovePortAcl(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/faucetconfserver.FaucetConfServer/RemovePortAcl',
+            faucetconfrpc__pb2.RemovePortAclRequest.SerializeToString,
+            faucetconfrpc__pb2.RemovePortAclReply.FromString,
             options, channel_credentials,
             call_credentials, compression, wait_for_ready, timeout, metadata)
