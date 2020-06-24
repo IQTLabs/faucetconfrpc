@@ -8,8 +8,11 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: tests
+      env:
+        PYTHONPATH: "."
+        GO111MODULE: "on"
       run: |
-        GO111MODULE=on go get github.com/square/certstrap && \
+        go get github.com/square/certstrap && \
         PATH=~/go/bin:$PATH certstrap -v && \
         sudo pip3 install setuptools && \
         sudo pip3 install -r test-requirements.txt && \

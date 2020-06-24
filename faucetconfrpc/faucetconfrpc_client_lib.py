@@ -4,8 +4,8 @@ import logging
 import grpc
 import yaml
 
-import faucetconfrpc_pb2
-import faucetconfrpc_pb2_grpc
+from faucetconfrpc import faucetconfrpc_pb2
+from faucetconfrpc import faucetconfrpc_pb2_grpc
 
 
 class FaucetConfRpcClient:

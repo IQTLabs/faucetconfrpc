@@ -10,7 +10,7 @@ import tempfile
 import time
 import os
 import yaml
-from faucetconfrpc_client_lib import FaucetConfRpcClient
+from faucetconfrpc.faucetconfrpc_client_lib import FaucetConfRpcClient
 
 
 def test_faucetconfrpc():  # pylint: disable=too-many-locals,disable=too-many-statements
@@ -56,7 +56,7 @@ def test_faucetconfrpc():  # pylint: disable=too-many-locals,disable=too-many-st
         server = subprocess.Popen(
             ['timeout',
              '10s',
-             './faucetconfrpc_server.py',
+             './faucetconfrpc/faucetconfrpc_server.py',
              '--config_dir=%s' % tmpdir,
              '--default_config=%s' % default_config,
              '--port=%u' % port,

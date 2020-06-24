@@ -3,7 +3,7 @@
 """Manage FAUCET config files via RPC (client)."""
 
 import argparse
-from faucetconfrpc_client_lib import FaucetConfRpcClient
+from faucetconfrpc.faucetconfrpc_client_lib import FaucetConfRpcClient
 
 
 class ClientError(Exception):
