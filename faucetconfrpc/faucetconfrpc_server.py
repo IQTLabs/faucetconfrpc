@@ -17,8 +17,8 @@ from faucet import valve
 from faucet.config_parser import dp_parser
 from faucet.conf import InvalidConfigError
 
-import faucetconfrpc_pb2
-import faucetconfrpc_pb2_grpc
+from faucetconfrpc import faucetconfrpc_pb2
+from faucetconfrpc import faucetconfrpc_pb2_grpc
 
 
 class _ServerError(Exception):
