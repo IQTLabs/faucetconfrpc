@@ -143,7 +143,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
 
     @staticmethod
     def _log_error(context, err):
-        logging.str(str(err))
+        logging.error(str(err))
         context.set_code(grpc.StatusCode.UNKNOWN)
         context.set_details(str(err))
 
