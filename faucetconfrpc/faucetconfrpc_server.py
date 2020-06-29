@@ -5,8 +5,10 @@
 from concurrent import futures  # pytype: disable=pyi-error
 
 import argparse
+import logging
 import os
 import shutil
+import sys
 import tempfile
 import threading
 import yaml
@@ -139,6 +141,12 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
         except (KeyError, ValueError, _ServerError) as err:
             raise _ServerError(err)
 
+    @staticmethod
+    def _log_error(context, err):
+        logging.str(str(err))
+        context.set_code(grpc.StatusCode.UNKNOWN)
+        context.set_details(str(err))
+
     def GetConfigFile(self, request, context):  # pylint: disable=invalid-name
         """Return existing file contents as YAML string."""
         with self.lock:
@@ -149,8 +157,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
                 return faucetconfrpc_pb2.GetConfigFileReply(
                     config_yaml=yaml.dump(self._get_config_file(config_filename)))
             except _ServerError as err:
-                context.set_code(grpc.StatusCode.UNKNOWN)
-                context.set_details(str(err))
+                self._log_error(context, err)
         return faucetconfrpc_pb2.GetConfigFileReply()
 
     def SetConfigFile(self, request, context):  # pylint: disable=invalid-name
@@ -163,8 +170,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
                 self._set_config_file(
                     config_filename, request.config_yaml, request.merge)
             except _ServerError as err:
-                context.set_code(grpc.StatusCode.UNKNOWN)
-                context.set_details(str(err))
+                self._log_error(context, err)
         return faucetconfrpc_pb2.SetConfigFileReply()
 
     def _get_mirror(self, request):
@@ -192,8 +198,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
                     mirrors.append(port.number)
                 self._set_mirror(config_filename, request, mirrors)
             except _ServerError as err:
-                context.set_code(grpc.StatusCode.UNKNOWN)
-                context.set_details(str(err))
+                self._log_error(context, err)
         return faucetconfrpc_pb2.AddPortMirrorReply()
 
     def RemovePortMirror(self, request, context):  # pylint: disable=invalid-name
@@ -205,8 +210,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
                     mirrors.remove(port.number)
                 self._set_mirror(config_filename, request, mirrors)
             except _ServerError as err:
-                context.set_code(grpc.StatusCode.UNKNOWN)
-                context.set_details(str(err))
+                self._log_error(context, err)
         return faucetconfrpc_pb2.AddPortMirrorReply()
 
     def _get_port_acls(self, request):
@@ -235,8 +239,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
                     acls_in.append(request.acl)
                 self._set_port_acls(config_filename, request, acls_in)
             except _ServerError as err:
-                context.set_code(grpc.StatusCode.UNKNOWN)
-                context.set_details(str(err))
+                self._log_error(context, err)
         return faucetconfrpc_pb2.AddPortAclReply()
 
     def RemovePortAcl(self, request, context):  # pylint: disable=invalid-name
@@ -248,8 +251,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
                     acls_in.remove(request.acl)
                 self._set_port_acls(config_filename, request, acls_in)
             except _ServerError as err:
-                context.set_code(grpc.StatusCode.UNKNOWN)
-                context.set_details(str(err))
+                self._log_error(context, err)
         return faucetconfrpc_pb2.AddPortAclReply()
 
     def DelConfigFromFile(self, request, context):  # pylint: disable=invalid-name
@@ -262,13 +264,13 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
                 self._del_config_from_file(
                     config_filename, request.config_yaml_keys)
             except _ServerError as err:
-                context.set_code(grpc.StatusCode.UNKNOWN)
-                context.set_details(str(err))
+                self._log_error(context, err)
         return faucetconfrpc_pb2.DelConfigFromFileReply()
 
 
 def serve():
     """Start server and serve requests."""
+    logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
     parser = argparse.ArgumentParser()
     parser.add_argument(
         '--config_dir',
