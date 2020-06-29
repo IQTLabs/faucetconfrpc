@@ -142,10 +142,11 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
             raise _ServerError(err)
 
     @staticmethod
-    def _log_error(context, err):
-        logging.error(str(err))
+    def _log_error(context, request, err):
+        log = '%s: error %s' % (str(request), str(err))
+        logging.error(log)
         context.set_code(grpc.StatusCode.UNKNOWN)
-        context.set_details(str(err))
+        context.set_details(log)
 
     def GetConfigFile(self, request, context):  # pylint: disable=invalid-name
         """Return existing file contents as YAML string."""
@@ -157,7 +158,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
                 return faucetconfrpc_pb2.GetConfigFileReply(
                     config_yaml=yaml.dump(self._get_config_file(config_filename)))
             except _ServerError as err:
-                self._log_error(context, err)
+                self._log_error(context, request, err)
         return faucetconfrpc_pb2.GetConfigFileReply()
 
     def SetConfigFile(self, request, context):  # pylint: disable=invalid-name
@@ -170,7 +171,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
                 self._set_config_file(
                     config_filename, request.config_yaml, request.merge)
             except _ServerError as err:
-                self._log_error(context, err)
+                self._log_error(context, request, err)
         return faucetconfrpc_pb2.SetConfigFileReply()
 
     def _get_mirror(self, request):
@@ -198,7 +199,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
                     mirrors.append(port.number)
                 self._set_mirror(config_filename, request, mirrors)
             except _ServerError as err:
-                self._log_error(context, err)
+                self._log_error(context, request, err)
         return faucetconfrpc_pb2.AddPortMirrorReply()
 
     def RemovePortMirror(self, request, context):  # pylint: disable=invalid-name
@@ -210,7 +211,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
                     mirrors.remove(port.number)
                 self._set_mirror(config_filename, request, mirrors)
             except _ServerError as err:
-                self._log_error(context, err)
+                self._log_error(context, request, err)
         return faucetconfrpc_pb2.AddPortMirrorReply()
 
     def _get_port_acls(self, request):
@@ -239,7 +240,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
                     acls_in.append(request.acl)
                 self._set_port_acls(config_filename, request, acls_in)
             except _ServerError as err:
-                self._log_error(context, err)
+                self._log_error(context, request, err)
         return faucetconfrpc_pb2.AddPortAclReply()
 
     def RemovePortAcl(self, request, context):  # pylint: disable=invalid-name
@@ -251,7 +252,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
                     acls_in.remove(request.acl)
                 self._set_port_acls(config_filename, request, acls_in)
             except _ServerError as err:
-                self._log_error(context, err)
+                self._log_error(context, request, err)
         return faucetconfrpc_pb2.AddPortAclReply()
 
     def DelConfigFromFile(self, request, context):  # pylint: disable=invalid-name
@@ -264,7 +265,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
                 self._del_config_from_file(
                     config_filename, request.config_yaml_keys)
             except _ServerError as err:
-                self._log_error(context, err)
+                self._log_error(context, request, err)
         return faucetconfrpc_pb2.DelConfigFromFileReply()
 
 
