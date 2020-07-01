@@ -1,4 +1,3 @@
 faucet
 grpcio
-grpcio-tools
 pyyaml

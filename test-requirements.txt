@@ -1,4 +1,5 @@
 -r requirements.txt
+grpcio-tools
 pylint==2.5.3
 pytype==2020.6.26
 pytest
