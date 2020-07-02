@@ -1,14 +1,12 @@
-FROM alpine:3.12
+FROM python:3.8-slim
 
 ENV PYTHONUNBUFFERED 1
 COPY requirements.txt requirements.txt
 
-RUN apk upgrade --no-cache && \
-    apk add --no-cache build-base python3-dev py3-pip linux-headers libc6-compat libstdc++ && \
+RUN apt-get update && \
+    apt-get install -y python3-dev gcc && \
     pip3 install --no-cache-dir --upgrade -r requirements.txt && \
-    apk del build-base && \
-    rm -rf /var/cache/* && \
-    rm -rf /root/.cache/*
+    rm -rf /var/cache/* /root/.cache/*
 
 COPY . /faucetconfrpc
 WORKDIR /faucetconfrpc
