@@ -12,6 +12,8 @@ COPY . /faucetconfrpc
 WORKDIR /faucetconfrpc
 
 RUN pip3 install .
+RUN python3 -c "from faucetconfrpc.faucetconfrpc_client_lib import FaucetConfRpcClient"
+RUN faucetconfrpc_client.py --help
 
 EXPOSE 59999
 
