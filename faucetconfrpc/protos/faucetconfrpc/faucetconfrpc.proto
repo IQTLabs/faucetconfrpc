@@ -1,9 +1,11 @@
-// From directory with this definition, run this to regenerate python libraries:
-// python -m grpc_tools.protoc --python_out=.. --grpc_python_out=.. -I . faucetconfrpc.proto
+// Use generate_pb_grpc.sh to regenerate protobuf and gRPC service definitions.
+// Paths and package names here, together with the directory this file resides in, are critical
+// for gRPC to work in multiple languages.
 
 syntax = "proto3";
 
 package faucetconfserver;
+option go_package = ".;faucetconfserver";
 
 service FaucetConfServer {
   rpc GetConfigFile(GetConfigFileRequest) returns (GetConfigFileReply) {}
