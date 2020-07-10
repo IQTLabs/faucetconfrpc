@@ -138,7 +138,13 @@ def test_faucetconfrpc():  # pylint: disable=too-many-locals,disable=too-many-st
         response = client.add_port_acl('ovs', 1, 'test')
         assert response is not None
         assert new_test_yaml != client.get_config_file(config_filename=default_config)
+        response = client.set_port_acls('ovs', 1, 'test')
+        assert response is not None
+        assert new_test_yaml != client.get_config_file(config_filename=default_config)
         response = client.remove_port_acl('ovs', 1, 'test')
+        assert response is not None
+        assert new_test_yaml == client.get_config_file(config_filename=default_config)
+        response = client.remove_port_acl('ovs', 1)
         assert response is not None
         assert new_test_yaml == client.get_config_file(config_filename=default_config)
 
