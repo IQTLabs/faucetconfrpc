@@ -15,6 +15,7 @@ service FaucetConfServer {
   rpc RemovePortMirror(RemovePortMirrorRequest) returns (RemovePortMirrorReply) {}
   rpc AddPortAcl(AddPortAclRequest) returns (AddPortAclReply) {}
   rpc RemovePortAcl(RemovePortAclRequest) returns (RemovePortAclReply) {}    
+  rpc SetPortAcl(SetPortAclRequest) returns (SetPortAclReply) {}
 }
 
 message GetConfigFileRequest {
@@ -58,6 +59,15 @@ message RemovePortMirrorRequest {
 }
 
 message RemovePortMirrorReply {
+}
+
+message SetPortAclRequest {
+  string dp_name = 1;
+  int32 port_no = 2;
+  string acls = 3;
+}
+
+message SetPortAclReply {
 }
 
 message AddPortAclRequest {
