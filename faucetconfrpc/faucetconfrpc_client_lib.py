@@ -37,14 +37,16 @@ class FaucetConfRpcClient:
             return yaml.safe_load(response.config_yaml)
         return None
 
-    def set_config_file(self, config_yaml, config_filename=None, merge=True):
+    def set_config_file(self, config_yaml, config_filename=None, merge=True,
+                        del_config_yaml_keys=''):
         """Set a YAML config file."""
         if isinstance(config_yaml, dict):
             config_yaml = yaml.dump(config_yaml)
         return self._call(self.stub.SetConfigFile, faucetconfrpc_pb2.SetConfigFileRequest(
             config_filename=config_filename,
             config_yaml=config_yaml,
-            merge=merge))
+            merge=merge,
+            del_config_yaml_keys=del_config_yaml_keys))
 
     def del_config_from_file(self, config_yaml_keys, config_filename=None):
         """Delete a key from YAML config file."""
