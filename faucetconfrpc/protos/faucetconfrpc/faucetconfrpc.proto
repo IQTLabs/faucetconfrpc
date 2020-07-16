@@ -30,6 +30,7 @@ message SetConfigFileRequest {
   string config_filename = 1;
   string config_yaml = 2;
   bool merge = 3;
+  string del_config_yaml_keys = 4;
 }
 
 message SetConfigFileReply {

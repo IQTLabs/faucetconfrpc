@@ -148,5 +148,16 @@ def test_faucetconfrpc():  # pylint: disable=too-many-locals,disable=too-many-st
         assert response is not None
         assert new_test_yaml == client.get_config_file(config_filename=default_config)
 
+        # Test replace operation.
+        new_test_yaml = yaml.safe_load(
+            '{dps: {ovs: {interfaces: {3: {description: replaced, output_only: true}}}}}')
+        del_config_yaml_keys = '[dps, ovs, interfaces, 3]'
+        response = client.set_config_file(
+            new_test_yaml, config_filename=default_config, merge=True,
+            del_config_yaml_keys=del_config_yaml_keys)
+        assert response is not None
+        assert (new_test_yaml['dps']['ovs']['interfaces'][3] ==
+                client.get_config_file(config_filename=default_config)['dps']['ovs']['interfaces'][3])
+
         server.terminate()
         server.wait()

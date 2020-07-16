@@ -18,7 +18,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='faucetconfserver',
   syntax='proto3',
   serialized_options=b'Z\022.;faucetconfserver',
-  serialized_pb=b'\n!faucetconfrpc/faucetconfrpc.proto\x12\x10\x66\x61ucetconfserver\"/\n\x14GetConfigFileRequest\x12\x17\n\x0f\x63onfig_filename\x18\x01 \x01(\t\")\n\x12GetConfigFileReply\x12\x13\n\x0b\x63onfig_yaml\x18\x01 \x01(\t\"S\n\x14SetConfigFileRequest\x12\x17\n\x0f\x63onfig_filename\x18\x01 \x01(\t\x12\x13\n\x0b\x63onfig_yaml\x18\x02 \x01(\t\x12\r\n\x05merge\x18\x03 \x01(\x08\"\x14\n\x12SetConfigFileReply\"M\n\x18\x44\x65lConfigFromFileRequest\x12\x17\n\x0f\x63onfig_filename\x18\x01 \x01(\t\x12\x18\n\x10\x63onfig_yaml_keys\x18\x02 \x01(\t\"\x18\n\x16\x44\x65lConfigFromFileReply\"P\n\x14\x41\x64\x64PortMirrorRequest\x12\x0f\n\x07\x64p_name\x18\x01 \x01(\t\x12\x0f\n\x07port_no\x18\x02 \x01(\x05\x12\x16\n\x0emirror_port_no\x18\x03 \x01(\x05\"\x14\n\x12\x41\x64\x64PortMirrorReply\"S\n\x17RemovePortMirrorRequest\x12\x0f\n\x07\x64p_name\x18\x01 \x01(\t\x12\x0f\n\x07port_no\x18\x02 \x01(\x05\x12\x16\n\x0emirror_port_no\x18\x03 \x01(\x05\"\x17\n\x15RemovePortMirrorReply\"C\n\x11SetPortAclRequest\x12\x0f\n\x07\x64p_name\x18\x01 \x01(\t\x12\x0f\n\x07port_no\x18\x02 \x01(\x05\x12\x0c\n\x04\x61\x63ls\x18\x03 \x01(\t\"\x11\n\x0fSetPortAclReply\"B\n\x11\x41\x64\x64PortAclRequest\x12\x0f\n\x07\x64p_name\x18\x01 \x01(\t\x12\x0f\n\x07port_no\x18\x02 \x01(\x05\x12\x0b\n\x03\x61\x63l\x18\x03 \x01(\t\"\x11\n\x0f\x41\x64\x64PortAclReply\"E\n\x14RemovePortAclRequest\x12\x0f\n\x07\x64p_name\x18\x01 \x01(\t\x12\x0f\n\x07port_no\x18\x02 \x01(\x05\x12\x0b\n\x03\x61\x63l\x18\x03 \x01(\t\"\x14\n\x12RemovePortAclReply2\x9d\x06\n\x10\x46\x61ucetConfServer\x12_\n\rGetConfigFile\x12&.faucetconfserver.GetConfigFileRequest\x1a$.faucetconfserver.GetConfigFileReply\"\x00\x12_\n\rSetConfigFile\x12&.faucetconfserver.SetConfigFileRequest\x1a$.faucetconfserver.SetConfigFileReply\"\x00\x12k\n\x11\x44\x65lConfigFromFile\x12*.faucetconfserver.DelConfigFromFileRequest\x1a(.faucetconfserver.DelConfigFromFileReply\"\x00\x12_\n\rAddPortMirror\x12&.faucetconfserver.AddPortMirrorRequest\x1a$.faucetconfserver.AddPortMirrorReply\"\x00\x12h\n\x10RemovePortMirror\x12).faucetconfserver.RemovePortMirrorRequest\x1a\'.faucetconfserver.RemovePortMirrorReply\"\x00\x12V\n\nAddPortAcl\x12#.faucetconfserver.AddPortAclRequest\x1a!.faucetconfserver.AddPortAclReply\"\x00\x12_\n\rRemovePortAcl\x12&.faucetconfserver.RemovePortAclRequest\x1a$.faucetconfserver.RemovePortAclReply\"\x00\x12V\n\nSetPortAcl\x12#.faucetconfserver.SetPortAclRequest\x1a!.faucetconfserver.SetPortAclReply\"\x00\x42\x14Z\x12.;faucetconfserverb\x06proto3'
+  serialized_pb=b'\n!faucetconfrpc/faucetconfrpc.proto\x12\x10\x66\x61ucetconfserver\"/\n\x14GetConfigFileRequest\x12\x17\n\x0f\x63onfig_filename\x18\x01 \x01(\t\")\n\x12GetConfigFileReply\x12\x13\n\x0b\x63onfig_yaml\x18\x01 \x01(\t\"q\n\x14SetConfigFileRequest\x12\x17\n\x0f\x63onfig_filename\x18\x01 \x01(\t\x12\x13\n\x0b\x63onfig_yaml\x18\x02 \x01(\t\x12\r\n\x05merge\x18\x03 \x01(\x08\x12\x1c\n\x14\x64\x65l_config_yaml_keys\x18\x04 \x01(\t\"\x14\n\x12SetConfigFileReply\"M\n\x18\x44\x65lConfigFromFileRequest\x12\x17\n\x0f\x63onfig_filename\x18\x01 \x01(\t\x12\x18\n\x10\x63onfig_yaml_keys\x18\x02 \x01(\t\"\x18\n\x16\x44\x65lConfigFromFileReply\"P\n\x14\x41\x64\x64PortMirrorRequest\x12\x0f\n\x07\x64p_name\x18\x01 \x01(\t\x12\x0f\n\x07port_no\x18\x02 \x01(\x05\x12\x16\n\x0emirror_port_no\x18\x03 \x01(\x05\"\x14\n\x12\x41\x64\x64PortMirrorReply\"S\n\x17RemovePortMirrorRequest\x12\x0f\n\x07\x64p_name\x18\x01 \x01(\t\x12\x0f\n\x07port_no\x18\x02 \x01(\x05\x12\x16\n\x0emirror_port_no\x18\x03 \x01(\x05\"\x17\n\x15RemovePortMirrorReply\"C\n\x11SetPortAclRequest\x12\x0f\n\x07\x64p_name\x18\x01 \x01(\t\x12\x0f\n\x07port_no\x18\x02 \x01(\x05\x12\x0c\n\x04\x61\x63ls\x18\x03 \x01(\t\"\x11\n\x0fSetPortAclReply\"B\n\x11\x41\x64\x64PortAclRequest\x12\x0f\n\x07\x64p_name\x18\x01 \x01(\t\x12\x0f\n\x07port_no\x18\x02 \x01(\x05\x12\x0b\n\x03\x61\x63l\x18\x03 \x01(\t\"\x11\n\x0f\x41\x64\x64PortAclReply\"E\n\x14RemovePortAclRequest\x12\x0f\n\x07\x64p_name\x18\x01 \x01(\t\x12\x0f\n\x07port_no\x18\x02 \x01(\x05\x12\x0b\n\x03\x61\x63l\x18\x03 \x01(\t\"\x14\n\x12RemovePortAclReply2\x9d\x06\n\x10\x46\x61ucetConfServer\x12_\n\rGetConfigFile\x12&.faucetconfserver.GetConfigFileRequest\x1a$.faucetconfserver.GetConfigFileReply\"\x00\x12_\n\rSetConfigFile\x12&.faucetconfserver.SetConfigFileRequest\x1a$.faucetconfserver.SetConfigFileReply\"\x00\x12k\n\x11\x44\x65lConfigFromFile\x12*.faucetconfserver.DelConfigFromFileRequest\x1a(.faucetconfserver.DelConfigFromFileReply\"\x00\x12_\n\rAddPortMirror\x12&.faucetconfserver.AddPortMirrorRequest\x1a$.faucetconfserver.AddPortMirrorReply\"\x00\x12h\n\x10RemovePortMirror\x12).faucetconfserver.RemovePortMirrorRequest\x1a\'.faucetconfserver.RemovePortMirrorReply\"\x00\x12V\n\nAddPortAcl\x12#.faucetconfserver.AddPortAclRequest\x1a!.faucetconfserver.AddPortAclReply\"\x00\x12_\n\rRemovePortAcl\x12&.faucetconfserver.RemovePortAclRequest\x1a$.faucetconfserver.RemovePortAclReply\"\x00\x12V\n\nSetPortAcl\x12#.faucetconfserver.SetPortAclRequest\x1a!.faucetconfserver.SetPortAclReply\"\x00\x42\x14Z\x12.;faucetconfserverb\x06proto3'
 )
 
 
@@ -114,6 +114,13 @@ _SETCONFIGFILEREQUEST = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='del_config_yaml_keys', full_name='faucetconfserver.SetConfigFileRequest.del_config_yaml_keys', index=3,
+      number=4, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -127,7 +134,7 @@ _SETCONFIGFILEREQUEST = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=147,
-  serialized_end=230,
+  serialized_end=260,
 )
 
 
@@ -150,8 +157,8 @@ _SETCONFIGFILEREPLY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=232,
-  serialized_end=252,
+  serialized_start=262,
+  serialized_end=282,
 )
 
 
@@ -188,8 +195,8 @@ _DELCONFIGFROMFILEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=254,
-  serialized_end=331,
+  serialized_start=284,
+  serialized_end=361,
 )
 
 
@@ -212,8 +219,8 @@ _DELCONFIGFROMFILEREPLY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=333,
-  serialized_end=357,
+  serialized_start=363,
+  serialized_end=387,
 )
 
 
@@ -257,8 +264,8 @@ _ADDPORTMIRRORREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=359,
-  serialized_end=439,
+  serialized_start=389,
+  serialized_end=469,
 )
 
 
@@ -281,8 +288,8 @@ _ADDPORTMIRRORREPLY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=441,
-  serialized_end=461,
+  serialized_start=471,
+  serialized_end=491,
 )
 
 
@@ -326,8 +333,8 @@ _REMOVEPORTMIRRORREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=463,
-  serialized_end=546,
+  serialized_start=493,
+  serialized_end=576,
 )
 
 
@@ -350,8 +357,8 @@ _REMOVEPORTMIRRORREPLY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=548,
-  serialized_end=571,
+  serialized_start=578,
+  serialized_end=601,
 )
 
 
@@ -395,8 +402,8 @@ _SETPORTACLREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=573,
-  serialized_end=640,
+  serialized_start=603,
+  serialized_end=670,
 )
 
 
@@ -419,8 +426,8 @@ _SETPORTACLREPLY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=642,
-  serialized_end=659,
+  serialized_start=672,
+  serialized_end=689,
 )
 
 
@@ -464,8 +471,8 @@ _ADDPORTACLREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=661,
-  serialized_end=727,
+  serialized_start=691,
+  serialized_end=757,
 )
 
 
@@ -488,8 +495,8 @@ _ADDPORTACLREPLY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=729,
-  serialized_end=746,
+  serialized_start=759,
+  serialized_end=776,
 )
 
 
@@ -533,8 +540,8 @@ _REMOVEPORTACLREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=748,
-  serialized_end=817,
+  serialized_start=778,
+  serialized_end=847,
 )
 
 
@@ -557,8 +564,8 @@ _REMOVEPORTACLREPLY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=819,
-  serialized_end=839,
+  serialized_start=849,
+  serialized_end=869,
 )
 
 DESCRIPTOR.message_types_by_name['GetConfigFileRequest'] = _GETCONFIGFILEREQUEST
@@ -700,8 +707,8 @@ _FAUCETCONFSERVER = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=842,
-  serialized_end=1639,
+  serialized_start=872,
+  serialized_end=1669,
   methods=[
   _descriptor.MethodDescriptor(
     name='GetConfigFile',
