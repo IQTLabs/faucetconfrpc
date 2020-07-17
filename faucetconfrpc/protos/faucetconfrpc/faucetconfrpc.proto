@@ -7,6 +7,8 @@ syntax = "proto3";
 package faucetconfserver;
 option go_package = ".;faucetconfserver";
 
+// NOTE: currently some of these API calls allow specifying an optional config_file.
+// This will be removed in future so the client does not need/have knowledge of the underlying YAML store.
 service FaucetConfServer {
   rpc GetConfigFile(GetConfigFileRequest) returns (GetConfigFileReply) {}
   rpc SetConfigFile(SetConfigFileRequest) returns (SetConfigFileReply) {}
@@ -16,9 +18,12 @@ service FaucetConfServer {
   rpc AddPortAcl(AddPortAclRequest) returns (AddPortAclReply) {}
   rpc RemovePortAcl(RemovePortAclRequest) returns (RemovePortAclReply) {}    
   rpc SetPortAcl(SetPortAclRequest) returns (SetPortAclReply) {}
+  rpc GetDpInfo(GetDpInfoRequest) returns (GetDpInfoReply) {}
 }
 
+// Retrieve YAML config.
 message GetConfigFileRequest {
+  // Optional: retrieve YAML from this file.
   string config_filename = 1;
 }
 
@@ -26,45 +31,55 @@ message GetConfigFileReply {
   string config_yaml = 1;
 }
 
+// Set current YAML config, optionally merging or overwriting.
 message SetConfigFileRequest {
   string config_filename = 1;
   string config_yaml = 2;
+  // If true, then merge new YAML dict in with current.
   bool merge = 3;
+  // If set, execute YAML delete per DelConfigFromFileRequest, below.
   string del_config_yaml_keys = 4;
 }
 
 message SetConfigFileReply {
 }
 
+// Delete a YAML config tree/list item.
 message DelConfigFromFileRequest {
+  // Optional: delete YAML from this file.
   string config_filename = 1;
+  // '[key1, key2', 99]' will delete {key1: {key2: 99}}
+  // '[key1, key2']' will delete {key1: {key2}}
   string config_yaml_keys = 2;
 }
 
 message DelConfigFromFileReply {
 }
 
+// Add mirroring to a port.
 message AddPortMirrorRequest {
   string dp_name = 1;
-  int32 port_no = 2;
-  int32 mirror_port_no = 3;
+  uint32 port_no = 2;
+  uint32 mirror_port_no = 3;
 }
 
 message AddPortMirrorReply {
 }
 
+// Remove mirroring from a port.
 message RemovePortMirrorRequest {
   string dp_name = 1;
-  int32 port_no = 2;
-  int32 mirror_port_no = 3;
+  uint32 port_no = 2;
+  uint32 mirror_port_no = 3;
 }
 
 message RemovePortMirrorReply {
 }
 
+// Overwrite ACL list on a port.
 message SetPortAclRequest {
   string dp_name = 1;
-  int32 port_no = 2;
+  uint32 port_no = 2;
   string acls = 3;
 }
 
@@ -73,18 +88,44 @@ message SetPortAclReply {
 
 message AddPortAclRequest {
   string dp_name = 1;
-  int32 port_no = 2;
+  uint32 port_no = 2;
   string acl = 3;
 }
 
 message AddPortAclReply {
 }
 
+// Remove named ACL from port, or all if no ACL name.
 message RemovePortAclRequest {
   string dp_name = 1;
-  int32 port_no = 2;
+  uint32 port_no = 2;
   string acl = 3;
 }
 
 message RemovePortAclReply {
+}
+
+// Request DP info.
+message GetDpInfoRequest {
+  // Optional: if specified, only info about this DP will be returned, otherwise all DPs.
+  string dp_name = 1;
+  // Optional: look up DPs in only this YAML file.
+  string config_filename = 2;
+}
+
+message InterfaceInfo {
+  int32 port_no = 1;
+  string name = 2;
+  string description = 3;
+}
+
+message DpInfo {
+  string name = 1;
+  uint64 dp_id = 2;
+  string description = 3;
+  repeated InterfaceInfo interfaces = 4;
+}
+
+message GetDpInfoReply{
+  repeated DpInfo dps = 1;
 }
