@@ -83,3 +83,8 @@ class FaucetConfRpcClient:
                 dp_name=dp_name, port_no=port_no, acl=acl))
         return self._call(self.stub.RemovePortAcl, faucetconfrpc_pb2.RemovePortAclRequest(
             dp_name=dp_name, port_no=port_no, acl=acl))
+
+    def get_dp_info(self, dp_name=''):
+        """Get DP info."""
+        return self._call(self.stub.GetDpInfo, faucetconfrpc_pb2.GetDpInfoRequest(
+            dp_name=dp_name))

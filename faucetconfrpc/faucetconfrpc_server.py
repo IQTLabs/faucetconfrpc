@@ -169,6 +169,33 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
                 self._log_error(context, request, err)
         return faucetconfrpc_pb2.GetConfigFileReply()
 
+    def GetDpInfo(self, request, context):  # pylint: disable=invalid-name
+        with self.lock:
+            try:
+                config_filename = request.config_filename
+                if not config_filename:
+                    config_filename = self.default_config
+                config_yaml = self._get_config_file(config_filename)
+                dps = config_yaml['dps']
+                if request.dp_name:
+                    dps = {}
+                    if request.dp_name in dps:
+                        dps = {request.dp_name: dps[request.dp_name]}
+                reply = faucetconfrpc_pb2.GetDpInfoReply()
+                for dp_name, dp in dps.items():  # pylint: disable=invalid-name
+                    dp_info = reply.dps.add()  # pylint: disable=no-member
+                    dp_info.name = dp_name
+                    dp_info.dp_id = dp.get('dp_id', 0)
+                    dp_info.description = dp.get('description', '')
+                    for port_no, port in dp.get('interfaces', {}).items():
+                        interface_info = dp_info.interfaces.add()
+                        interface_info.port_no = port_no
+                        interface_info.name = port.get('name', '')
+                        interface_info.description = port.get('description', '')
+            except _ServerError as err:
+                self._log_error(context, request, err)
+        return reply
+
     def SetConfigFile(self, request, context):  # pylint: disable=invalid-name
         """Overwrite/update config file contents with provided YAML."""
         with self.lock:
