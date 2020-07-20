@@ -11,7 +11,43 @@ import time
 import os
 import yaml
 from faucetconfrpc.faucetconfrpc_client_lib import FaucetConfRpcClient
+from faucetconfrpc.faucetconfrpc_server import Server
 
+
+def test_merge():
+    server = Server('.', None)
+    existing_yaml = {'dps': {'switch1': {'interfaces': {1: {'native_vlan': 100}}}}}
+    dpid_yaml = {'dps': {'switch1': {'dp_id': 1}}}
+    merged_yaml = server._yaml_merge(existing_yaml, dpid_yaml)
+    # dp_id is set.
+    assert (merged_yaml ==
+        {'dps': {'switch1': {'dp_id': 1, 'interfaces': {1: {'native_vlan': 100}}}}})
+    existing_yaml = {'dps': {
+        'switch1': {
+            'interfaces': {
+                1: {'native_vlan': 100}}}}}
+    # add new switch and stacking link.
+    new_yaml = {'dps': {
+        'switch1': {
+            'stack': {'priority': 1},
+            'interfaces': {
+                9: {'stack': {'dp': 'switch2', 'port': 999}}}},
+        'switch2': {
+            'dp_id': 2,
+            'interfaces': {
+                999: {'stack': {'dp': 'switch1', 'port': 9}}}}}}
+    merged_yaml = server._yaml_merge(existing_yaml, new_yaml)
+    assert (merged_yaml ==
+        {'dps': {
+            'switch1': {
+                'stack': {'priority': 1},
+                'interfaces': {
+                    1: {'native_vlan': 100},
+                    9: {'stack': {'dp': 'switch2', 'port': 999}}}},
+            'switch2': {
+                'dp_id': 2,
+                'interfaces': {
+                    999: {'stack': {'dp': 'switch1', 'port': 9}}}}}})
 
 def test_faucetconfrpc():  # pylint: disable=too-many-locals,disable=too-many-statements
     """Test faucetconfrpc RPCs."""
