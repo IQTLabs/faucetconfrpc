@@ -311,7 +311,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
         return faucetconfrpc_pb2.AddPortAclReply()
 
     def DelConfigFromFile(self, request, context):  # pylint: disable=invalid-name
-        """Delete config file contents based on provided key ."""
+        """Delete config file contents based on provided key."""
         with self.lock:
             try:
                 config_filename = request.config_filename
@@ -323,6 +323,22 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
                 self._log_error(context, request, err)
         return faucetconfrpc_pb2.DelConfigFromFileReply()
 
+    def SetDpInterfaces(self, request, context):  # pylint: disable=invalid-name
+        """Replace interfaces config."""
+        with self.lock:
+            try:
+                config_filename = self.default_config
+                config_yaml = self._get_config_file(config_filename)
+                for dp_request in request.interfaces_config:
+                    interfaces = config_yaml['dps'][dp_request.dp_name]['interfaces']
+                    for interface_request in dp_request.interface_config:
+                        interfaces[interface_request.port_no] = self._yaml_parse(
+                            interface_request.config_yaml)
+                self._set_config_file(
+                    config_filename, yaml.dump(config_yaml), False, [])
+            except _ServerError as err:
+                self._log_error(context, request, err)
+        return faucetconfrpc_pb2.SetDpInterfacesReply()
 
 def serve():
     """Start server and serve requests."""

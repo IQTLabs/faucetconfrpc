@@ -88,3 +88,17 @@ class FaucetConfRpcClient:
         """Get DP info."""
         return self._call(self.stub.GetDpInfo, faucetconfrpc_pb2.GetDpInfoRequest(
             dp_name=dp_name))
+
+    def set_dp_interfaces(self, dp_interfaces_requests=None):
+        """Set DP interfaces."""
+        if not dp_interfaces_requests:
+            dp_interfaces_requests = []
+        request = faucetconfrpc_pb2.SetDpInterfacesRequest()
+        for dp_name, dp_interfaces in dp_interfaces_requests:
+            dp_request = request.interfaces_config.add()  # pylint: disable=no-member
+            dp_request.dp_name = dp_name
+            for port_no, config_yaml in dp_interfaces.items():
+                interfaces_request = dp_request.interface_config.add()
+                interfaces_request.port_no = port_no
+                interfaces_request.config_yaml = config_yaml
+        return self._call(self.stub.SetDpInterfaces, request)

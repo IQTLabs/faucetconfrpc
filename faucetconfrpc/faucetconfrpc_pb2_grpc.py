@@ -5,7 +5,9 @@ from faucetconfrpc import faucetconfrpc_pb2 as faucetconfrpc_dot_faucetconfrpc__
 
 
 class FaucetConfServerStub(object):
-    """Missing associated documentation comment in .proto file"""
+    """NOTE: currently some of these API calls allow specifying an optional config_file.
+    This will be removed in future so the client does not need/have knowledge of the underlying YAML store.
+    """
 
     def __init__(self, channel):
         """Constructor.
@@ -53,6 +55,11 @@ class FaucetConfServerStub(object):
                 request_serializer=faucetconfrpc_dot_faucetconfrpc__pb2.SetPortAclRequest.SerializeToString,
                 response_deserializer=faucetconfrpc_dot_faucetconfrpc__pb2.SetPortAclReply.FromString,
                 )
+        self.SetDpInterfaces = channel.unary_unary(
+                '/faucetconfserver.FaucetConfServer/SetDpInterfaces',
+                request_serializer=faucetconfrpc_dot_faucetconfrpc__pb2.SetDpInterfacesRequest.SerializeToString,
+                response_deserializer=faucetconfrpc_dot_faucetconfrpc__pb2.SetDpInterfacesReply.FromString,
+                )
         self.GetDpInfo = channel.unary_unary(
                 '/faucetconfserver.FaucetConfServer/GetDpInfo',
                 request_serializer=faucetconfrpc_dot_faucetconfrpc__pb2.GetDpInfoRequest.SerializeToString,
@@ -61,7 +68,9 @@ class FaucetConfServerStub(object):
 
 
 class FaucetConfServerServicer(object):
-    """Missing associated documentation comment in .proto file"""
+    """NOTE: currently some of these API calls allow specifying an optional config_file.
+    This will be removed in future so the client does not need/have knowledge of the underlying YAML store.
+    """
 
     def GetConfigFile(self, request, context):
         """Missing associated documentation comment in .proto file"""
@@ -106,6 +115,12 @@ class FaucetConfServerServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def SetPortAcl(self, request, context):
+        """Missing associated documentation comment in .proto file"""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def SetDpInterfaces(self, request, context):
         """Missing associated documentation comment in .proto file"""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -160,6 +175,11 @@ def add_FaucetConfServerServicer_to_server(servicer, server):
                     request_deserializer=faucetconfrpc_dot_faucetconfrpc__pb2.SetPortAclRequest.FromString,
                     response_serializer=faucetconfrpc_dot_faucetconfrpc__pb2.SetPortAclReply.SerializeToString,
             ),
+            'SetDpInterfaces': grpc.unary_unary_rpc_method_handler(
+                    servicer.SetDpInterfaces,
+                    request_deserializer=faucetconfrpc_dot_faucetconfrpc__pb2.SetDpInterfacesRequest.FromString,
+                    response_serializer=faucetconfrpc_dot_faucetconfrpc__pb2.SetDpInterfacesReply.SerializeToString,
+            ),
             'GetDpInfo': grpc.unary_unary_rpc_method_handler(
                     servicer.GetDpInfo,
                     request_deserializer=faucetconfrpc_dot_faucetconfrpc__pb2.GetDpInfoRequest.FromString,
@@ -173,7 +193,9 @@ def add_FaucetConfServerServicer_to_server(servicer, server):
 
  # This class is part of an EXPERIMENTAL API.
 class FaucetConfServer(object):
-    """Missing associated documentation comment in .proto file"""
+    """NOTE: currently some of these API calls allow specifying an optional config_file.
+    This will be removed in future so the client does not need/have knowledge of the underlying YAML store.
+    """
 
     @staticmethod
     def GetConfigFile(request,
@@ -300,6 +322,22 @@ class FaucetConfServer(object):
         return grpc.experimental.unary_unary(request, target, '/faucetconfserver.FaucetConfServer/SetPortAcl',
             faucetconfrpc_dot_faucetconfrpc__pb2.SetPortAclRequest.SerializeToString,
             faucetconfrpc_dot_faucetconfrpc__pb2.SetPortAclReply.FromString,
+            options, channel_credentials,
+            call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def SetDpInterfaces(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/faucetconfserver.FaucetConfServer/SetDpInterfaces',
+            faucetconfrpc_dot_faucetconfrpc__pb2.SetDpInterfacesRequest.SerializeToString,
+            faucetconfrpc_dot_faucetconfrpc__pb2.SetDpInterfacesReply.FromString,
             options, channel_credentials,
             call_credentials, compression, wait_for_ready, timeout, metadata)
 

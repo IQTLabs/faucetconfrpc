@@ -18,6 +18,7 @@ service FaucetConfServer {
   rpc AddPortAcl(AddPortAclRequest) returns (AddPortAclReply) {}
   rpc RemovePortAcl(RemovePortAclRequest) returns (RemovePortAclReply) {}    
   rpc SetPortAcl(SetPortAclRequest) returns (SetPortAclReply) {}
+  rpc SetDpInterfaces(SetDpInterfacesRequest) returns (SetDpInterfacesReply) {}
   rpc GetDpInfo(GetDpInfoRequest) returns (GetDpInfoReply) {}
 }
 
@@ -103,6 +104,24 @@ message RemovePortAclRequest {
 }
 
 message RemovePortAclReply {
+}
+
+message SetInterface {
+  uint32 port_no = 1;
+  string config_yaml = 2;
+}
+
+message SetDpInterfaces {
+  string dp_name = 1;
+  repeated SetInterface interface_config = 2;
+}
+
+// Set/replace config for any number of DPs/interfaces.
+message SetDpInterfacesRequest {
+  repeated SetDpInterfaces interfaces_config = 1;
+}
+
+message SetDpInterfacesReply {
 }
 
 // Request DP info.
