@@ -212,11 +212,23 @@ def test_faucetconfrpc():  # pylint: disable=too-many-locals,disable=too-many-st
         assert (new_test_yaml['dps']['ovs']['interfaces'][3] ==
                 client.get_config_file(config_filename=default_config)['dps']['ovs']['interfaces'][3])
 
-        # DP info returned.
+        # All DP info returned.
         response = client.get_dp_info()
+        assert len(response.dps) == 1
         dp = response.dps[0]
         assert dp.name == 'ovs'
         assert len(dp.interfaces) == 3
+
+        # Only one DP info returned.
+        response = client.get_dp_info(dp_name='ovs')
+        assert len(response.dps) == 1
+        dp = response.dps[0]
+        assert dp.name == 'ovs'
+        assert len(dp.interfaces) == 3
+
+        # Empty list when no such DP
+        response = client.get_dp_info(dp_name='nosuchdp')
+        assert len(response.dps) == 0
 
         server.terminate()
         server.wait()

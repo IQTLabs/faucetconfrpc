@@ -184,9 +184,10 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
                 config_yaml = self._get_config_file(config_filename)
                 dps = config_yaml['dps']
                 if request.dp_name:
-                    dps = {}
                     if request.dp_name in dps:
                         dps = {request.dp_name: dps[request.dp_name]}
+                    else:
+                        dps = {}
                 reply = faucetconfrpc_pb2.GetDpInfoReply()
                 for dp_name, dp in dps.items():  # pylint: disable=invalid-name
                     dp_info = reply.dps.add()  # pylint: disable=no-member
