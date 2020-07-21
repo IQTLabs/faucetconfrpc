@@ -92,10 +92,17 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
             raise _ServerError('cannot overwrite %s' % safe_filename)
         return safe_filename
 
+    @staticmethod
+    def _yaml_parse(config_yaml_str):
+        try:
+            return yaml.safe_load(config_yaml_str)
+        except (yaml.constructor.ConstructorError, yaml.parser.ParserError) as err:
+            raise _ServerError('YAML error: %s' % err)
+
     def _get_config_file(self, config_filename):
         try:
             with open(self._validate_filename(config_filename)) as config_file:
-                return yaml.safe_load(config_file.read())
+                return self._yaml_parse(config_file.read())
         except (FileNotFoundError, PermissionError) as err:
             raise _ServerError(err)
 
@@ -113,7 +120,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
     def _set_config_file(self, config_filename, config_yaml, merge, del_yaml_keys=None):
         try:
             config_filename = self._validate_filename(config_filename)
-            new_config_yaml = yaml.safe_load(config_yaml)
+            new_config_yaml = self._yaml_parse(config_yaml)
             if merge:
                 curr_config_yaml = self._get_config_file(config_filename)
                 if del_yaml_keys:
@@ -125,9 +132,8 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
         except (FileNotFoundError, PermissionError, _ServerError) as err:
             raise _ServerError(err)
 
-    @staticmethod
-    def _del_keys_from_yaml(config_yaml_keys, new_config_yaml):
-        config_yaml_keys = yaml.safe_load(config_yaml_keys)
+    def _del_keys_from_yaml(self, config_yaml_keys, new_config_yaml):
+        config_yaml_keys = self._yaml_parse(config_yaml_keys)
         if not isinstance(config_yaml_keys, list):
             raise _ServerError('config_yaml_keys %s not a list' % config_yaml_keys)
         penultimate_key = new_config_yaml
@@ -178,9 +184,10 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
                 config_yaml = self._get_config_file(config_filename)
                 dps = config_yaml['dps']
                 if request.dp_name:
-                    dps = {}
                     if request.dp_name in dps:
                         dps = {request.dp_name: dps[request.dp_name]}
+                    else:
+                        dps = {}
                 reply = faucetconfrpc_pb2.GetDpInfoReply()
                 for dp_name, dp in dps.items():  # pylint: disable=invalid-name
                     dp_info = reply.dps.add()  # pylint: disable=no-member
