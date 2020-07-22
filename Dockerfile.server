@@ -4,7 +4,7 @@ ENV PYTHONUNBUFFERED 1
 COPY requirements.txt requirements.txt
 
 RUN apt-get update && \
-    apt-get install -y python3-dev gcc g++ && \
+    apt-get install -y iproute2 python3-dev gcc g++ && \
     pip3 install --no-cache-dir --upgrade -r requirements.txt && \
     rm -rf /var/cache/* /root/.cache/*
 
@@ -18,3 +18,4 @@ RUN faucetconfrpc_client.py --help
 EXPOSE 59999
 
 ENTRYPOINT ["faucetconfrpc_server.py"]
+HEALTHCHECK --interval=30s CMD ss -tln|grep -q 59999 || exit 1
