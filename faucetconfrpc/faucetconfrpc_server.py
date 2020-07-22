@@ -37,6 +37,18 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
         self.lock = threading.Lock()
         os.chdir(self.config_dir)
 
+    def request_wrapper(self, request_handler, context, request, default_reply):
+        """Wrap an RPC call in a lock and log."""
+        with self.lock:
+            reply = default_reply
+            try:
+                reply = request_handler()
+                logging.info('request %s, reply %s', request, reply)
+                return reply
+            except _ServerError as err:
+                self._log_error(context, request, err)
+            return default_reply
+
     def _yaml_merge(self, yaml_doc_a, yaml_doc_b):
         if yaml_doc_a is None or isinstance(yaml_doc_a, (str, int, float)):
             yaml_doc_a = yaml_doc_b
@@ -164,58 +176,66 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
 
     def GetConfigFile(self, request, context):  # pylint: disable=invalid-name
         """Return existing file contents as YAML string."""
-        with self.lock:
-            try:
-                config_filename = request.config_filename
-                if not config_filename:
-                    config_filename = self.default_config
-                return faucetconfrpc_pb2.GetConfigFileReply(
-                    config_yaml=yaml.dump(self._get_config_file(config_filename)))
-            except _ServerError as err:
-                self._log_error(context, request, err)
-        return faucetconfrpc_pb2.GetConfigFileReply()
+
+        default_reply = faucetconfrpc_pb2.GetConfigFileReply()
+
+        def get_config_file():
+            config_filename = request.config_filename
+            if not config_filename:
+                config_filename = self.default_config
+            return faucetconfrpc_pb2.GetConfigFileReply(
+                config_yaml=yaml.dump(self._get_config_file(config_filename)))
+
+        return self.request_wrapper(
+            get_config_file, context, request, default_reply)
 
     def GetDpInfo(self, request, context):  # pylint: disable=invalid-name
-        with self.lock:
-            try:
-                config_filename = request.config_filename
-                if not config_filename:
-                    config_filename = self.default_config
-                config_yaml = self._get_config_file(config_filename)
-                dps = config_yaml['dps']
-                if request.dp_name:
-                    if request.dp_name in dps:
-                        dps = {request.dp_name: dps[request.dp_name]}
-                    else:
-                        dps = {}
-                reply = faucetconfrpc_pb2.GetDpInfoReply()
-                for dp_name, dp in dps.items():  # pylint: disable=invalid-name
-                    dp_info = reply.dps.add()  # pylint: disable=no-member
-                    dp_info.name = dp_name
-                    dp_info.dp_id = dp.get('dp_id', 0)
-                    dp_info.description = dp.get('description', '')
-                    for port_no, port in dp.get('interfaces', {}).items():
-                        interface_info = dp_info.interfaces.add()
-                        interface_info.port_no = port_no
-                        interface_info.name = port.get('name', '')
-                        interface_info.description = port.get('description', '')
-            except _ServerError as err:
-                self._log_error(context, request, err)
-        return reply
+        """Return parsed DP info."""
+
+        default_reply = faucetconfrpc_pb2.GetDpInfoReply()
+
+        def get_dp_info():
+            config_filename = request.config_filename
+            if not config_filename:
+                config_filename = self.default_config
+            config_yaml = self._get_config_file(config_filename)
+            dps = config_yaml['dps']
+            if request.dp_name:
+                if request.dp_name in dps:
+                    dps = {request.dp_name: dps[request.dp_name]}
+                else:
+                    dps = {}
+            for dp_name, dp in dps.items():  # pylint: disable=invalid-name
+                dp_info = default_reply.dps.add()  # pylint: disable=no-member
+                dp_info.name = dp_name
+                dp_info.dp_id = dp.get('dp_id', 0)
+                dp_info.description = dp.get('description', '')
+                for port_no, port in dp.get('interfaces', {}).items():
+                    interface_info = dp_info.interfaces.add()
+                    interface_info.port_no = port_no
+                    interface_info.name = port.get('name', '')
+                    interface_info.description = port.get('description', '')
+            return default_reply
+
+        return self.request_wrapper(
+            get_dp_info, context, request, default_reply)
 
     def SetConfigFile(self, request, context):  # pylint: disable=invalid-name
         """Overwrite/update config file contents with provided YAML."""
-        with self.lock:
-            try:
-                config_filename = request.config_filename
-                if not config_filename:
-                    config_filename = self._filename_for_yaml(request.config_yaml)
-                self._set_config_file(
-                    config_filename, request.config_yaml, request.merge,
-                    request.del_config_yaml_keys)
-            except _ServerError as err:
-                self._log_error(context, request, err)
-        return faucetconfrpc_pb2.SetConfigFileReply()
+
+        default_reply = faucetconfrpc_pb2.SetConfigFileReply()
+
+        def set_config_file():
+            config_filename = request.config_filename
+            if not config_filename:
+                config_filename = self._filename_for_yaml(request.config_yaml)
+            self._set_config_file(
+                config_filename, request.config_yaml, request.merge,
+                request.del_config_yaml_keys)
+            return default_reply
+
+        return self.request_wrapper(
+            set_config_file, context, request, default_reply)
 
     def _get_mirror(self, request):
         dps = self._validate_faucet_config(self.config_dir)
@@ -234,28 +254,36 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
             config_filename, config_yaml, merge=True)
 
     def AddPortMirror(self, request, context):  # pylint: disable=invalid-name
-        with self.lock:
-            try:
-                config_filename = self.default_config
-                port, mirrors = self._get_mirror(request)
-                if port.number not in mirrors:
-                    mirrors.append(port.number)
-                self._set_mirror(config_filename, request, mirrors)
-            except _ServerError as err:
-                self._log_error(context, request, err)
-        return faucetconfrpc_pb2.AddPortMirrorReply()
+        """Add mirroring for port."""
+
+        default_reply = faucetconfrpc_pb2.AddPortMirrorReply()
+
+        def add_port_mirror():
+            config_filename = self.default_config
+            port, mirrors = self._get_mirror(request)
+            if port.number not in mirrors:
+                mirrors.append(port.number)
+            self._set_mirror(config_filename, request, mirrors)
+            return default_reply
+
+        return self.request_wrapper(
+            add_port_mirror, context, request, default_reply)
 
     def RemovePortMirror(self, request, context):  # pylint: disable=invalid-name
-        with self.lock:
-            try:
-                config_filename = self.default_config
-                port, mirrors = self._get_mirror(request)
-                if port.number in mirrors:
-                    mirrors.remove(port.number)
-                self._set_mirror(config_filename, request, mirrors)
-            except _ServerError as err:
-                self._log_error(context, request, err)
-        return faucetconfrpc_pb2.AddPortMirrorReply()
+        """Remove mirroring for port."""
+
+        default_reply = faucetconfrpc_pb2.AddPortMirrorReply()
+
+        def remove_port_mirror():
+            config_filename = self.default_config
+            port, mirrors = self._get_mirror(request)
+            if port.number in mirrors:
+                mirrors.remove(port.number)
+            self._set_mirror(config_filename, request, mirrors)
+            return default_reply
+
+        return self.request_wrapper(
+            remove_port_mirror, context, request, default_reply)
 
     def _get_port_acls(self, request):
         dps = self._validate_faucet_config(self.config_dir)
@@ -275,70 +303,88 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
             config_filename, config_yaml, merge=True)
 
     def SetPortAcl(self, request, context):  # pylint: disable=invalid-name
-        with self.lock:
-            try:
-                config_filename = self.default_config
-                self._set_port_acls(config_filename, request, request.acls.split(','))
-            except _ServerError as err:
-                self._log_error(context, request, err)
-        return faucetconfrpc_pb2.SetPortAclReply()
+        """Set ACL list on port."""
+
+        default_reply = faucetconfrpc_pb2.SetPortAclReply()
+
+        def set_port_acl():
+            config_filename = self.default_config
+            self._set_port_acls(config_filename, request, request.acls.split(','))
+            return default_reply
+
+        return self.request_wrapper(
+            set_port_acl, context, request, default_reply)
 
     def AddPortAcl(self, request, context):  # pylint: disable=invalid-name
-        with self.lock:
-            try:
-                config_filename = self.default_config
-                acls_in = self._get_port_acls(request)
-                if request.acl not in acls_in:
-                    acls_in.append(request.acl)
-                self._set_port_acls(config_filename, request, acls_in)
-            except _ServerError as err:
-                self._log_error(context, request, err)
-        return faucetconfrpc_pb2.AddPortAclReply()
+        """Add ACL to port."""
+
+        default_reply = faucetconfrpc_pb2.AddPortAclReply()
+
+        def add_port_acl():
+            config_filename = self.default_config
+            acls_in = self._get_port_acls(request)
+            if request.acl not in acls_in:
+                acls_in.append(request.acl)
+            self._set_port_acls(config_filename, request, acls_in)
+            return default_reply
+
+        return self.request_wrapper(
+            add_port_acl, context, request, default_reply)
 
     def RemovePortAcl(self, request, context):  # pylint: disable=invalid-name
-        with self.lock:
-            try:
-                config_filename = self.default_config
-                acls_in = []
-                # If no acls specified, remove all ACLs.
-                if request.acl:
-                    acls_in = self._get_port_acls(request)
-                    if request.acl in acls_in:
-                        acls_in.remove(request.acl)
-                self._set_port_acls(config_filename, request, acls_in)
-            except _ServerError as err:
-                self._log_error(context, request, err)
-        return faucetconfrpc_pb2.AddPortAclReply()
+        """Remove ACL from port."""
+
+        default_reply = faucetconfrpc_pb2.RemovePortAclReply()
+
+        def remove_port_acl():
+            config_filename = self.default_config
+            acls_in = []
+            # If no acls specified, remove all ACLs.
+            if request.acl:
+                acls_in = self._get_port_acls(request)
+                if request.acl in acls_in:
+                    acls_in.remove(request.acl)
+            self._set_port_acls(config_filename, request, acls_in)
+            return default_reply
+
+        return self.request_wrapper(
+            remove_port_acl, request, context, default_reply)
 
     def DelConfigFromFile(self, request, context):  # pylint: disable=invalid-name
         """Delete config file contents based on provided key."""
-        with self.lock:
-            try:
-                config_filename = request.config_filename
-                if not config_filename:
-                    config_filename = self._filename_for_yaml(request.config_yaml)
-                self._del_config_from_file(
-                    config_filename, request.config_yaml_keys)
-            except _ServerError as err:
-                self._log_error(context, request, err)
-        return faucetconfrpc_pb2.DelConfigFromFileReply()
+
+        default_reply = faucetconfrpc_pb2.DelConfigFromFileReply()
+
+        def del_config_from_file():
+            config_filename = request.config_filename
+            if not config_filename:
+                config_filename = self._filename_for_yaml(request.config_yaml)
+            self._del_config_from_file(
+                config_filename, request.config_yaml_keys)
+            return default_reply
+
+        return self.request_wrapper(
+            del_config_from_file, request, context, default_reply)
 
     def SetDpInterfaces(self, request, context):  # pylint: disable=invalid-name
         """Replace interfaces config."""
-        with self.lock:
-            try:
-                config_filename = self.default_config
-                config_yaml = self._get_config_file(config_filename)
-                for dp_request in request.interfaces_config:
-                    interfaces = config_yaml['dps'][dp_request.dp_name]['interfaces']
-                    for interface_request in dp_request.interface_config:
-                        interfaces[interface_request.port_no] = self._yaml_parse(
-                            interface_request.config_yaml)
-                self._set_config_file(
-                    config_filename, yaml.dump(config_yaml), False, [])
-            except _ServerError as err:
-                self._log_error(context, request, err)
-        return faucetconfrpc_pb2.SetDpInterfacesReply()
+
+        default_reply = faucetconfrpc_pb2.SetDpInterfacesReply()
+
+        def set_dp_interfaces():
+            config_filename = self.default_config
+            config_yaml = self._get_config_file(config_filename)
+            for dp_request in request.interfaces_config:
+                interfaces = config_yaml['dps'][dp_request.dp_name]['interfaces']
+                for interface_request in dp_request.interface_config:
+                    interfaces[interface_request.port_no] = self._yaml_parse(
+                        interface_request.config_yaml)
+            self._set_config_file(
+                config_filename, yaml.dump(config_yaml), False, [])
+            return default_reply
+
+        return self.request_wrapper(
+            set_dp_interfaces, request, context, default_reply)
 
 def serve():
     """Start server and serve requests."""
