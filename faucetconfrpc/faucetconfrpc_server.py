@@ -386,6 +386,60 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
         return self.request_wrapper(
             set_dp_interfaces, request, context, default_reply)
 
+    @staticmethod
+    def _del_dp(dp_name, config_yaml):
+        if dp_name in config_yaml['dps']:
+            for interface in config_yaml['dps'][dp_name]['interfaces'].values():
+                port_stack = interface.get('stack', None)
+                if port_stack:
+                    del config_yaml['dps'][port_stack['dp']]['interfaces'][port_stack['port']]
+            del config_yaml['dps'][dp_name]
+
+    def DelDps(self, request, context):  # pylint: disable=invalid-name
+        """Delete DPs altogether."""
+
+        default_reply = faucetconfrpc_pb2.DelDpsReply()
+
+        def del_dps():
+            config_filename = self.default_config
+            config_yaml = self._get_config_file(config_filename)
+            for dp_request in request.interfaces_config:
+                self._del_dp(dp_request.name, config_yaml)
+            self._set_config_file(
+                config_filename, yaml.dump(config_yaml), False, [])
+            return default_reply
+
+        return self.request_wrapper(
+            del_dps, request, context, default_reply)
+
+    def DelDpInterfaces(self, request, context):  # pylint: disable=invalid-name
+
+        default_reply = faucetconfrpc_pb2.DelDpInterfacesReply()
+
+        def del_dp_interfaces():
+            config_filename = self.default_config
+            config_yaml = self._get_config_file(config_filename)
+            for dp_info in request.interfaces_config:
+                for interface_info in dp_info.interfaces:
+                    try:
+                        del config_yaml['dps'][dp_info.name]['interfaces'][interface_info.port_no]
+                    except KeyError:
+                        continue
+            if request.delete_empty_dp:
+                for dp_info in request.dps:
+                    try:
+                        if not config_yaml['dps'][dp_info.name]['interfaces']:
+                            self._del_dp(dp_info.name, config_yaml)
+                    except KeyError:
+                        continue
+            self._set_config_file(
+                config_filename, yaml.dump(config_yaml), False, [])
+            return default_reply
+
+        return self.request_wrapper(
+            del_dp_interfaces, request, context, default_reply)
+
+
 def serve():
     """Start server and serve requests."""
     logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)

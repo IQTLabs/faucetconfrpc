@@ -20,6 +20,8 @@ service FaucetConfServer {
   rpc SetPortAcl(SetPortAclRequest) returns (SetPortAclReply) {}
   rpc SetDpInterfaces(SetDpInterfacesRequest) returns (SetDpInterfacesReply) {}
   rpc GetDpInfo(GetDpInfoRequest) returns (GetDpInfoReply) {}
+  rpc DelDpInterfaces(DelDpInterfacesRequest) returns (DelDpInterfacesReply) {}
+  rpc DelDps(DelDpsRequest) returns (DelDpsReply) {}
 }
 
 // Retrieve YAML config.
@@ -145,6 +147,21 @@ message DpInfo {
   repeated InterfaceInfo interfaces = 4;
 }
 
-message GetDpInfoReply{
+message GetDpInfoReply {
   repeated DpInfo dps = 1;
+}
+
+message DelDpInterfacesRequest {
+  repeated DpInfo interfaces_config = 1;
+  bool delete_empty_dp = 2;
+}
+
+message DelDpInterfacesReply {
+}
+
+message DelDpsRequest {
+  repeated DpInfo interfaces_config = 1;
+}
+
+message DelDpsReply {
 }

@@ -65,6 +65,16 @@ class FaucetConfServerStub(object):
                 request_serializer=faucetconfrpc_dot_faucetconfrpc__pb2.GetDpInfoRequest.SerializeToString,
                 response_deserializer=faucetconfrpc_dot_faucetconfrpc__pb2.GetDpInfoReply.FromString,
                 )
+        self.DelDpInterfaces = channel.unary_unary(
+                '/faucetconfserver.FaucetConfServer/DelDpInterfaces',
+                request_serializer=faucetconfrpc_dot_faucetconfrpc__pb2.DelDpInterfacesRequest.SerializeToString,
+                response_deserializer=faucetconfrpc_dot_faucetconfrpc__pb2.DelDpInterfacesReply.FromString,
+                )
+        self.DelDps = channel.unary_unary(
+                '/faucetconfserver.FaucetConfServer/DelDps',
+                request_serializer=faucetconfrpc_dot_faucetconfrpc__pb2.DelDpsRequest.SerializeToString,
+                response_deserializer=faucetconfrpc_dot_faucetconfrpc__pb2.DelDpsReply.FromString,
+                )
 
 
 class FaucetConfServerServicer(object):
@@ -132,6 +142,18 @@ class FaucetConfServerServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def DelDpInterfaces(self, request, context):
+        """Missing associated documentation comment in .proto file"""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def DelDps(self, request, context):
+        """Missing associated documentation comment in .proto file"""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_FaucetConfServerServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -184,6 +206,16 @@ def add_FaucetConfServerServicer_to_server(servicer, server):
                     servicer.GetDpInfo,
                     request_deserializer=faucetconfrpc_dot_faucetconfrpc__pb2.GetDpInfoRequest.FromString,
                     response_serializer=faucetconfrpc_dot_faucetconfrpc__pb2.GetDpInfoReply.SerializeToString,
+            ),
+            'DelDpInterfaces': grpc.unary_unary_rpc_method_handler(
+                    servicer.DelDpInterfaces,
+                    request_deserializer=faucetconfrpc_dot_faucetconfrpc__pb2.DelDpInterfacesRequest.FromString,
+                    response_serializer=faucetconfrpc_dot_faucetconfrpc__pb2.DelDpInterfacesReply.SerializeToString,
+            ),
+            'DelDps': grpc.unary_unary_rpc_method_handler(
+                    servicer.DelDps,
+                    request_deserializer=faucetconfrpc_dot_faucetconfrpc__pb2.DelDpsRequest.FromString,
+                    response_serializer=faucetconfrpc_dot_faucetconfrpc__pb2.DelDpsReply.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -354,5 +386,37 @@ class FaucetConfServer(object):
         return grpc.experimental.unary_unary(request, target, '/faucetconfserver.FaucetConfServer/GetDpInfo',
             faucetconfrpc_dot_faucetconfrpc__pb2.GetDpInfoRequest.SerializeToString,
             faucetconfrpc_dot_faucetconfrpc__pb2.GetDpInfoReply.FromString,
+            options, channel_credentials,
+            call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def DelDpInterfaces(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/faucetconfserver.FaucetConfServer/DelDpInterfaces',
+            faucetconfrpc_dot_faucetconfrpc__pb2.DelDpInterfacesRequest.SerializeToString,
+            faucetconfrpc_dot_faucetconfrpc__pb2.DelDpInterfacesReply.FromString,
+            options, channel_credentials,
+            call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def DelDps(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/faucetconfserver.FaucetConfServer/DelDps',
+            faucetconfrpc_dot_faucetconfrpc__pb2.DelDpsRequest.SerializeToString,
+            faucetconfrpc_dot_faucetconfrpc__pb2.DelDpsReply.FromString,
             options, channel_credentials,
             call_credentials, compression, wait_for_ready, timeout, metadata)
