@@ -139,6 +139,47 @@ class ServerIntTests(unittest.TestCase):
         assert self.client.set_config_file(
             self.default_test_yaml_str, config_filename=self.default_config, merge=False)
 
+    def test_del_dps(self):
+        two_dps_yaml = {
+            'dps': {
+                'ovs1': {
+                    'dp_id': 1,
+                    'hardware': 'Open vSwitch',
+                    'stack': {'priority': 1},
+                    'interfaces': {
+                        1: {'native_vlan': 100, 'acls_in': []},
+                        2: {'stack': {'dp': 'ovs2', 'port': 2}}}},
+                'ovs2': {
+                    'dp_id': 2,
+                    'hardware': 'Open vSwitch',
+                    'interfaces': {
+                        1: {'native_vlan': 100, 'acls_in': []},
+                        2: {'stack': {'dp': 'ovs1', 'port': 2}}}}}}
+        assert self.client.set_config_file(
+            yaml.dump(two_dps_yaml), config_filename=self.default_config, merge=False)
+        response = self.client.del_dps(['ovs2'])
+        assert response is not None
+        del two_dps_yaml['dps']['ovs2']
+        del two_dps_yaml['dps']['ovs1']['interfaces'][2]
+        result = self.client.get_config_file(config_filename=self.default_config)
+        assert two_dps_yaml == result
+
+    def test_del_interfaces(self):
+        response = self.client.del_dp_interfaces(
+            [('ovs', [2])])
+        assert response is not None
+        del_test_yaml = {
+            'dps': {
+                'ovs': {
+                    'dp_id': 1,
+                    'hardware': 'Open vSwitch',
+                    'interfaces': {
+                        1: {'native_vlan': 100, 'acls_in': []},
+                        3: {'output_only': True, 'mirror': [1]}}}},
+            'acls': {
+                'test': [{'rule': {'actions': {'allow': 0}}}]}}
+        assert del_test_yaml == self.client.get_config_file(config_filename=self.default_config)
+
     def test_set_interfaces(self):
         response = self.client.set_dp_interfaces(
             [('ovs', {
