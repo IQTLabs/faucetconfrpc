@@ -140,29 +140,36 @@ class ServerIntTests(unittest.TestCase):
             self.default_test_yaml_str, config_filename=self.default_config, merge=False)
 
     def test_del_dps(self):
-        two_dps_yaml = {
+        three_dps_yaml = {
             'dps': {
                 'ovs1': {
                     'dp_id': 1,
                     'hardware': 'Open vSwitch',
                     'stack': {'priority': 1},
                     'interfaces': {
-                        1: {'native_vlan': 100, 'acls_in': []},
+                        1: {'native_vlan': 100},
                         2: {'stack': {'dp': 'ovs2', 'port': 2}}}},
                 'ovs2': {
                     'dp_id': 2,
                     'hardware': 'Open vSwitch',
                     'interfaces': {
-                        1: {'native_vlan': 100, 'acls_in': []},
-                        2: {'stack': {'dp': 'ovs1', 'port': 2}}}}}}
+                        1: {'native_vlan': 100},
+                        2: {'stack': {'dp': 'ovs1', 'port': 2}}}},
+                'ovs3': {
+                    'dp_id': 3,
+                    'hardware': 'Open vSwitch',
+                    'interfaces': {
+                        1: {'native_vlan': 100}}}}}
         assert self.client.set_config_file(
-            yaml.dump(two_dps_yaml), config_filename=self.default_config, merge=False)
+            yaml.dump(three_dps_yaml), config_filename=self.default_config, merge=False)
         response = self.client.del_dps(['ovs2'])
         assert response is not None
-        del two_dps_yaml['dps']['ovs2']
-        del two_dps_yaml['dps']['ovs1']['interfaces'][2]
+        assert self.client.del_dp_interfaces([('ovs3', [1])], delete_empty_dp=True) is not None
+        del three_dps_yaml['dps']['ovs3']
+        del three_dps_yaml['dps']['ovs2']
+        del three_dps_yaml['dps']['ovs1']['interfaces'][2]
         result = self.client.get_config_file(config_filename=self.default_config)
-        assert two_dps_yaml == result
+        assert three_dps_yaml == result
 
     def test_del_interfaces(self):
         response = self.client.del_dp_interfaces(
