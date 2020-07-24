@@ -1,3 +1,5 @@
 faucet
 grpcio
 pyyaml
+# https://github.com/grpc/grpc/blob/master/requirements.txt
+protobuf>=3.5.0.post1, < 4.0dev
