@@ -37,14 +37,16 @@ class FaucetConfRpcClient:
             return yaml.safe_load(response.config_yaml)
         return None
 
-    def set_config_file(self, config_yaml, config_filename=None, merge=True):
+    def set_config_file(self, config_yaml, config_filename=None, merge=True,
+                        del_config_yaml_keys=''):
         """Set a YAML config file."""
         if isinstance(config_yaml, dict):
             config_yaml = yaml.dump(config_yaml)
         return self._call(self.stub.SetConfigFile, faucetconfrpc_pb2.SetConfigFileRequest(
             config_filename=config_filename,
             config_yaml=config_yaml,
-            merge=merge))
+            merge=merge,
+            del_config_yaml_keys=del_config_yaml_keys))
 
     def del_config_from_file(self, config_yaml_keys, config_filename=None):
         """Delete a key from YAML config file."""
@@ -69,7 +71,56 @@ class FaucetConfRpcClient:
         return self._call(self.stub.AddPortAcl, faucetconfrpc_pb2.AddPortAclRequest(
             dp_name=dp_name, port_no=port_no, acl=acl))
 
-    def remove_port_acl(self, dp_name, port_no, acl):
+    def set_port_acls(self, dp_name, port_no, acls):
+        """Set port ACL."""
+        return self._call(self.stub.SetPortAcl, faucetconfrpc_pb2.SetPortAclRequest(
+            dp_name=dp_name, port_no=port_no, acls=acls))
+
+    def remove_port_acl(self, dp_name, port_no, acl=None):
         """Remove port ACL."""
+        if acl:
+            return self._call(self.stub.RemovePortAcl, faucetconfrpc_pb2.RemovePortAclRequest(
+                dp_name=dp_name, port_no=port_no, acl=acl))
         return self._call(self.stub.RemovePortAcl, faucetconfrpc_pb2.RemovePortAclRequest(
             dp_name=dp_name, port_no=port_no, acl=acl))
+
+    def get_dp_info(self, dp_name=''):
+        """Get DP info."""
+        return self._call(self.stub.GetDpInfo, faucetconfrpc_pb2.GetDpInfoRequest(
+            dp_name=dp_name))
+
+    def set_dp_interfaces(self, dp_interfaces_requests=None):
+        """Set DP interfaces."""
+        if not dp_interfaces_requests:
+            dp_interfaces_requests = []
+        request = faucetconfrpc_pb2.SetDpInterfacesRequest()
+        for dp_name, dp_interfaces in dp_interfaces_requests:
+            dp_request = request.interfaces_config.add()  # pylint: disable=no-member
+            dp_request.dp_name = dp_name
+            for port_no, config_yaml in dp_interfaces.items():
+                interfaces_request = dp_request.interface_config.add()
+                interfaces_request.port_no = port_no
+                interfaces_request.config_yaml = config_yaml
+        return self._call(self.stub.SetDpInterfaces, request)
+
+    def del_dp_interfaces(self, dp_interfaces_requests=None, delete_empty_dp=False):
+        """Delete DP interfaces."""
+        if not dp_interfaces_requests:
+            dp_interfaces_requests = []
+        request = faucetconfrpc_pb2.DelDpInterfacesRequest()
+        request.delete_empty_dp = delete_empty_dp
+        for dp_name, dp_interfaces in dp_interfaces_requests:
+            dp_request = request.interfaces_config.add()  # pylint: disable=no-member
+            dp_request.name = dp_name
+            for port_no in dp_interfaces:
+                interfaces_request = dp_request.interfaces.add()
+                interfaces_request.port_no = port_no
+        return self._call(self.stub.DelDpInterfaces, request)
+
+    def del_dps(self, dps):
+        """Delete DPs."""
+        request = faucetconfrpc_pb2.DelDpsRequest()
+        for dp_name in dps:
+            dp_request = request.interfaces_config.add()  # pylint: disable=no-member
+            dp_request.name = dp_name
+        return self._call(self.stub.DelDps, request)
