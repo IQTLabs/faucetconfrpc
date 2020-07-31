@@ -43,8 +43,8 @@ $ cat<<EOD>/tmp/conf_dir/faucet.yaml
        1:
           native_vlan: 100
 EOD
-$ docker build -f Dockerfile.server . -t cyberreboot/faucetconfrpc
-$ docker run -v /tmp/keydir:/keydir -v /tmp/conf_dir:/conf_dir -p 59999:59999/tcp cyberreboot/faucetconfrpc:latest --key=/keydir/localhost.key --cert=/keydir/localhost.crt --cacert=/keydir/ca.crt --host=0.0.0.0 --config_dir=/conf_dir
+$ docker build -f Dockerfile.server . -t iqtlabs/faucetconfrpc
+$ docker run -v /tmp/keydir:/keydir -v /tmp/conf_dir:/conf_dir -p 59999:59999/tcp iqtlabs/faucetconfrpc:latest --key=/keydir/localhost.key --cert=/keydir/localhost.crt --cacert=/keydir/ca.crt --host=0.0.0.0 --config_dir=/conf_dir
 ```
 
 In another terminal, having run `pip3 install faucetconfrpc`:
