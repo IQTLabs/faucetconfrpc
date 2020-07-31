@@ -9,7 +9,7 @@ setup(
     install_requires=open('requirements.txt', 'r').read().splitlines(),
     license='Apache License 2.0',
     description='utility to manage FAUCET config files via RPC',
-    url='https://github.com/CyberReboot/faucetconfrpc',
+    url='https://github.com/IQTLabs/faucetconfrpc',
     packages=['faucetconfrpc'],
     scripts=['faucetconfrpc/faucetconfrpc_server.py', 'faucetconfrpc/faucetconfrpc_client.py'],
 )

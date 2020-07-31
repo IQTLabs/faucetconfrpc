@@ -29,7 +29,7 @@ jobs:
         DOCKER_PASSWORD: ${{ secrets.DOCKER_TOKEN }}
       run: |
         echo "${DOCKER_PASSWORD}" | docker login --username "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-      if: github.repository == 'cyberreboot/faucetconfrpc' && github.event_name == 'push'
+      if: github.repository == 'iqtlabs/faucetconfrpc' && github.event_name == 'push'
 
     - name: Build and push platforms
       env:
@@ -39,5 +39,5 @@ jobs:
           --platform linux/amd64,linux/arm/v7,linux/arm64 \
           --push \
           --file Dockerfile.server \
-          -t cyberreboot/faucetconfrpc:${{ steps.change_version.outputs.VERSION }} .
-      if: github.repository == 'cyberreboot/faucetconfrpc' && github.event_name == 'push'
+          -t iqtlabs/faucetconfrpc:${{ steps.change_version.outputs.VERSION }} .
+      if: github.repository == 'iqtlabs/faucetconfrpc' && github.event_name == 'push'
