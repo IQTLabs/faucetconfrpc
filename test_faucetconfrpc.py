@@ -331,6 +331,30 @@ class ServerIntTests(unittest.TestCase):
         assert self.default_test_yaml == self.client.get_config_file(
             config_filename=self.default_config)
 
+    def test_remote_mirror_port(self):
+        stack_dps_yaml = {
+            'dps': {
+                'ovs1': {
+                    'dp_id': 1,
+                    'hardware': 'Open vSwitch',
+                    'stack': {'priority': 1},
+                    'interfaces': {
+                        1: {'native_vlan': 100},
+                        2: {'stack': {'dp': 'ovs2', 'port': 2}}}},
+                'ovs2': {
+                    'dp_id': 2,
+                    'hardware': 'Open vSwitch',
+                    'interfaces': {
+                        1: {'native_vlan': 100},
+                        2: {'stack': {'dp': 'ovs1', 'port': 2}}}}}}
+        assert self.client.set_config_file(
+            yaml.dump(stack_dps_yaml), config_filename=self.default_config, merge=False)
+        response = self.client.set_remote_mirror_port('ovs2', 3, 999, 'ovs1', 1)
+        assert response is not None
+        response = self.client.get_config_file(config_filename=self.default_config)
+        assert (response['dps']['ovs2']['interfaces'][3] == {
+            'acls_in': ['remote-mirror-ovs1-1'], 'coprocessor': {'strategy': 'vlan_vid'}, 'description': 'loopback'})
+
     def test_acls(self):
         # Add and remove port ACLs
         response = self.client.add_port_acl('ovs', 1, 'test')
