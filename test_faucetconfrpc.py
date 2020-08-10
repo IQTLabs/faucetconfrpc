@@ -322,13 +322,27 @@ class ServerIntTests(unittest.TestCase):
 
     def test_mirror(self):
         # Add and remove port mirroring.
+        mirror_test_yaml_str = """
+        {dps: {ovs: {
+            dp_id: 1,
+            hardware: Open vSwitch,
+            interfaces: {
+                1: {native_vlan: 100},
+                2: {native_vlan: 100},
+                3: {output_only: true, mirror: []}}}}}
+        """
+        mirror_test_yaml = yaml.safe_load(mirror_test_yaml_str)
+        response = self.client.set_config_file(
+            yaml.safe_load(mirror_test_yaml_str),
+            config_filename=self.default_config, merge=False)
+        assert response is not None
         response = self.client.add_port_mirror('ovs', 2, 3)
         assert response is not None
-        assert self.default_test_yaml != self.client.get_config_file(
+        assert mirror_test_yaml != self.client.get_config_file(
             config_filename=self.default_config)
         response = self.client.remove_port_mirror('ovs', 2, 3)
         assert response is not None
-        assert self.default_test_yaml == self.client.get_config_file(
+        assert mirror_test_yaml == self.client.get_config_file(
             config_filename=self.default_config)
 
     def test_remote_mirror_port(self):
