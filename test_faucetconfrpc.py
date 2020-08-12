@@ -367,7 +367,7 @@ class ServerIntTests(unittest.TestCase):
         assert response is not None
         response = self.client.get_config_file(config_filename=self.default_config)
         assert (response['dps']['ovs2']['interfaces'][3] == {
-            'acls_in': ['remote-mirror-ovs1-1'], 'coprocessor': {'strategy': 'vlan_vid'}, 'description': 'loopback'})
+            'acls_in': ['remote-mirror-999-ovs1-1'], 'coprocessor': {'strategy': 'vlan_vid'}, 'description': 'loopback'})
 
     def test_acls(self):
         # Add and remove port ACLs
