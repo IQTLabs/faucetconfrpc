@@ -45,8 +45,11 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
                 reply = request_handler()
                 logging.info('request %s, reply %s', request, reply)
                 return reply
-            except _ServerError as err:
-                self._log_error(context, request, err)
+            except (_ServerError, InvalidConfigError) as err:
+                log = '%s: error %s' % (str(request), str(err))
+                logging.error(log)
+                context.set_code(grpc.StatusCode.UNKNOWN)
+                context.set_details(log)
             return default_reply
 
     def _yaml_merge(self, yaml_doc_a, yaml_doc_b):
@@ -166,13 +169,6 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
             self._replace_config_file(config_filename, new_config_yaml)
         except (KeyError, ValueError, _ServerError) as err:
             raise _ServerError(err)
-
-    @staticmethod
-    def _log_error(context, request, err):
-        log = '%s: error %s' % (str(request), str(err))
-        logging.error(log)
-        context.set_code(grpc.StatusCode.UNKNOWN)
-        context.set_details(log)
 
     def GetConfigFile(self, request, context):  # pylint: disable=invalid-name
         """Return existing file contents as YAML string."""
