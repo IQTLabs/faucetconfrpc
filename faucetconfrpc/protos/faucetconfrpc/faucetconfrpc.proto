@@ -15,6 +15,7 @@ service FaucetConfServer {
   rpc DelConfigFromFile(DelConfigFromFileRequest) returns (DelConfigFromFileReply) {}
   rpc AddPortMirror(AddPortMirrorRequest) returns (AddPortMirrorReply) {}
   rpc RemovePortMirror(RemovePortMirrorRequest) returns (RemovePortMirrorReply) {}
+  rpc ClearPortMirror(ClearPortMirrorRequest) returns (ClearPortMirrorReply) {}
   rpc AddPortAcl(AddPortAclRequest) returns (AddPortAclReply) {}
   rpc RemovePortAcl(RemovePortAclRequest) returns (RemovePortAclReply) {}    
   rpc SetPortAcl(SetPortAclRequest) returns (SetPortAclReply) {}
@@ -90,6 +91,14 @@ message RemovePortMirrorRequest {
 }
 
 message RemovePortMirrorReply {
+}
+
+message ClearPortMirrorRequest {
+  string dp_name = 1;
+  uint32 mirror_port_no = 2;
+}
+
+message ClearPortMirrorReply {
 }
 
 // Overwrite ACL list on a port.
