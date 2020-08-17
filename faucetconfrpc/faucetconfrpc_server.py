@@ -43,10 +43,10 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
             reply = default_reply
             try:
                 reply = request_handler()
-                logging.info('request %s, reply %s', request, reply)
+                logging.info('request %s: reply %s', request, reply)
                 return reply
             except (_ServerError, InvalidConfigError) as err:
-                log = '%s: error %s' % (str(request), str(err))
+                log = 'request %s: error %s' % (str(request), str(err))
                 logging.error(log)
                 context.set_code(grpc.StatusCode.UNKNOWN)
                 context.set_details(log)
