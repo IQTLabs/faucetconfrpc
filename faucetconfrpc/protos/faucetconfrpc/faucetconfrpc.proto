@@ -157,7 +157,7 @@ message GetDpInfoRequest {
 }
 
 message InterfaceInfo {
-  int32 port_no = 1;
+  uint32 port_no = 1;
   string name = 2;
   string description = 3;
 }
