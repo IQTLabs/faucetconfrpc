@@ -283,6 +283,19 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
         return self.request_wrapper(
             remove_port_mirror, context, request, default_reply)
 
+    def ClearPortMirror(self, request, context):  # pylint: disable=invalid-name
+        """Remove all mirroring on port."""
+
+        default_reply = faucetconfrpc_pb2.ClearPortMirrorReply()
+
+        def clear_port_mirror():
+            config_filename = self.default_config
+            self._set_mirror(config_filename, request, [])
+            return default_reply
+
+        return self.request_wrapper(
+            clear_port_mirror, context, request, default_reply)
+
     def _get_port_acls(self, request):
         dps = self._validate_faucet_config(self.config_dir)
         dp = dps[request.dp_name]  # pylint: disable=invalid-name
