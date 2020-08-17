@@ -344,6 +344,12 @@ class ServerIntTests(unittest.TestCase):
         assert response is not None
         assert mirror_test_yaml == self.client.get_config_file(
             config_filename=self.default_config)
+        response = self.client.add_port_mirror('ovs', 2, 3)
+        assert response is not None
+        response = self.client.clear_port_mirror('ovs', 3)
+        assert response is not None
+        assert mirror_test_yaml == self.client.get_config_file(
+            config_filename=self.default_config)
 
     def test_remote_mirror_port(self):
         stack_dps_yaml = {
