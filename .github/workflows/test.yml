@@ -22,5 +22,5 @@ jobs:
         ./codecheck.sh && \
         PATH=~/go/bin:$PATH pytest ./test_faucetconfrpc.py && \
         docker build -f Dockerfile.server . && \
-        cd faucetconfrpc && ./generate_pb_grpc.sh && \
+        cd faucetconfrpc && PATH=~/go/bin:$PATH ./generate_pb_grpc.sh && \
         if [ $(git diff) != "" ] ; then echo protobufs out of date ; exit 1 ; fi
