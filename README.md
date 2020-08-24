@@ -50,14 +50,14 @@ $ docker run -v /tmp/keydir:/keydir -v /tmp/conf_dir:/conf_dir -p 59999:59999/tc
 In another terminal, having run `pip3 install faucetconfrpc`:
 
 ```
-$ faucetconfrpc_client.py get_config_file config_filename='faucet.yaml' --key=/tmp/keydir/client.key --cert=/tmp/keydir/client.crt --cacert=/tmp/keydir/ca.crt
+$ faucetconfrpc_client.py get_config_file --key=/tmp/keydir/client.key --cert=/tmp/keydir/client.crt --cacert=/tmp/keydir/ca.crt
 {'dps': {'ovs': {'dp_id': 1, 'hardware': 'Open vSwitch', 'interfaces': {1: {'native_vlan': 100}}}}}
-$ faucetconfrpc_client.py set_config_file config_filename='faucet.yaml' config_yaml='{dps: {ovs: {interfaces: {1: {native_vlan: 200}}}}}' merge=true --key=/tmp/keydir/client.key --cert=/tmp/keydir/client.crt --cacert=/tmp/keydir/ca.crt
+$ faucetconfrpc_client.py set_config_file config_yaml='{dps: {ovs: {interfaces: {1: {native_vlan: 200}}}}}' merge=true --key=/tmp/keydir/client.key --cert=/tmp/keydir/client.crt --cacert=/tmp/keydir/ca.crt
 
-$ faucetconfrpc_client.py get_config_file config_filename='faucet.yaml' --key=/tmp/keydir/client.key --cert=/tmp/keydir/client.crt --cacert=/tmp/keydir/ca.crt
+$ faucetconfrpc_client.py get_config_file --key=/tmp/keydir/client.key --cert=/tmp/keydir/client.crt --cacert=/tmp/keydir/ca.crt
 {'dps': {'ovs': {'dp_id': 1, 'hardware': 'Open vSwitch', 'interfaces': {1: {'native_vlan': 200}}}}}
 
-$ faucetconfrpc_client.py set_config_file config_filename='faucet.yaml' config_yaml='{dps: {ovs: {interfaces: {2: {native_vlan: 100}}}}}' merge=true --key=/tmp/keydir/client.key --cert=/tmp/keydir/client.crt --cacert=/tmp/keydir/ca.crt
+$ faucetconfrpc_client.py set_config_file config_yaml='{dps: {ovs: {interfaces: {2: {native_vlan: 100}}}}}' merge=true --key=/tmp/keydir/client.key --cert=/tmp/keydir/client.crt --cacert=/tmp/keydir/ca.crt
 
 $ faucetconfrpc_client.py get_config_file config_filename='faucet.yaml' --key=/tmp/keydir/client.key --cert=/tmp/keydir/client.crt --cacert=/tmp/keydir/ca.crt
 {'dps': {'ovs': {'dp_id': 1, 'hardware': 'Open vSwitch', 'interfaces': {1: {'native_vlan': 200}, 2: {'native_vlan': 100}}}}}
