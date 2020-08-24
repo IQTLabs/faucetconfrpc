@@ -322,14 +322,58 @@ class ServerIntTests(unittest.TestCase):
 
     def test_mirror(self):
         # Add and remove port mirroring.
+        mirror_test_yaml_str = """
+        {dps: {ovs: {
+            dp_id: 1,
+            hardware: Open vSwitch,
+            interfaces: {
+                1: {native_vlan: 100},
+                2: {native_vlan: 100},
+                3: {output_only: true, mirror: []}}}}}
+        """
+        mirror_test_yaml = yaml.safe_load(mirror_test_yaml_str)
+        response = self.client.set_config_file(
+            yaml.safe_load(mirror_test_yaml_str),
+            config_filename=self.default_config, merge=False)
+        assert response is not None
         response = self.client.add_port_mirror('ovs', 2, 3)
         assert response is not None
-        assert self.default_test_yaml != self.client.get_config_file(
+        assert mirror_test_yaml != self.client.get_config_file(
             config_filename=self.default_config)
         response = self.client.remove_port_mirror('ovs', 2, 3)
         assert response is not None
-        assert self.default_test_yaml == self.client.get_config_file(
+        assert mirror_test_yaml == self.client.get_config_file(
             config_filename=self.default_config)
+        response = self.client.add_port_mirror('ovs', 2, 3)
+        assert response is not None
+        response = self.client.clear_port_mirror('ovs', 3)
+        assert response is not None
+        assert mirror_test_yaml == self.client.get_config_file(
+            config_filename=self.default_config)
+
+    def test_remote_mirror_port(self):
+        stack_dps_yaml = {
+            'dps': {
+                'ovs1': {
+                    'dp_id': 1,
+                    'hardware': 'Open vSwitch',
+                    'stack': {'priority': 1},
+                    'interfaces': {
+                        1: {'native_vlan': 100},
+                        2: {'stack': {'dp': 'ovs2', 'port': 2}}}},
+                'ovs2': {
+                    'dp_id': 2,
+                    'hardware': 'Open vSwitch',
+                    'interfaces': {
+                        1: {'native_vlan': 100},
+                        2: {'stack': {'dp': 'ovs1', 'port': 2}}}}}}
+        assert self.client.set_config_file(
+            yaml.dump(stack_dps_yaml), config_filename=self.default_config, merge=False)
+        response = self.client.set_remote_mirror_port('ovs2', 3, 999, 'ovs1', 1)
+        assert response is not None
+        response = self.client.get_config_file(config_filename=self.default_config)
+        assert (response['dps']['ovs2']['interfaces'][3] == {
+            'acls_in': ['remote-mirror-999-ovs1-1'], 'coprocessor': {'strategy': 'vlan_vid'}, 'description': 'loopback'})
 
     def test_acls(self):
         # Add and remove port ACLs

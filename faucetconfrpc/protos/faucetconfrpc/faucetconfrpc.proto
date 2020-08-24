@@ -15,6 +15,7 @@ service FaucetConfServer {
   rpc DelConfigFromFile(DelConfigFromFileRequest) returns (DelConfigFromFileReply) {}
   rpc AddPortMirror(AddPortMirrorRequest) returns (AddPortMirrorReply) {}
   rpc RemovePortMirror(RemovePortMirrorRequest) returns (RemovePortMirrorReply) {}
+  rpc ClearPortMirror(ClearPortMirrorRequest) returns (ClearPortMirrorReply) {}
   rpc AddPortAcl(AddPortAclRequest) returns (AddPortAclReply) {}
   rpc RemovePortAcl(RemovePortAclRequest) returns (RemovePortAclReply) {}    
   rpc SetPortAcl(SetPortAclRequest) returns (SetPortAclReply) {}
@@ -22,6 +23,7 @@ service FaucetConfServer {
   rpc GetDpInfo(GetDpInfoRequest) returns (GetDpInfoReply) {}
   rpc DelDpInterfaces(DelDpInterfacesRequest) returns (DelDpInterfacesReply) {}
   rpc DelDps(DelDpsRequest) returns (DelDpsReply) {}
+  rpc SetRemoteMirrorPort(SetRemoteMirrorPortRequest) returns (SetRemoteMirrorPortReply) {}
 }
 
 // Retrieve YAML config.
@@ -59,6 +61,18 @@ message DelConfigFromFileRequest {
 message DelConfigFromFileReply {
 }
 
+// Set a port to mirror to another DP
+message SetRemoteMirrorPortRequest {
+  string dp_name = 1;
+  uint32 port_no = 2;
+  uint32 tunnel_vid = 3;
+  string remote_dp_name = 4;
+  uint32 remote_port_no = 5;
+}
+
+message SetRemoteMirrorPortReply {
+}
+
 // Add mirroring to a port.
 message AddPortMirrorRequest {
   string dp_name = 1;
@@ -77,6 +91,14 @@ message RemovePortMirrorRequest {
 }
 
 message RemovePortMirrorReply {
+}
+
+message ClearPortMirrorRequest {
+  string dp_name = 1;
+  uint32 mirror_port_no = 2;
+}
+
+message ClearPortMirrorReply {
 }
 
 // Overwrite ACL list on a port.
@@ -135,7 +157,7 @@ message GetDpInfoRequest {
 }
 
 message InterfaceInfo {
-  int32 port_no = 1;
+  uint32 port_no = 1;
   string name = 2;
   string description = 3;
 }
