@@ -3,12 +3,19 @@
 """Manage FAUCET config files via RPC (client)."""
 
 import argparse
+import inspect
 from faucetconfrpc.faucetconfrpc_client_lib import FaucetConfRpcClient
 
 
 class ClientError(Exception):
     """Exceptions for client."""
 
+
+def get_attributes(cls):
+    boring = dir(type('dummy', (object,), {}))
+    return [item
+            for item in inspect.getmembers(cls)
+            if item[0] not in boring]
 
 def main():
     """Instantiate client and call it."""
@@ -34,6 +41,15 @@ def main():
     args = parser.parse_args()
     server_addr = '%s:%u' % (args.host, args.port)
     client = FaucetConfRpcClient(args.key, args.cert, args.cacert, server_addr)
+
+    if args.commands[0] == 'list_rpcs':
+        ignore_list = ['_call', 'channel', 'stub']
+        attributes = get_attributes(client)
+        for attribute in attributes:
+            if attribute[0] not in ignore_list:
+                print(attribute[0])
+        return
+
     command = getattr(client, args.commands[0], None)
     if not command:
         raise ClientError('no such rpc: %s' % args.commands[0])
