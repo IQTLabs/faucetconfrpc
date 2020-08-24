@@ -16,6 +16,11 @@ jobs:
         PATH=~/go/bin:$PATH certstrap -v && \
         sudo pip3 install setuptools && \
         sudo pip3 install -r test-requirements.txt && \
+        sudo pip3 install grpcio-tools protobuf && \
+        sudo apt-get update && \
+        sudo apt install -y protobuf-compiler && \
         ./codecheck.sh && \
         PATH=~/go/bin:$PATH pytest ./test_faucetconfrpc.py && \
-        docker build -f Dockerfile.server .
+        docker build -f Dockerfile.server . && \
+        cd faucetconfrpc && ./generate_pb_grpc.sh && \
+        if [ $(git diff) != "" ] ; then echo protobufs out of date ; exit 1 ; fi
