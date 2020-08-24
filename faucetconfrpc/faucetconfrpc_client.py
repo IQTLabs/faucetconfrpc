@@ -12,10 +12,12 @@ class ClientError(Exception):
 
 
 def get_attributes(cls):
+    """Get available RPCs via attrs"""
     boring = dir(type('dummy', (object,), {}))
     return [item
             for item in inspect.getmembers(cls)
             if item[0] not in boring]
+
 
 def main():
     """Instantiate client and call it."""
