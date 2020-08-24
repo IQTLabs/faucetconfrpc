@@ -24,4 +24,4 @@ jobs:
         docker build -f Dockerfile.server . && \
         go get github.com/golang/protobuf/protoc-gen-go && \
         cd faucetconfrpc && PATH=~/go/bin:$PATH ./generate_pb_grpc.sh && \
-        if [ $(git diff) != "" ] ; then echo protobufs out of date ; exit 1 ; fi
+        if [ "$(git diff)" != "" ] ; then echo protobufs out of date ; exit 1 ; fi
