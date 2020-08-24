@@ -23,10 +23,10 @@ def main():
         '--cacert', help='CA public cert', action='store',
         default='ca.crt')
     parser.add_argument(
-        '--port', help='port to serve rpc requests', action='store',
+        '--port', help='port of rpc server', action='store',
         default=59999, type=int)
     parser.add_argument(
-        '--host', help='host address to serve rpc requests',
+        '--host', help='host address of rpc server',
         default='localhost')
     parser.add_argument(
         'commands', type=str, nargs='+',
