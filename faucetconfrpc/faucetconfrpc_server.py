@@ -495,6 +495,48 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
         return self.request_wrapper(
             set_remote_mirror_port, request, context, default_reply)
 
+    def GetDpNames(self, request, context):  # pylint: disable=invalid-name
+
+        default_reply = faucetconfrpc_pb2.GetDpNamesReply()
+
+        def get_dp_names():
+            config_filename = self.default_config
+            config_yaml = self._get_config_file(config_filename)
+            dp_names = config_yaml['dps'].keys()
+            default_reply.dp_name[:] = dp_names  # pylint: disable=no-member
+            return default_reply
+
+        return self.request_wrapper(
+            get_dp_names, request, context, default_reply)
+
+    def GetDpIDs(self, request, context):  # pylint: disable=invalid-name
+
+        default_reply = faucetconfrpc_pb2.GetDpIDsReply()
+
+        def get_dp_ids():
+            config_filename = self.default_config
+            config_yaml = self._get_config_file(config_filename)
+            dp_names = [dp['dp_id'] for dp in config_yaml['dps'].values()]
+            default_reply.dp_id[:] = dp_names  # pylint: disable=no-member
+            return default_reply
+
+        return self.request_wrapper(
+            get_dp_ids, request, context, default_reply)
+
+    def GetAclNames(self, request, context):  # pylint: disable=invalid-name
+
+        default_reply = faucetconfrpc_pb2.GetAclNamesReply()
+
+        def get_acl_names():
+            config_filename = self.default_config
+            config_yaml = self._get_config_file(config_filename)
+            acl_names = config_yaml.get('acls', {}).keys()
+            default_reply.acl_name[:] = acl_names  # pylint: disable=no-member
+            return default_reply
+
+        return self.request_wrapper(
+            get_acl_names, request, context, default_reply)
+
 
 def serve():
     """Start server and serve requests."""

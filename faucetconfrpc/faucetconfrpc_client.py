@@ -14,9 +14,7 @@ class ClientError(Exception):
 def get_attributes(cls):
     """Get available RPCs via attrs"""
     boring = dir(type('dummy', (object,), {}))
-    return [item
-            for item in inspect.getmembers(cls)
-            if item[0] not in boring]
+    return [item for item in inspect.getmembers(cls) if item[0] not in boring]
 
 
 def main():
@@ -45,10 +43,9 @@ def main():
     client = FaucetConfRpcClient(args.key, args.cert, args.cacert, server_addr)
 
     if args.commands[0] == 'list_rpcs':
-        ignore_list = ['_call', 'channel', 'stub']
         attributes = get_attributes(client)
         for attribute in attributes:
-            if attribute[0] not in ignore_list:
+            if not attribute[0].startswith('_'):
                 print(attribute[0])
         return
 
