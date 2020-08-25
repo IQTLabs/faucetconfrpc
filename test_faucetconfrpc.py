@@ -9,8 +9,8 @@ import subprocess
 import tempfile
 import time
 import os
-import yaml
 import unittest
+import yaml
 from faucetconfrpc.faucetconfrpc_client_lib import FaucetConfRpcClient
 from faucetconfrpc.faucetconfrpc_server import Server, _ServerError
 
@@ -27,11 +27,11 @@ class ServerMethodTests(unittest.TestCase):
         merged_yaml = server._yaml_merge(existing_yaml, dpid_yaml)
         # dp_id is set.
         assert (merged_yaml ==
-            {'dps': {
-                'switch1': {
-                    'dp_id': 1,
-                    'interfaces': {
-                        1: {'native_vlan': 100}}}}})
+                {'dps': {
+                    'switch1': {
+                        'dp_id': 1,
+                        'interfaces': {
+                            1: {'native_vlan': 100}}}}})
         existing_yaml = {'dps': {
             'switch1': {
                 'interfaces': {
@@ -41,23 +41,23 @@ class ServerMethodTests(unittest.TestCase):
             'switch1': {
                 'stack': {'priority': 1},
                 'interfaces': {
-                     9: {'stack': {'dp': 'switch2', 'port': 999}}}},
+                    9: {'stack': {'dp': 'switch2', 'port': 999}}}},
             'switch2': {
                 'dp_id': 2,
                 'interfaces': {
                     999: {'stack': {'dp': 'switch1', 'port': 9}}}}}}
         merged_yaml = server._yaml_merge(existing_yaml, new_yaml)
         assert (merged_yaml ==
-            {'dps': {
-                'switch1': {
-                    'stack': {'priority': 1},
-                    'interfaces': {
-                        1: {'native_vlan': 100},
-                        9: {'stack': {'dp': 'switch2', 'port': 999}}}},
-                'switch2': {
-                    'dp_id': 2,
-                    'interfaces': {
-                        999: {'stack': {'dp': 'switch1', 'port': 9}}}}}})
+                {'dps': {
+                    'switch1': {
+                        'stack': {'priority': 1},
+                        'interfaces': {
+                            1: {'native_vlan': 100},
+                            9: {'stack': {'dp': 'switch2', 'port': 999}}}},
+                    'switch2': {
+                        'dp_id': 2,
+                        'interfaces': {
+                            999: {'stack': {'dp': 'switch1', 'port': 9}}}}}})
 
     def test_parse(self):
         server = Server('.', None)
@@ -208,6 +208,18 @@ class ServerIntTests(unittest.TestCase):
             'acls': {
                 'test': [{'rule': {'actions': {'allow': 0}}}]}}
         assert set_test_yaml == self.client.get_config_file(config_filename=self.default_config)
+
+    def test_get_dp_names(self):
+        response = self.client.get_dp_names()
+        assert response.dp_name == ['ovs']
+
+    def test_get_dp_ids(self):
+        response = self.client.get_dp_ids()
+        assert response.dp_id == [1]
+
+    def test_get_acl_names(self):
+        response = self.client.get_acl_names()
+        assert response.acl_name == ["test"]
 
     def test_dpinfo(self):
         # All DP info returned.
