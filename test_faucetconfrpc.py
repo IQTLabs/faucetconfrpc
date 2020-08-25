@@ -139,6 +139,25 @@ class ServerIntTests(unittest.TestCase):
         assert self.client.set_config_file(
             self.default_test_yaml_str, config_filename=self.default_config, merge=False)
 
+    def test_err(self):
+        err_yaml = {
+            'acls': {
+                'patchit': [{
+                    'rule': {
+                        'actions': {
+                            'output': {
+                                'ports': [1001]}}}}]},
+            'dps': {
+                'ovs1': {
+                    'dp_id': 1,
+                    'hardware': 'Open vSwitch',
+                    'stack': {'priority': 1},
+                    'interfaces': {
+                        1: {'native_vlan': 100, 'acls_in': ['patchit']}}}}}
+        response = self.client.set_config_file(
+            yaml.dump(err_yaml), config_filename=self.default_config, merge=False)
+        assert response is None
+
     def test_del_dps(self):
         three_dps_yaml = {
             'dps': {
