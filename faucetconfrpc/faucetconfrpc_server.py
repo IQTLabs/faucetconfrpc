@@ -112,14 +112,14 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
         try:
             return yaml.safe_load(config_yaml_str)
         except (yaml.constructor.ConstructorError, yaml.parser.ParserError) as err:
-            raise _ServerError('YAML error') from err
+            raise _ServerError(f'YAML error: {err}')  # pylint: disable=raise-missing-from
 
     def _get_config_file(self, config_filename):
         try:
             with open(self._validate_filename(config_filename)) as config_file:
                 return self._yaml_parse(config_file.read())
         except (FileNotFoundError, PermissionError) as err:
-            raise _ServerError('File not found, or unable to read') from err
+            raise _ServerError(f'Error: {err}')  # pylint: disable=raise-missing-from
 
     def _replace_config_file(self, config_filename, config_yaml, config_dir=None):
         if config_dir is None:
@@ -168,7 +168,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
             self._validate_config_tree(config_filename, new_config_yaml)
             self._replace_config_file(config_filename, new_config_yaml)
         except (KeyError, ValueError, _ServerError) as err:
-            raise _ServerError('Unable to find key in the config') from err
+            raise _ServerError(f'Unable to find key in the config: {err}')  # pylint: disable=raise-missing-from
 
     def GetConfigFile(self, request, context):  # pylint: disable=invalid-name
         """Return existing file contents as YAML string."""
