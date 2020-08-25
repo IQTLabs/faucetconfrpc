@@ -24,6 +24,9 @@ service FaucetConfServer {
   rpc DelDpInterfaces(DelDpInterfacesRequest) returns (DelDpInterfacesReply) {}
   rpc DelDps(DelDpsRequest) returns (DelDpsReply) {}
   rpc SetRemoteMirrorPort(SetRemoteMirrorPortRequest) returns (SetRemoteMirrorPortReply) {}
+  rpc GetDpNames(GetDpNamesRequest) returns (GetDpNamesReply) {}
+  rpc GetDpIDs(GetDpIDsRequest) returns (GetDpIDsReply) {}
+  rpc GetAclNames(GetAclNamesRequest) returns (GetAclNamesReply) {}
 }
 
 // Retrieve YAML config.
@@ -186,4 +189,26 @@ message DelDpsRequest {
 }
 
 message DelDpsReply {
+}
+
+message GetDpNamesRequest {
+}
+
+message GetDpNamesReply {
+  repeated string dp_name = 1;
+}
+
+message GetDpIDsRequest {
+}
+
+message GetDpIDsReply {
+  repeated uint64 dp_id = 1;
+}
+
+message GetAclNamesRequest {
+  repeated string acl_name = 1;
+}
+
+message GetAclNamesReply{
+  repeated string acl_name = 1;
 }
