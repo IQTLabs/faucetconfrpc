@@ -86,7 +86,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
                 raise InvalidConfigError('no DPs defined')
             return dps_conf
         except InvalidConfigError as err:
-            raise _ServerError('Invalid config: %s' % err)
+            raise _ServerError('Invalid config: %s' % err)  # pylint: disable=raise-missing-from
 
     def _validate_config_tree(self, config_filename, config_yaml):
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -145,7 +145,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
             self._validate_config_tree(config_filename, new_config_yaml)
             self._replace_config_file(config_filename, new_config_yaml)
         except (FileNotFoundError, PermissionError, _ServerError) as err:
-            raise _ServerError('Cannot set FAUCET config: %s' % err)
+            raise _ServerError('Cannot set FAUCET config: %s' % err)   # pylint: disable=raise-missing-from
 
     def _del_keys_from_yaml(self, config_yaml_keys, new_config_yaml):
         config_yaml_keys = self._yaml_parse(config_yaml_keys)
