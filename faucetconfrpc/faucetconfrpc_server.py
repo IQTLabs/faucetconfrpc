@@ -440,11 +440,11 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
                         continue
                 # second pass to clean up any mirroring
                 for interface in config_yaml['dps'][dp_info.name]['interfaces']:
-                    port_mirror = config_yaml['dps'][dp_info.name]['interfaces'][interface].get('mirror', None)
+                    port_mirror = config_yaml['dps'][dp_info.name]['interfaces'][interface].get('mirror', None)  # pylint: disable=line-too-long
                     if port_mirror:
                         for port in dp_port_nos:
-                            if port in config_yaml['dps'][dp_info.name]['interfaces'][interface]['mirror']:
-                                config_yaml['dps'][dp_info.name]['interfaces'][interface]['mirror'].remove(port)
+                            if port in config_yaml['dps'][dp_info.name]['interfaces'][interface]['mirror']:  # pylint: disable=line-too-long
+                                config_yaml['dps'][dp_info.name]['interfaces'][interface]['mirror'].remove(port)  # pylint: disable=line-too-long
             if request.delete_empty_dp:
                 for dp_info in request.interfaces_config:
                     try:
