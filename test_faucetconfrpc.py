@@ -237,8 +237,26 @@ class ServerIntTests(unittest.TestCase):
         assert response.dp_id == [1]
 
     def test_get_acl_names(self):
+        include_name = os.path.join(self.tmpdir, 'include.yaml')
+        include_yaml = yaml.safe_load('{acls: {anotheracl: [{rule: {actions: {allow: 0}}}]}}')
+        acl_test_yaml = yaml.safe_load("""
+        {dps: {ovs: {
+            dp_id: 1,
+            hardware: Open vSwitch,
+            interfaces: {
+                1: {native_vlan: 100, acls_in: []},
+                2: {native_vlan: 100},
+                3: {output_only: true, mirror: [1]}}}},
+         acls: {test: [{rule: {actions: {allow: 0}}}]},
+         include: [%s]}
+        """ % os.path.basename(include_name))
+
+        with open(os.path.join(self.tmpdir, self.default_config), 'w') as test_yaml_file:
+            test_yaml_file.write(yaml.dump(acl_test_yaml))  # pytype: disable=wrong-arg-types
+        with open(include_name, 'w') as test_yaml_file:
+            test_yaml_file.write(yaml.dump(include_yaml))  # pytype: disable=wrong-arg-types
         response = self.client.get_acl_names()
-        assert response.acl_name == ["test"]
+        assert response.acl_name == ["test", "anotheracl"]
 
     def test_dpinfo(self):
         # All DP info returned.
