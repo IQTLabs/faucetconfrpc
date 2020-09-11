@@ -7,6 +7,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    - name: shell_test
+      run: |
+        wget "https://github.com/koalaman/shellcheck/releases/download/stable/shellcheck-stable.linux.x86_64.tar.xz" && \
+        tar --xz -xvf "shellcheck-stable.linux.x86_64.tar.xz" && \
+        shellcheck() { "shellcheck-stable/shellcheck" "$@"; } && \
+        shellcheck --version && \
+        /bin/bash --version && shellcheck -x -e SC2016 -e SC2119 -e SC2129 -e SC2001 -e SC2038 -e SC2044 certstrap/gen_faucetconfrpc_keys.sh
     - name: tests
       env:
         PYTHONPATH: "."
