@@ -37,6 +37,14 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
         self.lock = threading.Lock()
         os.chdir(self.config_dir)
 
+    @staticmethod
+    def _yaml_load(yaml_str):
+        return yaml.load(yaml_str, Loader=yaml.CSafeLoader)
+
+    @staticmethod
+    def _yaml_dump(yaml_dict):
+        return yaml.dump(yaml_dict, Dumper=yaml.CSafeDumper)
+
     def request_wrapper(self, request_handler, context, request, default_reply):
         """Wrap an RPC call in a lock and log."""
         with self.lock:
@@ -109,10 +117,9 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
             raise _ServerError('cannot overwrite %s' % safe_filename)
         return safe_filename
 
-    @staticmethod
-    def _yaml_parse(config_yaml_str):
+    def _yaml_parse(self, config_yaml_str):
         try:
-            return yaml.safe_load(config_yaml_str)
+            return self._yaml_load(config_yaml_str)
         except (yaml.constructor.ConstructorError, yaml.parser.ParserError) as err:
             raise _ServerError(f'YAML error: {err}')  # pylint: disable=raise-missing-from
 
@@ -130,7 +137,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
         new_file = tempfile.NamedTemporaryFile(
             mode='wt', dir=config_dir, delete=False)
         new_file_name = new_file.name
-        new_file.write(yaml.dump(config_yaml))
+        new_file.write(self._yaml_dump(config_yaml))
         new_file.close()
         os.rename(new_file_name, os.path.join(config_dir, config_filename))
 
@@ -182,7 +189,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
             if not config_filename:
                 config_filename = self.default_config
             return faucetconfrpc_pb2.GetConfigFileReply(
-                config_yaml=yaml.dump(self._get_config_file(config_filename)))
+                config_yaml=self._yaml_dump(self._get_config_file(config_filename)))
 
         return self.request_wrapper(
             get_config_file, context, request, default_reply)
@@ -393,7 +400,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
                     interfaces[interface_request.port_no] = self._yaml_parse(
                         interface_request.config_yaml)
             self._set_config_file(
-                config_filename, yaml.dump(config_yaml), False, [])
+                config_filename, self._yaml_dump(config_yaml), False, [])
             return default_reply
 
         return self.request_wrapper(
@@ -419,7 +426,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
             for dp_request in request.interfaces_config:
                 self._del_dp(dp_request.name, config_yaml)
             self._set_config_file(
-                config_filename, yaml.dump(config_yaml), False, [])
+                config_filename, self._yaml_dump(config_yaml), False, [])
             return default_reply
 
         return self.request_wrapper(
@@ -454,7 +461,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
                     except KeyError:
                         continue
             self._set_config_file(
-                config_filename, yaml.dump(config_yaml), False, [])
+                config_filename, self._yaml_dump(config_yaml), False, [])
             return default_reply
 
         return self.request_wrapper(
@@ -499,7 +506,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
                 'description': 'loopback'
             }
             self._set_config_file(
-                config_filename, yaml.dump(config_yaml), False, [])
+                config_filename, self._yaml_dump(config_yaml), False, [])
             return default_reply
 
         return self.request_wrapper(
