@@ -1,4 +1,4 @@
 -r requirements.txt
 pylint==2.6.0
-pytype==2020.8.28
+pytype==2020.9.14
 pytest
