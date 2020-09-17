@@ -24,9 +24,11 @@ from faucetconfrpc import faucetconfrpc_pb2_grpc
 
 
 def yaml_load(yaml_str):
+    """Wrap YAML safe load for consistency."""
     return yaml.load(yaml_str, Loader=yaml.CSafeLoader)
 
 def yaml_dump(yaml_dict):
+    """Wrap YAML dump for consistency."""
     return yaml.dump(yaml_dict, Dumper=yaml.CSafeDumper)
 
 
@@ -116,7 +118,8 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
             raise _ServerError('cannot overwrite %s' % safe_filename)
         return safe_filename
 
-    def _yaml_parse(self, config_yaml_str):
+    @staticmethod
+    def _yaml_parse(config_yaml_str):
         try:
             return yaml_load(config_yaml_str)
         except (yaml.constructor.ConstructorError, yaml.parser.ParserError) as err:
