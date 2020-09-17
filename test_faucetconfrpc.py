@@ -138,6 +138,17 @@ class ServerIntTests(unittest.TestCase):
         assert self.client.set_config_file(
             self.default_test_yaml_str, config_filename=self.default_config, merge=False)
 
+    def test_hex_dpid(self):
+        hex_test_yaml_str = """
+            {dps: {ovs: {
+                dp_id: 0x1,
+                hardware: Open vSwitch,
+                interfaces: {1: {native_vlan: 100}}}}}
+        """
+        response = self.client.set_config_file(
+            hex_test_yaml_str, config_filename=self.default_config, merge=False)
+        assert response is not None
+
     def test_err(self):
         err_yaml = {
             'acls': {
