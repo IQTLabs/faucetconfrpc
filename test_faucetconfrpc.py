@@ -10,9 +10,8 @@ import tempfile
 import time
 import os
 import unittest
-import yaml
 from faucetconfrpc.faucetconfrpc_client_lib import FaucetConfRpcClient
-from faucetconfrpc.faucetconfrpc_server import Server, _ServerError
+from faucetconfrpc.faucetconfrpc_server import Server, _ServerError, yaml_load, yaml_dump
 
 
 class ServerMethodTests(unittest.TestCase):
@@ -96,7 +95,7 @@ class ServerIntTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.tmpdir = tempfile.mkdtemp()
-        cls.default_test_yaml = yaml.safe_load(cls.default_test_yaml_str)
+        cls.default_test_yaml = yaml_load(cls.default_test_yaml_str)
         cls.default_config = 'test.yaml'
         with open(os.path.join(cls.tmpdir, cls.default_config), 'w') as test_yaml_file:
             test_yaml_file.write(cls.default_test_yaml_str)  # pytype: disable=wrong-arg-types
@@ -135,9 +134,20 @@ class ServerIntTests(unittest.TestCase):
         cls.client = FaucetConfRpcClient(client_key, client_cert, ca_cert, server_addr)
 
     def setUp(self):
-        self.default_test_yaml = yaml.safe_load(self.default_test_yaml_str)
+        self.default_test_yaml = yaml_load(self.default_test_yaml_str)
         assert self.client.set_config_file(
             self.default_test_yaml_str, config_filename=self.default_config, merge=False)
+
+    def test_hex_dpid(self):
+        hex_test_yaml_str = """
+            {dps: {ovs: {
+                dp_id: 0x1,
+                hardware: Open vSwitch,
+                interfaces: {1: {native_vlan: 100}}}}}
+        """
+        response = self.client.set_config_file(
+            hex_test_yaml_str, config_filename=self.default_config, merge=False)
+        assert response is not None
 
     def test_err(self):
         err_yaml = {
@@ -155,7 +165,7 @@ class ServerIntTests(unittest.TestCase):
                     'interfaces': {
                         1: {'native_vlan': 100, 'acls_in': ['patchit']}}}}}
         response = self.client.set_config_file(
-            yaml.dump(err_yaml), config_filename=self.default_config, merge=False)
+            yaml_dump(err_yaml), config_filename=self.default_config, merge=False)
         assert response is None
 
     def test_del_dps(self):
@@ -180,7 +190,7 @@ class ServerIntTests(unittest.TestCase):
                     'interfaces': {
                         1: {'native_vlan': 100}}}}}
         assert self.client.set_config_file(
-            yaml.dump(three_dps_yaml), config_filename=self.default_config, merge=False)
+            yaml_dump(three_dps_yaml), config_filename=self.default_config, merge=False)
         response = self.client.del_dps(['ovs2'])
         assert response is not None
         assert self.client.del_dp_interfaces([('ovs3', [1])], delete_empty_dp=True) is not None
@@ -238,8 +248,8 @@ class ServerIntTests(unittest.TestCase):
 
     def test_get_acl_names(self):
         include_name = os.path.join(self.tmpdir, 'include.yaml')
-        include_yaml = yaml.safe_load('{acls: {anotheracl: [{rule: {actions: {allow: 0}}}]}}')
-        acl_test_yaml = yaml.safe_load("""
+        include_yaml = yaml_load('{acls: {anotheracl: [{rule: {actions: {allow: 0}}}]}}')
+        acl_test_yaml = yaml_load("""
         {dps: {ovs: {
             dp_id: 1,
             hardware: Open vSwitch,
@@ -252,9 +262,9 @@ class ServerIntTests(unittest.TestCase):
         """ % os.path.basename(include_name))
 
         with open(os.path.join(self.tmpdir, self.default_config), 'w') as test_yaml_file:
-            test_yaml_file.write(yaml.dump(acl_test_yaml))  # pytype: disable=wrong-arg-types
+            test_yaml_file.write(yaml_dump(acl_test_yaml))  # pytype: disable=wrong-arg-types
         with open(include_name, 'w') as test_yaml_file:
-            test_yaml_file.write(yaml.dump(include_yaml))  # pytype: disable=wrong-arg-types
+            test_yaml_file.write(yaml_dump(include_yaml))  # pytype: disable=wrong-arg-types
         response = self.client.get_acl_names()
         assert response.acl_name == ["test", "anotheracl"]
 
@@ -283,7 +293,7 @@ class ServerIntTests(unittest.TestCase):
         assert response is None
         # Get existing file
         response = self.client.get_config_file(config_filename=self.default_config)
-        assert response == yaml.safe_load(self.default_test_yaml_str)
+        assert response == yaml_load(self.default_test_yaml_str)
 
     def test_remove(self):
         # Remove item from list.
@@ -340,7 +350,7 @@ class ServerIntTests(unittest.TestCase):
             self.default_test_yaml_str, config_filename=self.default_config, merge=True)
         assert response is not None
         assert self.default_test_yaml == self.client.get_config_file(config_filename=self.default_config)
-        new_test_yaml = yaml.safe_load('{dps: {ovs: {interfaces: {3: {description: test}}}}}')
+        new_test_yaml = yaml_load('{dps: {ovs: {interfaces: {3: {description: test}}}}}')
         response = self.client.set_config_file(
             new_test_yaml, config_filename=self.default_config, merge=True)
         assert response is not None
@@ -358,7 +368,7 @@ class ServerIntTests(unittest.TestCase):
         assert new_test_yaml == self.client.get_config_file(config_filename=self.default_config)
 
         # Test replace operation.
-        new_test_yaml = yaml.safe_load(
+        new_test_yaml = yaml_load(
             '{dps: {ovs: {interfaces: {3: {description: replaced, output_only: true}}}}}')
         del_config_yaml_keys = '[dps, ovs, interfaces, 3]'
         response = self.client.set_config_file(
@@ -380,9 +390,9 @@ class ServerIntTests(unittest.TestCase):
                 2: {native_vlan: 100},
                 3: {output_only: true, mirror: []}}}}}
         """
-        mirror_test_yaml = yaml.safe_load(mirror_test_yaml_str)
+        mirror_test_yaml = yaml_load(mirror_test_yaml_str)
         response = self.client.set_config_file(
-            yaml.safe_load(mirror_test_yaml_str),
+            yaml_load(mirror_test_yaml_str),
             config_filename=self.default_config, merge=False)
         assert response is not None
         response = self.client.add_port_mirror('ovs', 2, 3)
@@ -417,7 +427,7 @@ class ServerIntTests(unittest.TestCase):
                         1: {'native_vlan': 100},
                         2: {'stack': {'dp': 'ovs1', 'port': 2}}}}}}
         assert self.client.set_config_file(
-            yaml.dump(stack_dps_yaml), config_filename=self.default_config, merge=False)
+            yaml_dump(stack_dps_yaml), config_filename=self.default_config, merge=False)
         response = self.client.set_remote_mirror_port('ovs2', 3, 999, 'ovs1', 1)
         assert response is not None
         response = self.client.get_config_file(config_filename=self.default_config)
