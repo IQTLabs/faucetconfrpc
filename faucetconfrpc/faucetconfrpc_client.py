@@ -5,6 +5,7 @@
 import argparse
 import inspect
 from faucetconfrpc.faucetconfrpc_client_lib import FaucetConfRpcClient
+from faucetconfrpc.faucetconfrpc_server import yaml_load, yaml_dump
 
 
 class ClientError(Exception):
@@ -17,8 +18,16 @@ def get_attributes(cls):
     return [item for item in inspect.getmembers(cls) if item[0] not in boring]
 
 
+def yaml_sanity():
+    """Ensure YAML libraries present."""
+    test_dict = {'test': 'value'}
+    test_yaml = yaml_dump(test_dict)
+    assert yaml_load(test_yaml) == test_dict
+
+
 def main():
     """Instantiate client and call it."""
+    yaml_sanity()
     parser = argparse.ArgumentParser()
     parser.add_argument(
         '--key', help='client private key', action='store',
