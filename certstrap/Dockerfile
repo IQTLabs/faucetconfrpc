@@ -1,4 +1,4 @@
-FROM golang:1.15
+FROM golang:1.15-alpine
 
 ENV GO111MODULE="on"
 RUN go get github.com/square/certstrap
