@@ -3,6 +3,7 @@
 """Tests for faucetconfrpc."""
 
 from contextlib import closing
+import requests
 import shutil
 import socket
 import subprocess
@@ -88,6 +89,8 @@ class ServerIntTests(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
+        cls.assertGreater(cls, cls._get_prom_var(
+            'faucetconfrpc_ok_total{request="SetConfigFile"}', cls.host, cls.prom_port), 0)
         cls.server.terminate()
         cls.server.wait()
         shutil.rmtree(cls.tmpdir)
@@ -100,21 +103,22 @@ class ServerIntTests(unittest.TestCase):
         with open(os.path.join(cls.tmpdir, cls.default_config), 'w') as test_yaml_file:
             test_yaml_file.write(cls.default_test_yaml_str)  # pytype: disable=wrong-arg-types
 
-        host = 'localhost'
-        port = 59999
+        cls.host = 'localhost'
+        cls.port = 59999
+        cls.prom_port = 59998
         certstrap = shutil.which('certstrap')
         cls.assertTrue(certstrap, 'certstrap not found')
         for cmd in (
                 ['init', '--common-name', 'ca', '--passphrase', ''],
                 ['request-cert', '--common-name', 'client', '--passphrase', ''],
                 ['sign', 'client', '--CA', 'ca'],
-                ['request-cert', '--common-name', host, '--passphrase', ''],
-                ['sign', host, '--CA', 'ca']):
+                ['request-cert', '--common-name', cls.host, '--passphrase', ''],
+                ['sign', cls.host, '--CA', 'ca']):
             subprocess.check_call([certstrap, '--depot-path', cls.tmpdir] + cmd)
         client_key = os.path.join(cls.tmpdir, 'client.key')
         client_cert = os.path.join(cls.tmpdir, 'client.crt')
-        server_key = os.path.join(cls.tmpdir, '%s.key' % host)
-        server_cert = os.path.join(cls.tmpdir, '%s.crt' % host)
+        server_key = os.path.join(cls.tmpdir, '%s.key' % cls.host)
+        server_cert = os.path.join(cls.tmpdir, '%s.crt' % cls.host)
         ca_cert = os.path.join(cls.tmpdir, 'ca.crt')
 
         cls.server = subprocess.Popen(
@@ -123,20 +127,30 @@ class ServerIntTests(unittest.TestCase):
              './faucetconfrpc/faucetconfrpc_server.py',
              '--config_dir=%s' % cls.tmpdir,
              '--default_config=%s' % cls.default_config,
-             '--port=%u' % port,
-             '--host=%s' % host,
+             '--port=%u' % cls.port,
+             '--prom_port=%u' % cls.prom_port,
+             '--host=%s' % cls.host,
              '--key=%s' % server_key,
              '--cert=%s' % server_cert,
              '--cacert=%s' % ca_cert,
              ], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        cls._wait_for_port(cls, host, port)
-        server_addr = '%s:%u' % (host, port)
+        cls._wait_for_port(cls, cls.host, cls.port)
+        cls._wait_for_port(cls, cls.host, cls.prom_port)
+        server_addr = '%s:%u' % (cls.host, cls.port)
         cls.client = FaucetConfRpcClient(client_key, client_cert, ca_cert, server_addr)
 
     def setUp(self):
         self.default_test_yaml = yaml_load(self.default_test_yaml_str)
         assert self.client.set_config_file(
             self.default_test_yaml_str, config_filename=self.default_config, merge=False)
+
+    @staticmethod
+    def _get_prom_var(var, host, port):
+        response = requests.get('http://%s:%u' % (host, port))
+        for line in response.text.splitlines():
+            if line.startswith(var):
+                return float(line.split(' ')[1])
+        return None
 
     def test_hex_dpid(self):
         hex_test_yaml_str = """
