@@ -7,6 +7,7 @@ from concurrent import futures  # pytype: disable=pyi-error
 import argparse
 import logging
 import os
+import re
 import shutil
 import sys
 import tempfile
@@ -14,6 +15,8 @@ import threading
 import yaml
 
 import grpc
+
+from prometheus_client import start_http_server, Counter
 
 from faucet import valve
 from faucet.config_parser import dp_parser
@@ -45,21 +48,41 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
         self.default_config = default_config
         self.lock = threading.Lock()
         os.chdir(self.config_dir)
+        self.grpc_counter_ok = None
+        self.grpc_counter_bad = None
+
+    def add_counters(self):
+        """Add counters separately so staticmethods are testable."""
+        self.grpc_counter_ok = Counter(
+            'faucetconfrpc_ok', 'successful faucetconfrpc grpc calls', ['request'])
+        self.grpc_counter_bad = Counter(
+            'faucetconfrpc_bad', 'unsucessful faucetconfrpc grpc calls', ['request'])
+
+    @staticmethod
+    def _describe_handler(request_handler):
+        handler_re = re.compile(r'^\<function Server\.([^\.]+).+$')
+        match = handler_re.match(str(request_handler))
+        if not match:
+            raise _ServerError('could not parse request_handler: %s' % str(request_handler))
+        return match.group(1)
 
     def request_wrapper(self, request_handler, context, request, default_reply):
         """Wrap an RPC call in a lock and log."""
         with self.lock:
             reply = default_reply
+            faucetconfrpc_str = self._describe_handler(request_handler)
+            counter = self.grpc_counter_ok
             try:
                 reply = request_handler()
                 logging.info('request %s: reply %s', request, reply)
-                return reply
             except (_ServerError, InvalidConfigError) as err:
                 log = 'request %s: error %s' % (str(request), str(err))
                 logging.error(log)
                 context.set_code(grpc.StatusCode.UNKNOWN)
                 context.set_details(log)
-            return default_reply
+                counter = self.grpc_counter_bad
+            counter.labels(request=faucetconfrpc_str).inc()
+            return reply
 
     def _yaml_merge(self, yaml_doc_a, yaml_doc_b):
         if yaml_doc_a is None or isinstance(yaml_doc_a, (str, int, float)):
@@ -595,6 +618,12 @@ def serve():
         action='store',
         default=59999,
         type=int)
+    parser.add_argument(
+        '--prom_port',
+        help='port to serve prometheus variables',
+        action='store',
+        default=59998,
+        type=int)
     args = parser.parse_args()
     with open(args.key) as keyfile:
         private_key = keyfile.read().encode('utf8')
@@ -607,10 +636,12 @@ def serve():
         root_certificate,
         require_client_auth=True)
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
-    faucetconfrpc_pb2_grpc.add_FaucetConfServerServicer_to_server(
-        Server(args.config_dir, args.default_config), server)
+    server_handler = Server(args.config_dir, args.default_config)
+    server_handler.add_counters()
+    faucetconfrpc_pb2_grpc.add_FaucetConfServerServicer_to_server(server_handler, server)
     server.add_secure_port('%s:%u' % (args.host, args.port), server_credentials)
     server.start()
+    start_http_server(args.prom_port)
     server.wait_for_termination()
 
 
