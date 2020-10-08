@@ -1,4 +1,4 @@
-faucet
+faucet==1.9.49
 grpcio
 pyyaml
 # https://github.com/grpc/grpc/blob/master/requirements.txt
