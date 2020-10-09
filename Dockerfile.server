@@ -4,14 +4,13 @@ ENV PYTHONUNBUFFERED 1
 COPY requirements.txt requirements.txt
 
 RUN apt-get update && \
-    apt-get install -y iproute2 python3-dev gcc g++ && \
+    apt-get install -y iproute2 python3-dev gcc g++ libyaml-dev && \
     pip3 install --no-cache-dir --upgrade -r requirements.txt && \
-    rm -rf /var/cache/* /root/.cache/*
+    apt-get purge -y python3-dev gcc g++ && apt -y autoremove --purge && rm -rf /var/cache/* /root/.cache/*
 
 COPY . /faucetconfrpc
 WORKDIR /faucetconfrpc
-
-RUN pip3 install .
+RUN pip3 --no-cache-dir install .
 RUN python3 -c "from faucetconfrpc.faucetconfrpc_client_lib import FaucetConfRpcClient"
 RUN faucetconfrpc_client.py --help
 

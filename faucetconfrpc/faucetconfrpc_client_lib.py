@@ -2,10 +2,10 @@
 
 import logging
 import grpc
-import yaml
 
 from faucetconfrpc import faucetconfrpc_pb2
 from faucetconfrpc import faucetconfrpc_pb2_grpc
+from faucetconfrpc.faucetconfrpc_server import yaml_load, yaml_dump
 
 
 class FaucetConfRpcClient:
@@ -34,14 +34,14 @@ class FaucetConfRpcClient:
         response = self._call(self._stub.GetConfigFile, faucetconfrpc_pb2.GetConfigFileRequest(
             config_filename=config_filename))
         if response is not None:
-            return yaml.safe_load(response.config_yaml)
+            return yaml_load(response.config_yaml)
         return None
 
     def set_config_file(self, config_yaml, config_filename=None, merge=True,
                         del_config_yaml_keys=''):
         """Set a YAML config file."""
         if isinstance(config_yaml, dict):
-            config_yaml = yaml.dump(config_yaml)
+            config_yaml = yaml_dump(config_yaml)
         return self._call(self._stub.SetConfigFile, faucetconfrpc_pb2.SetConfigFileRequest(
             config_filename=config_filename,
             config_yaml=config_yaml,
@@ -51,7 +51,7 @@ class FaucetConfRpcClient:
     def del_config_from_file(self, config_yaml_keys, config_filename=None):
         """Delete a key from YAML config file."""
         if isinstance(config_yaml_keys, list):
-            config_yaml_keys = yaml.dump(config_yaml_keys)
+            config_yaml_keys = yaml_dump(config_yaml_keys)
         return self._call(self._stub.DelConfigFromFile, faucetconfrpc_pb2.DelConfigFromFileRequest(
             config_filename=config_filename,
             config_yaml_keys=config_yaml_keys))

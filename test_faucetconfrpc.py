@@ -3,6 +3,7 @@
 """Tests for faucetconfrpc."""
 
 from contextlib import closing
+import requests
 import shutil
 import socket
 import subprocess
@@ -10,9 +11,8 @@ import tempfile
 import time
 import os
 import unittest
-import yaml
 from faucetconfrpc.faucetconfrpc_client_lib import FaucetConfRpcClient
-from faucetconfrpc.faucetconfrpc_server import Server, _ServerError
+from faucetconfrpc.faucetconfrpc_server import Server, _ServerError, yaml_load, yaml_dump
 
 
 class ServerMethodTests(unittest.TestCase):
@@ -89,6 +89,8 @@ class ServerIntTests(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
+        cls.assertGreater(cls, cls._get_prom_var(
+            'faucetconfrpc_ok_total{request="SetConfigFile"}', cls.host, cls.prom_port), 0)
         cls.server.terminate()
         cls.server.wait()
         shutil.rmtree(cls.tmpdir)
@@ -96,26 +98,27 @@ class ServerIntTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.tmpdir = tempfile.mkdtemp()
-        cls.default_test_yaml = yaml.safe_load(cls.default_test_yaml_str)
+        cls.default_test_yaml = yaml_load(cls.default_test_yaml_str)
         cls.default_config = 'test.yaml'
         with open(os.path.join(cls.tmpdir, cls.default_config), 'w') as test_yaml_file:
             test_yaml_file.write(cls.default_test_yaml_str)  # pytype: disable=wrong-arg-types
 
-        host = 'localhost'
-        port = 59999
+        cls.host = 'localhost'
+        cls.port = 59999
+        cls.prom_port = 59998
         certstrap = shutil.which('certstrap')
         cls.assertTrue(certstrap, 'certstrap not found')
         for cmd in (
                 ['init', '--common-name', 'ca', '--passphrase', ''],
                 ['request-cert', '--common-name', 'client', '--passphrase', ''],
                 ['sign', 'client', '--CA', 'ca'],
-                ['request-cert', '--common-name', host, '--passphrase', ''],
-                ['sign', host, '--CA', 'ca']):
+                ['request-cert', '--common-name', cls.host, '--passphrase', ''],
+                ['sign', cls.host, '--CA', 'ca']):
             subprocess.check_call([certstrap, '--depot-path', cls.tmpdir] + cmd)
         client_key = os.path.join(cls.tmpdir, 'client.key')
         client_cert = os.path.join(cls.tmpdir, 'client.crt')
-        server_key = os.path.join(cls.tmpdir, '%s.key' % host)
-        server_cert = os.path.join(cls.tmpdir, '%s.crt' % host)
+        server_key = os.path.join(cls.tmpdir, '%s.key' % cls.host)
+        server_cert = os.path.join(cls.tmpdir, '%s.crt' % cls.host)
         ca_cert = os.path.join(cls.tmpdir, 'ca.crt')
 
         cls.server = subprocess.Popen(
@@ -124,20 +127,41 @@ class ServerIntTests(unittest.TestCase):
              './faucetconfrpc/faucetconfrpc_server.py',
              '--config_dir=%s' % cls.tmpdir,
              '--default_config=%s' % cls.default_config,
-             '--port=%u' % port,
-             '--host=%s' % host,
+             '--port=%u' % cls.port,
+             '--prom_port=%u' % cls.prom_port,
+             '--host=%s' % cls.host,
              '--key=%s' % server_key,
              '--cert=%s' % server_cert,
              '--cacert=%s' % ca_cert,
              ], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        cls._wait_for_port(cls, host, port)
-        server_addr = '%s:%u' % (host, port)
+        cls._wait_for_port(cls, cls.host, cls.port)
+        cls._wait_for_port(cls, cls.host, cls.prom_port)
+        server_addr = '%s:%u' % (cls.host, cls.port)
         cls.client = FaucetConfRpcClient(client_key, client_cert, ca_cert, server_addr)
 
     def setUp(self):
-        self.default_test_yaml = yaml.safe_load(self.default_test_yaml_str)
+        self.default_test_yaml = yaml_load(self.default_test_yaml_str)
         assert self.client.set_config_file(
             self.default_test_yaml_str, config_filename=self.default_config, merge=False)
+
+    @staticmethod
+    def _get_prom_var(var, host, port):
+        response = requests.get('http://%s:%u' % (host, port))
+        for line in response.text.splitlines():
+            if line.startswith(var):
+                return float(line.split(' ')[1])
+        return None
+
+    def test_hex_dpid(self):
+        hex_test_yaml_str = """
+            {dps: {ovs: {
+                dp_id: 0x1,
+                hardware: Open vSwitch,
+                interfaces: {1: {native_vlan: 100}}}}}
+        """
+        response = self.client.set_config_file(
+            hex_test_yaml_str, config_filename=self.default_config, merge=False)
+        assert response is not None
 
     def test_err(self):
         err_yaml = {
@@ -155,7 +179,7 @@ class ServerIntTests(unittest.TestCase):
                     'interfaces': {
                         1: {'native_vlan': 100, 'acls_in': ['patchit']}}}}}
         response = self.client.set_config_file(
-            yaml.dump(err_yaml), config_filename=self.default_config, merge=False)
+            yaml_dump(err_yaml), config_filename=self.default_config, merge=False)
         assert response is None
 
     def test_del_dps(self):
@@ -180,7 +204,7 @@ class ServerIntTests(unittest.TestCase):
                     'interfaces': {
                         1: {'native_vlan': 100}}}}}
         assert self.client.set_config_file(
-            yaml.dump(three_dps_yaml), config_filename=self.default_config, merge=False)
+            yaml_dump(three_dps_yaml), config_filename=self.default_config, merge=False)
         response = self.client.del_dps(['ovs2'])
         assert response is not None
         assert self.client.del_dp_interfaces([('ovs3', [1])], delete_empty_dp=True) is not None
@@ -238,8 +262,8 @@ class ServerIntTests(unittest.TestCase):
 
     def test_get_acl_names(self):
         include_name = os.path.join(self.tmpdir, 'include.yaml')
-        include_yaml = yaml.safe_load('{acls: {anotheracl: [{rule: {actions: {allow: 0}}}]}}')
-        acl_test_yaml = yaml.safe_load("""
+        include_yaml = yaml_load('{acls: {anotheracl: [{rule: {actions: {allow: 0}}}]}}')
+        acl_test_yaml = yaml_load("""
         {dps: {ovs: {
             dp_id: 1,
             hardware: Open vSwitch,
@@ -252,9 +276,9 @@ class ServerIntTests(unittest.TestCase):
         """ % os.path.basename(include_name))
 
         with open(os.path.join(self.tmpdir, self.default_config), 'w') as test_yaml_file:
-            test_yaml_file.write(yaml.dump(acl_test_yaml))  # pytype: disable=wrong-arg-types
+            test_yaml_file.write(yaml_dump(acl_test_yaml))  # pytype: disable=wrong-arg-types
         with open(include_name, 'w') as test_yaml_file:
-            test_yaml_file.write(yaml.dump(include_yaml))  # pytype: disable=wrong-arg-types
+            test_yaml_file.write(yaml_dump(include_yaml))  # pytype: disable=wrong-arg-types
         response = self.client.get_acl_names()
         assert response.acl_name == ["test", "anotheracl"]
 
@@ -283,7 +307,7 @@ class ServerIntTests(unittest.TestCase):
         assert response is None
         # Get existing file
         response = self.client.get_config_file(config_filename=self.default_config)
-        assert response == yaml.safe_load(self.default_test_yaml_str)
+        assert response == yaml_load(self.default_test_yaml_str)
 
     def test_remove(self):
         # Remove item from list.
@@ -340,7 +364,7 @@ class ServerIntTests(unittest.TestCase):
             self.default_test_yaml_str, config_filename=self.default_config, merge=True)
         assert response is not None
         assert self.default_test_yaml == self.client.get_config_file(config_filename=self.default_config)
-        new_test_yaml = yaml.safe_load('{dps: {ovs: {interfaces: {3: {description: test}}}}}')
+        new_test_yaml = yaml_load('{dps: {ovs: {interfaces: {3: {description: test}}}}}')
         response = self.client.set_config_file(
             new_test_yaml, config_filename=self.default_config, merge=True)
         assert response is not None
@@ -358,7 +382,7 @@ class ServerIntTests(unittest.TestCase):
         assert new_test_yaml == self.client.get_config_file(config_filename=self.default_config)
 
         # Test replace operation.
-        new_test_yaml = yaml.safe_load(
+        new_test_yaml = yaml_load(
             '{dps: {ovs: {interfaces: {3: {description: replaced, output_only: true}}}}}')
         del_config_yaml_keys = '[dps, ovs, interfaces, 3]'
         response = self.client.set_config_file(
@@ -380,9 +404,9 @@ class ServerIntTests(unittest.TestCase):
                 2: {native_vlan: 100},
                 3: {output_only: true, mirror: []}}}}}
         """
-        mirror_test_yaml = yaml.safe_load(mirror_test_yaml_str)
+        mirror_test_yaml = yaml_load(mirror_test_yaml_str)
         response = self.client.set_config_file(
-            yaml.safe_load(mirror_test_yaml_str),
+            yaml_load(mirror_test_yaml_str),
             config_filename=self.default_config, merge=False)
         assert response is not None
         response = self.client.add_port_mirror('ovs', 2, 3)
@@ -417,7 +441,7 @@ class ServerIntTests(unittest.TestCase):
                         1: {'native_vlan': 100},
                         2: {'stack': {'dp': 'ovs1', 'port': 2}}}}}}
         assert self.client.set_config_file(
-            yaml.dump(stack_dps_yaml), config_filename=self.default_config, merge=False)
+            yaml_dump(stack_dps_yaml), config_filename=self.default_config, merge=False)
         response = self.client.set_remote_mirror_port('ovs2', 3, 999, 'ovs1', 1)
         assert response is not None
         response = self.client.get_config_file(config_filename=self.default_config)
