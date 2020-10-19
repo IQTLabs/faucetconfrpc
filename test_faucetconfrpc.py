@@ -79,13 +79,14 @@ class ServerIntTests(unittest.TestCase):
          acls: {test: [{rule: {actions: {allow: 0}}}]}}
     """
 
-    def _wait_for_port(self, host, port, timeout=10):
+    @classmethod
+    def _wait_for_port(cls, host, port, timeout=10):
         for _ in range(timeout):
             with closing(socket.socket(socket.AF_INET, socket.SOCK_STREAM)) as sock:
                 if sock.connect_ex((host, port)) == 0:
                     return  # pytype: disable=not-callable
             time.sleep(1)
-        self.fail('server did not start')
+        cls.fail('server did not start')
 
     @classmethod
     def tearDownClass(cls):
@@ -134,8 +135,8 @@ class ServerIntTests(unittest.TestCase):
              '--cert=%s' % server_cert,
              '--cacert=%s' % ca_cert,
              ], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        cls._wait_for_port(cls, cls.host, cls.port)
-        cls._wait_for_port(cls, cls.host, cls.prom_port)
+        cls._wait_for_port(cls.host, cls.port)
+        cls._wait_for_port(cls.host, cls.prom_port)
         server_addr = '%s:%u' % (cls.host, cls.port)
         cls.client = FaucetConfRpcClient(client_key, client_cert, ca_cert, server_addr)
 
