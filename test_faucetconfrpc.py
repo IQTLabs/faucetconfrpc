@@ -91,7 +91,7 @@ class ServerIntTests(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         cls.assertGreater(cls, cls._get_prom_var(
-            'faucetconfrpc_ok_total{request="SetConfigFile"}', cls.host, cls.prom_port), 0)
+            'faucetconfrpc_ok_total', 'request="SetConfigFile"', cls.host, cls.prom_port), 0)
         cls.server.terminate()
         cls.server.wait()
         shutil.rmtree(cls.tmpdir)
@@ -146,10 +146,10 @@ class ServerIntTests(unittest.TestCase):
             self.default_test_yaml_str, config_filename=self.default_config, merge=False)
 
     @staticmethod
-    def _get_prom_var(var, host, port):
+    def _get_prom_var(var, label, host, port):
         response = requests.get('http://%s:%u' % (host, port))
         for line in response.text.splitlines():
-            if line.startswith(var):
+            if line.startswith(var) and label in line:
                 return float(line.split(' ')[1])
         return None
 

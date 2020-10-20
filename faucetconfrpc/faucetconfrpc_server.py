@@ -54,9 +54,11 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
     def add_counters(self):
         """Add counters separately so staticmethods are testable."""
         self.grpc_counter_ok = Counter(
-            'faucetconfrpc_ok', 'successful faucetconfrpc grpc calls', ['request'])
+            'faucetconfrpc_ok', 'successful faucetconfrpc grpc calls',
+            ['request', 'peer_ip', 'peer_id'])
         self.grpc_counter_bad = Counter(
-            'faucetconfrpc_bad', 'unsucessful faucetconfrpc grpc calls', ['request'])
+            'faucetconfrpc_bad', 'unsucessful faucetconfrpc grpc calls',
+            ['request', 'peer_ip', 'peer_id'])
 
     @staticmethod
     def _describe_handler(request_handler):
@@ -66,22 +68,39 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
             raise _ServerError('could not parse request_handler: %s' % str(request_handler))
         return match.group(1)
 
+    @staticmethod
+    def _peer_from_context(context):
+        try:
+            peer_ip = context.peer().split(':')[1].replace('.', '_').replace(':', '_')
+            peer_id = '_'.join([id.decode('utf8') for id in context.peer_identities()])
+        except AttributeError:
+            peer_ip = 'unknown'
+            peer_id = 'unknown'
+        return (peer_ip, peer_id)
+
+    @staticmethod
+    def _flatten_str(request):
+        return ' '.join(str(request).replace('\n', ' ').split())
+
     def request_wrapper(self, request_handler, context, request, default_reply):
         """Wrap an RPC call in a lock and log."""
         with self.lock:
             reply = default_reply
             faucetconfrpc_str = self._describe_handler(request_handler)
             counter = self.grpc_counter_ok
+            peer_ip, peer_id = self._peer_from_context(context)
+            log_prefix = 'peer_ip:%s peer_id:%s request:%s' % (
+                peer_ip, peer_id, self._flatten_str(request))
             try:
                 reply = request_handler()
-                logging.info('request %s: reply %s', request, reply)
+                logging.info('%s reply %s', log_prefix, self._flatten_str(reply))
             except (_ServerError, InvalidConfigError) as err:
-                log = 'request %s: error %s' % (str(request), str(err))
+                log = '%s error %s' % (log_prefix, str(err))
                 logging.error(log)
                 context.set_code(grpc.StatusCode.UNKNOWN)
                 context.set_details(log)
                 counter = self.grpc_counter_bad
-            counter.labels(request=faucetconfrpc_str).inc()
+            counter.labels(request=faucetconfrpc_str, peer_ip=peer_ip, peer_id=peer_id).inc()
             return reply
 
     def _yaml_merge(self, yaml_doc_a, yaml_doc_b):
@@ -429,7 +448,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
             return default_reply
 
         return self.request_wrapper(
-            set_dp_interfaces, request, context, default_reply)
+            set_dp_interfaces, context, request, default_reply)
 
     @staticmethod
     def _del_dp(dp_name, config_yaml):
@@ -455,7 +474,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
             return default_reply
 
         return self.request_wrapper(
-            del_dps, request, context, default_reply)
+            del_dps, context, request, default_reply)
 
     def DelDpInterfaces(self, request, context):  # pylint: disable=invalid-name
 
@@ -490,7 +509,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
             return default_reply
 
         return self.request_wrapper(
-            del_dp_interfaces, request, context, default_reply)
+            del_dp_interfaces, context, request, default_reply)
 
     def SetRemoteMirrorPort(self, request, context):  # pylint: disable=invalid-name
 
@@ -535,7 +554,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
             return default_reply
 
         return self.request_wrapper(
-            set_remote_mirror_port, request, context, default_reply)
+            set_remote_mirror_port, context, request, default_reply)
 
     def GetDpNames(self, request, context):  # pylint: disable=invalid-name
 
@@ -549,7 +568,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
             return default_reply
 
         return self.request_wrapper(
-            get_dp_names, request, context, default_reply)
+            get_dp_names, context, request, default_reply)
 
     def GetDpIDs(self, request, context):  # pylint: disable=invalid-name
 
@@ -563,7 +582,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
             return default_reply
 
         return self.request_wrapper(
-            get_dp_ids, request, context, default_reply)
+            get_dp_ids, context, request, default_reply)
 
     def GetAclNames(self, request, context):  # pylint: disable=invalid-name
 
@@ -576,12 +595,13 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
             return default_reply
 
         return self.request_wrapper(
-            get_acl_names, request, context, default_reply)
+            get_acl_names, context, request, default_reply)
 
 
 def serve():
     """Start server and serve requests."""
-    logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
+    logging.basicConfig(
+        stream=sys.stdout, level=logging.DEBUG, format='%(asctime)s %(levelname)-8s %(message)s')
     parser = argparse.ArgumentParser()
     parser.add_argument(
         '--config_dir',
