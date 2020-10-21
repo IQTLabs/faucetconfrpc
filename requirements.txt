@@ -1,5 +1,5 @@
 faucet==1.9.50
-grpcio==1.32.0
+grpcio==1.33.1
 pyyaml==5.3.1
 # https://github.com/grpc/grpc/blob/master/requirements.txt
 protobuf>=3.5.0.post1, < 4.0dev
