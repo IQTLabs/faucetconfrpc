@@ -27,6 +27,7 @@ service FaucetConfServer {
   rpc GetDpNames(GetDpNamesRequest) returns (GetDpNamesReply) {}
   rpc GetDpIDs(GetDpIDsRequest) returns (GetDpIDsReply) {}
   rpc GetAclNames(GetAclNamesRequest) returns (GetAclNamesReply) {}
+  rpc SetDps(SetDpsRequest) returns (SetDpsReply) {}
 }
 
 // Retrieve YAML config.
@@ -209,6 +210,18 @@ message GetAclNamesRequest {
   repeated string acl_name = 1;
 }
 
-message GetAclNamesReply{
+message GetAclNamesReply {
   repeated string acl_name = 1;
+}
+
+message SetDp {
+  string dp_name = 1;
+  string config_yaml = 2;
+}
+
+message SetDpsRequest {
+  repeated SetDp dp_config = 1;
+}
+
+message SetDpsReply {
 }
