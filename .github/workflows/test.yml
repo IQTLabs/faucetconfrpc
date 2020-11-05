@@ -23,7 +23,7 @@ jobs:
         PATH=~/go/bin:$PATH certstrap -v && \
         sudo apt-get update && \
         sudo apt install -y libpython3-dev protobuf-compiler && \
-        sudo pip3 install setuptools && \
+        sudo pip3 install setuptools pybind11 && \
         sudo pip3 install -r test-requirements.txt && \
         sudo pip3 install grpcio-tools protobuf && \
         ./codecheck.sh && \
