@@ -21,11 +21,11 @@ jobs:
       run: |
         go get github.com/square/certstrap && \
         PATH=~/go/bin:$PATH certstrap -v && \
-        sudo pip3 install setuptools && \
+        sudo apt-get update && \
+        sudo apt install -y libpython3-dev protobuf-compiler && \
+        sudo pip3 install setuptools pybind11 && \
         sudo pip3 install -r test-requirements.txt && \
         sudo pip3 install grpcio-tools protobuf && \
-        sudo apt-get update && \
-        sudo apt install -y protobuf-compiler && \
         ./codecheck.sh && \
         PATH=~/go/bin:$PATH pytest ./test_faucetconfrpc.py && \
         docker build -f Dockerfile.server . && \
