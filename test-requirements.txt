@@ -1,5 +1,4 @@
 -r requirements.txt
-pybind11==2.6.0
 pylint==2.6.0
 pytype==2020.11.3
 pytest==6.1.2
