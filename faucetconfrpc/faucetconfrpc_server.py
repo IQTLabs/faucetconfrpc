@@ -7,6 +7,7 @@ from concurrent import futures  # pytype: disable=pyi-error
 import argparse
 import logging
 import os
+import random
 import re
 import shutil
 import sys
@@ -449,6 +450,29 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
 
         return self.request_wrapper(
             set_dp_interfaces, context, request, default_reply)
+
+    def SetDps(self, request, context):  # pylint: disable=invalid-name
+        """Replace DPs config including reservation of DP ID."""
+
+        default_reply = faucetconfrpc_pb2.SetDpsReply()
+
+        def set_dps():
+            config_filename = self.default_config
+            config_yaml = self._get_config_file(config_filename)
+            existing_dp_ids = {dp['dp_id'] for dp in config_yaml['dps'].values()}
+            for dp_request in request.dp_config:
+                dp_config_yaml = self._yaml_parse(dp_request.config_yaml)
+                while not 'dp_id' in dp_config_yaml:
+                    new_dp_id = random.randint(1, 2**64-1)
+                    if new_dp_id not in existing_dp_ids:
+                        dp_config_yaml['dp_id'] = new_dp_id
+                config_yaml['dps'][dp_request.dp_name] = dp_config_yaml
+            self._set_config_file(
+                config_filename, yaml_dump(config_yaml), False, [])
+            return default_reply
+
+        return self.request_wrapper(
+            set_dps, context, request, default_reply)
 
     @staticmethod
     def _del_dp(dp_name, config_yaml):

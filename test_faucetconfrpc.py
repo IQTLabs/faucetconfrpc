@@ -231,6 +231,15 @@ class ServerIntTests(unittest.TestCase):
                 'test': [{'rule': {'actions': {'allow': 0}}}]}}
         assert del_test_yaml == self.client.get_config_file(config_filename=self.default_config)
 
+    def test_set_new_dp(self):
+        response = self.client.set_dps(
+            {'newdp': '{hardware: "Open vSwitch", interfaces: {1: {output_only: true}}}'})
+        assert response is not None
+        new_yaml = self.client.get_config_file(config_filename=self.default_config)
+        dp_id = new_yaml['dps']['newdp']['dp_id']
+        assert dp_id
+        assert isinstance(dp_id, int)
+
     def test_set_interfaces(self):
         response = self.client.set_dp_interfaces(
             [('ovs', {
