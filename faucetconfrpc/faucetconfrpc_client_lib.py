@@ -155,3 +155,14 @@ class FaucetConfRpcClient:
         """Get a list of ACL names."""
         request = faucetconfrpc_pb2.GetAclNamesRequest()
         return self._call(self._stub.GetAclNames, request)
+
+    def set_dps(self, dps_config=None):
+        """Set DPs config."""
+        if dps_config is None:
+            dps_config = {}
+        request = faucetconfrpc_pb2.SetDpsRequest()
+        for dp_name, config_yaml in dps_config.items():
+            dp_request = request.dp_config.add()  # pylint: disable=no-member
+            dp_request.dp_name = dp_name
+            dp_request.config_yaml = config_yaml
+        return  self._call(self._stub.SetDps, request)

@@ -79,18 +79,19 @@ class ServerIntTests(unittest.TestCase):
          acls: {test: [{rule: {actions: {allow: 0}}}]}}
     """
 
-    def _wait_for_port(self, host, port, timeout=10):
+    @classmethod
+    def _wait_for_port(cls, host, port, timeout=10):
         for _ in range(timeout):
             with closing(socket.socket(socket.AF_INET, socket.SOCK_STREAM)) as sock:
                 if sock.connect_ex((host, port)) == 0:
                     return  # pytype: disable=not-callable
             time.sleep(1)
-        self.fail('server did not start')
+        cls.fail('server did not start')
 
     @classmethod
     def tearDownClass(cls):
         cls.assertGreater(cls, cls._get_prom_var(
-            'faucetconfrpc_ok_total{request="SetConfigFile"}', cls.host, cls.prom_port), 0)
+            'faucetconfrpc_ok_total', 'request="SetConfigFile"', cls.host, cls.prom_port), 0)
         cls.server.terminate()
         cls.server.wait()
         shutil.rmtree(cls.tmpdir)
@@ -134,8 +135,8 @@ class ServerIntTests(unittest.TestCase):
              '--cert=%s' % server_cert,
              '--cacert=%s' % ca_cert,
              ], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        cls._wait_for_port(cls, cls.host, cls.port)
-        cls._wait_for_port(cls, cls.host, cls.prom_port)
+        cls._wait_for_port(cls.host, cls.port)
+        cls._wait_for_port(cls.host, cls.prom_port)
         server_addr = '%s:%u' % (cls.host, cls.port)
         cls.client = FaucetConfRpcClient(client_key, client_cert, ca_cert, server_addr)
 
@@ -145,10 +146,10 @@ class ServerIntTests(unittest.TestCase):
             self.default_test_yaml_str, config_filename=self.default_config, merge=False)
 
     @staticmethod
-    def _get_prom_var(var, host, port):
+    def _get_prom_var(var, label, host, port):
         response = requests.get('http://%s:%u' % (host, port))
         for line in response.text.splitlines():
-            if line.startswith(var):
+            if line.startswith(var) and label in line:
                 return float(line.split(' ')[1])
         return None
 
@@ -229,6 +230,15 @@ class ServerIntTests(unittest.TestCase):
             'acls': {
                 'test': [{'rule': {'actions': {'allow': 0}}}]}}
         assert del_test_yaml == self.client.get_config_file(config_filename=self.default_config)
+
+    def test_set_new_dp(self):
+        response = self.client.set_dps(
+            {'newdp': '{hardware: "Open vSwitch", interfaces: {1: {output_only: true}}}'})
+        assert response is not None
+        new_yaml = self.client.get_config_file(config_filename=self.default_config)
+        dp_id = new_yaml['dps']['newdp']['dp_id']
+        assert dp_id
+        assert isinstance(dp_id, int)
 
     def test_set_interfaces(self):
         response = self.client.set_dp_interfaces(
