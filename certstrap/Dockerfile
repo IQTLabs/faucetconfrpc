@@ -6,8 +6,6 @@ RUN go get github.com/square/certstrap
 WORKDIR /
 COPY gen_faucetconfrpc_keys.sh gen_faucetconfrpc_keys.sh
 
-RUN which certstrap
-
 FROM alpine:3.12
 
 COPY --from=build /gen_faucetconfrpc_keys.sh /gen_faucetconfrpc_keys.sh
