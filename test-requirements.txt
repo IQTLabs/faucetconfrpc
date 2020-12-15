@@ -1,4 +1,4 @@
 -r requirements.txt
 pylint==2.6.0
 pytype==2020.12.2
-pytest==6.2.0
+pytest==6.2.1
