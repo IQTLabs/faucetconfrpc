@@ -670,7 +670,7 @@ def serve():
         type=int)
     args = parser.parse_args()
     if not os.path.isfile(args.default_config):
-        logging.warning('unable to find %s, creating one instead' % args.default_config)
+        logging.warning('unable to find %s, creating one instead', args.default_config)
         with open(args.default_config, 'w') as file_in:
             file_in.write('dps:')
     with open(args.key) as keyfile:
