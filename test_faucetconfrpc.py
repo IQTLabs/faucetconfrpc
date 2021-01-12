@@ -183,6 +183,25 @@ class ServerIntTests(unittest.TestCase):
             yaml_dump(err_yaml), config_filename=self.default_config, merge=False)
         assert response is None
 
+    def test_dps_empty(self):
+        dps_yaml = {
+            'dps': {
+                'ovs1': {
+                    'dp_id': 1,
+                    'hardware': 'Open vSwitch',
+                    'interfaces': {
+                        1: {'native_vlan': 100},
+                    },
+                },
+            },
+        }
+        assert self.client.set_config_file(
+            yaml_dump(dps_yaml), config_filename=self.default_config, merge=False)
+        response = self.client.del_dps(['ovs1'])
+        assert response is not None
+        assert self.client.set_config_file(
+            yaml_dump(dps_yaml), config_filename=self.default_config, merge=False)
+
     def test_del_dps(self):
         three_dps_yaml = {
             'dps': {

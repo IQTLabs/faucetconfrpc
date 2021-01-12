@@ -136,8 +136,11 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
                 dps_conf = {dp.name: dp for dp in dps}
                 valve_cls = [valve.valve_factory(dp) for dp in dps]
                 acls_conf = top_confs.get('acls', {})
-            if not dps_conf or not valve_cls:
-                raise InvalidConfigError('no DPs defined')
+            if dps_conf:
+                if not valve_cls:
+                    raise InvalidConfigError('no valid DPs defined')
+            else:
+                dps_conf = {}
             return (dps_conf, acls_conf)
         except InvalidConfigError as err:
             raise _ServerError('Invalid config: %s' % err)  # pylint: disable=raise-missing-from
@@ -196,7 +199,12 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
                     curr_config_yaml = self._del_keys_from_yaml(
                         del_yaml_keys, curr_config_yaml)
                 new_config_yaml = self._yaml_merge(curr_config_yaml, new_config_yaml)
-            self._validate_config_tree(config_filename, new_config_yaml)
+            try:
+                self._validate_config_tree(config_filename, new_config_yaml)
+            except _ServerError as err:
+                # If no DPs in the new YAML, don't consider this an error.
+                if config_filename == self.default_config and new_config_yaml.get('dps', None):
+                    raise err
             self._replace_config_file(config_filename, new_config_yaml)
         except (FileNotFoundError, PermissionError, _ServerError) as err:
             raise _ServerError('Cannot set FAUCET config: %s' % err)   # pylint: disable=raise-missing-from
