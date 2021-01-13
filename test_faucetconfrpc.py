@@ -164,6 +164,21 @@ class ServerIntTests(unittest.TestCase):
             hex_test_yaml_str, config_filename=self.default_config, merge=False)
         assert response is not None
 
+    def test_empty(self):
+        os.remove(os.path.join(self.tmpdir, self.default_config))
+        one_dp_yaml = {
+            'dps': {
+                'ovs1': {
+                    'dp_id': 1,
+                    'hardware': 'Open vSwitch',
+                    'stack': {'priority': 1},
+                    'interfaces': {
+                        1: {'native_vlan': 100}}}},
+        }
+        response = self.client.set_config_file(
+            yaml_dump(one_dp_yaml), config_filename=self.default_config, merge=True)
+        assert response is not None
+
     def test_err(self):
         err_yaml = {
             'acls': {

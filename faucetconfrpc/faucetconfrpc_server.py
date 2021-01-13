@@ -193,7 +193,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
         try:
             config_filename = self._validate_filename(config_filename)
             new_config_yaml = self._yaml_parse(config_yaml)
-            if merge:
+            if merge and os.path.exists(config_filename):
                 curr_config_yaml = self._get_config_file(config_filename)
                 if del_yaml_keys:
                     curr_config_yaml = self._del_keys_from_yaml(
