@@ -164,6 +164,24 @@ class ServerIntTests(unittest.TestCase):
             hex_test_yaml_str, config_filename=self.default_config, merge=False)
         assert response is not None
 
+    def test_copro(self):
+        one_dp_yaml = {
+            'dps': {
+                'ovs1': {
+                    'dp_id': 1,
+                    'hardware': 'Open vSwitch',
+                    'interfaces': {
+                        1: {'native_vlan': 100}}}},
+        }
+        response = self.client.set_config_file(
+            yaml_dump(one_dp_yaml), config_filename=self.default_config, merge=False)
+        assert response is not None
+        response = self.client.make_coprocessor_port('ovs1', 1)
+        assert response is not None
+        copro_yaml = self.client.get_config_file(config_filename=self.default_config)
+        assert copro_yaml['dps']['ovs1']['interfaces'][1] == {
+            'description': 'coprocessor', 'coprocessor': {'strategy': 'vlan_vid'}}
+
     def test_empty(self):
         os.remove(os.path.join(self.tmpdir, self.default_config))
         one_dp_yaml = {

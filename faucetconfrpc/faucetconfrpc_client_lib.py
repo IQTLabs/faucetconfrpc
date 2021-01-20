@@ -165,4 +165,14 @@ class FaucetConfRpcClient:
             dp_request = request.dp_config.add()  # pylint: disable=no-member
             dp_request.dp_name = dp_name
             dp_request.config_yaml = config_yaml
-        return  self._call(self._stub.SetDps, request)
+        return self._call(self._stub.SetDps, request)
+
+    def make_coprocessor_port(self, dp_name='', port_no=0, description='coprocessor',
+            strategy='vlan_vid'):
+        """Make a coprocessor port."""
+        request = faucetconfrpc_pb2.MakeCoprocessorPortRequest()
+        request.dp_name = dp_name
+        request.port_no = port_no
+        request.description = description
+        request.strategy = strategy
+        return self._call(self._stub.MakeCoprocessorPort, request)
