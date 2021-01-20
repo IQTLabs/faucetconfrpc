@@ -41,7 +41,7 @@ class _ServerError(Exception):
     pass
 
 
-class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disable=too-few-public-methods
+class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disable=too-many-public-methods
     """Serve config management requests."""
 
     def __init__(self, config_dir, default_config):
@@ -294,6 +294,28 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
 
         return self.request_wrapper(
             set_config_file, context, request, default_reply)
+
+    def _set_copro(self, config_filename, request):
+        config_yaml = self._get_config_file(config_filename)
+        interfaces = config_yaml['dps'][request.dp_name]['interfaces']
+        interfaces[request.port_no] = {
+            'description': request.description,
+            'coprocessor': {'strategy': request.strategy}}
+        self._set_config_file(
+            config_filename, yaml_dump(config_yaml), False, [])
+
+    def MakeCoprocessorPort(self, request, context):  # pylint: disable=invalid-name
+        """Make a port a copro port."""
+
+        default_reply = faucetconfrpc_pb2.MakeCoprocessorPortReply()
+
+        def make_copro():
+            config_filename = self.default_config
+            self._set_copro(config_filename, request)
+            return default_reply
+
+        return self.request_wrapper(
+            make_copro, context, request, default_reply)
 
     def _get_mirror(self, request):
         dps, _ = self._validate_faucet_config(self.config_dir)

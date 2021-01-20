@@ -28,6 +28,7 @@ service FaucetConfServer {
   rpc GetDpIDs(GetDpIDsRequest) returns (GetDpIDsReply) {}
   rpc GetAclNames(GetAclNamesRequest) returns (GetAclNamesReply) {}
   rpc SetDps(SetDpsRequest) returns (SetDpsReply) {}
+  rpc MakeCoprocessorPort(MakeCoprocessorPortRequest) returns (MakeCoprocessorPortReply) {}
 }
 
 // Retrieve YAML config.
@@ -85,6 +86,17 @@ message AddPortMirrorRequest {
 }
 
 message AddPortMirrorReply {
+}
+
+// Configure a port as a coprocessor port.
+message MakeCoprocessorPortRequest {
+  string dp_name = 1;
+  uint32 port_no = 2;
+  string description = 3;
+  string strategy = 4;
+}
+
+message MakeCoprocessorPortReply {  
 }
 
 // Remove mirroring from a port.
