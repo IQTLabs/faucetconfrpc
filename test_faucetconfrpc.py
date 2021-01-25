@@ -182,6 +182,26 @@ class ServerIntTests(unittest.TestCase):
         assert copro_yaml['dps']['ovs1']['interfaces'][1] == {
             'description': 'coprocessor', 'coprocessor': {'strategy': 'vlan_vid'}}
 
+    def test_vlan_out_acl(self):
+        one_dp_yaml = {
+            'acls': {
+                'denyit': [{'rule': {}}]},
+            'dps': {
+                'ovs1': {
+                    'dp_id': 1,
+                    'hardware': 'Open vSwitch',
+                    'egress_pipeline': True,
+                    'interfaces': {
+                        1: {'native_vlan': 100}}}},
+        }
+        response = self.client.set_config_file(
+            yaml_dump(one_dp_yaml), config_filename=self.default_config, merge=False)
+        assert response is not None
+        response = self.client.set_vlan_out_acl('100', 'denyit')
+        assert response is not None
+        acl_yaml = self.client.get_config_file(config_filename=self.default_config)
+        assert acl_yaml['vlans'][100]['acl_out'] == 'denyit'
+
     def test_empty(self):
         os.remove(os.path.join(self.tmpdir, self.default_config))
         one_dp_yaml = {

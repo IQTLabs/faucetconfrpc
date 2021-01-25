@@ -110,6 +110,11 @@ class FaucetConfServerStub(object):
                 request_serializer=faucetconfrpc_dot_faucetconfrpc__pb2.MakeCoprocessorPortRequest.SerializeToString,
                 response_deserializer=faucetconfrpc_dot_faucetconfrpc__pb2.MakeCoprocessorPortReply.FromString,
                 )
+        self.SetVlanOutAcl = channel.unary_unary(
+                '/faucetconfserver.FaucetConfServer/SetVlanOutAcl',
+                request_serializer=faucetconfrpc_dot_faucetconfrpc__pb2.SetVlanOutAclRequest.SerializeToString,
+                response_deserializer=faucetconfrpc_dot_faucetconfrpc__pb2.SetVlanOutAclReply.FromString,
+                )
 
 
 class FaucetConfServerServicer(object):
@@ -231,6 +236,12 @@ class FaucetConfServerServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def SetVlanOutAcl(self, request, context):
+        """Missing associated documentation comment in .proto file"""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_FaucetConfServerServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -328,6 +339,11 @@ def add_FaucetConfServerServicer_to_server(servicer, server):
                     servicer.MakeCoprocessorPort,
                     request_deserializer=faucetconfrpc_dot_faucetconfrpc__pb2.MakeCoprocessorPortRequest.FromString,
                     response_serializer=faucetconfrpc_dot_faucetconfrpc__pb2.MakeCoprocessorPortReply.SerializeToString,
+            ),
+            'SetVlanOutAcl': grpc.unary_unary_rpc_method_handler(
+                    servicer.SetVlanOutAcl,
+                    request_deserializer=faucetconfrpc_dot_faucetconfrpc__pb2.SetVlanOutAclRequest.FromString,
+                    response_serializer=faucetconfrpc_dot_faucetconfrpc__pb2.SetVlanOutAclReply.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -642,5 +658,21 @@ class FaucetConfServer(object):
         return grpc.experimental.unary_unary(request, target, '/faucetconfserver.FaucetConfServer/MakeCoprocessorPort',
             faucetconfrpc_dot_faucetconfrpc__pb2.MakeCoprocessorPortRequest.SerializeToString,
             faucetconfrpc_dot_faucetconfrpc__pb2.MakeCoprocessorPortReply.FromString,
+            options, channel_credentials,
+            call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def SetVlanOutAcl(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/faucetconfserver.FaucetConfServer/SetVlanOutAcl',
+            faucetconfrpc_dot_faucetconfrpc__pb2.SetVlanOutAclRequest.SerializeToString,
+            faucetconfrpc_dot_faucetconfrpc__pb2.SetVlanOutAclReply.FromString,
             options, channel_credentials,
             call_credentials, compression, wait_for_ready, timeout, metadata)
