@@ -29,6 +29,7 @@ service FaucetConfServer {
   rpc GetAclNames(GetAclNamesRequest) returns (GetAclNamesReply) {}
   rpc SetDps(SetDpsRequest) returns (SetDpsReply) {}
   rpc MakeCoprocessorPort(MakeCoprocessorPortRequest) returns (MakeCoprocessorPortReply) {}
+  rpc SetVlanOutAcl(SetVlanOutAclRequest) returns (SetVlanOutAclReply) {}
 }
 
 // Retrieve YAML config.
@@ -115,6 +116,15 @@ message ClearPortMirrorRequest {
 }
 
 message ClearPortMirrorReply {
+}
+
+// Overwrite VLAN output ACL
+message SetVlanOutAclRequest {
+  string vlan_name = 1;
+  string acl_out = 2;
+}
+
+message SetVlanOutAclReply {
 }
 
 // Overwrite ACL list on a port.

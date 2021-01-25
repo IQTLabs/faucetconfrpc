@@ -410,6 +410,22 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
         return self.request_wrapper(
             set_port_acl, context, request, default_reply)
 
+    def SetVlanOutAcl(self, request, context):  # pylint: disable=invalid-name
+        """Set output ACL on a VLAN."""
+        default_reply = faucetconfrpc_pb2.SetVlanOutAclReply()
+
+        def set_vlan_out_acl():
+            config_filename = self.default_config
+            vlan_name = request.vlan_name
+            acl_out = request.acl_out
+            config_yaml = '{vlans: {%s: {acl_out: %s}}}' % (vlan_name, acl_out)
+            self._set_config_file(
+                config_filename, config_yaml, merge=True)
+            return default_reply
+
+        return self.request_wrapper(
+            set_vlan_out_acl, context, request, default_reply)
+
     def AddPortAcl(self, request, context):  # pylint: disable=invalid-name
         """Add ACL to port."""
 
@@ -644,8 +660,9 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
 
         def get_acl_names():
             _, acls_conf = self._validate_faucet_config(self.config_dir)
-            acl_names = acls_conf.keys()
-            default_reply.acl_name[:] = acl_names  # pylint: disable=no-member
+            if acls_conf is not None:
+                acl_names = acls_conf.keys()
+                default_reply.acl_name[:] = acl_names  # pylint: disable=no-member
             return default_reply
 
         return self.request_wrapper(

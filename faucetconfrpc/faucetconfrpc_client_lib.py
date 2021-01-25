@@ -81,6 +81,11 @@ class FaucetConfRpcClient:
         return self._call(self._stub.SetPortAcl, faucetconfrpc_pb2.SetPortAclRequest(
             dp_name=dp_name, port_no=port_no, acls=acls))
 
+    def set_vlan_out_acl(self, vlan_name, acl_out):
+        """Set VLAN out ACL."""
+        return self._call(self._stub.SetVlanOutAcl, faucetconfrpc_pb2.SetVlanOutAclRequest(
+            vlan_name=vlan_name, acl_out=acl_out))
+
     def remove_port_acl(self, dp_name, port_no, acl=None):
         """Remove port ACL."""
         if acl:
