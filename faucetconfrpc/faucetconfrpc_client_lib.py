@@ -81,6 +81,11 @@ class FaucetConfRpcClient:
         return self._call(self._stub.SetPortAcl, faucetconfrpc_pb2.SetPortAclRequest(
             dp_name=dp_name, port_no=port_no, acls=acls))
 
+    def set_vlan_out_acl(self, vlan_name, acl_out):
+        """Set VLAN out ACL."""
+        return self._call(self._stub.SetVlanOutAcl, faucetconfrpc_pb2.SetVlanOutAclRequest(
+            vlan_name=vlan_name, acl_out=acl_out))
+
     def remove_port_acl(self, dp_name, port_no, acl=None):
         """Remove port ACL."""
         if acl:
@@ -165,4 +170,14 @@ class FaucetConfRpcClient:
             dp_request = request.dp_config.add()  # pylint: disable=no-member
             dp_request.dp_name = dp_name
             dp_request.config_yaml = config_yaml
-        return  self._call(self._stub.SetDps, request)
+        return self._call(self._stub.SetDps, request)
+
+    def make_coprocessor_port(self, dp_name='', port_no=0, description='coprocessor',
+            strategy='vlan_vid'):
+        """Make a coprocessor port."""
+        request = faucetconfrpc_pb2.MakeCoprocessorPortRequest()
+        request.dp_name = dp_name
+        request.port_no = port_no
+        request.description = description
+        request.strategy = strategy
+        return self._call(self._stub.MakeCoprocessorPort, request)

@@ -41,7 +41,7 @@ class _ServerError(Exception):
     pass
 
 
-class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disable=too-few-public-methods
+class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disable=too-many-public-methods
     """Serve config management requests."""
 
     def __init__(self, config_dir, default_config):
@@ -136,8 +136,11 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
                 dps_conf = {dp.name: dp for dp in dps}
                 valve_cls = [valve.valve_factory(dp) for dp in dps]
                 acls_conf = top_confs.get('acls', {})
-            if not dps_conf or not valve_cls:
-                raise InvalidConfigError('no DPs defined')
+            if dps_conf:
+                if not valve_cls:
+                    raise InvalidConfigError('no valid DPs defined')
+            else:
+                dps_conf = {}
             return (dps_conf, acls_conf)
         except InvalidConfigError as err:
             raise _ServerError('Invalid config: %s' % err)  # pylint: disable=raise-missing-from
@@ -190,13 +193,18 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
         try:
             config_filename = self._validate_filename(config_filename)
             new_config_yaml = self._yaml_parse(config_yaml)
-            if merge:
+            if merge and os.path.exists(config_filename):
                 curr_config_yaml = self._get_config_file(config_filename)
                 if del_yaml_keys:
                     curr_config_yaml = self._del_keys_from_yaml(
                         del_yaml_keys, curr_config_yaml)
                 new_config_yaml = self._yaml_merge(curr_config_yaml, new_config_yaml)
-            self._validate_config_tree(config_filename, new_config_yaml)
+            try:
+                self._validate_config_tree(config_filename, new_config_yaml)
+            except _ServerError as err:
+                # If no DPs in the new YAML, don't consider this an error.
+                if config_filename == self.default_config and new_config_yaml.get('dps', None):
+                    raise err
             self._replace_config_file(config_filename, new_config_yaml)
         except (FileNotFoundError, PermissionError, _ServerError) as err:
             raise _ServerError('Cannot set FAUCET config: %s' % err)   # pylint: disable=raise-missing-from
@@ -286,6 +294,28 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
 
         return self.request_wrapper(
             set_config_file, context, request, default_reply)
+
+    def _set_copro(self, config_filename, request):
+        config_yaml = self._get_config_file(config_filename)
+        interfaces = config_yaml['dps'][request.dp_name]['interfaces']
+        interfaces[request.port_no] = {
+            'description': request.description,
+            'coprocessor': {'strategy': request.strategy}}
+        self._set_config_file(
+            config_filename, yaml_dump(config_yaml), False, [])
+
+    def MakeCoprocessorPort(self, request, context):  # pylint: disable=invalid-name
+        """Make a port a copro port."""
+
+        default_reply = faucetconfrpc_pb2.MakeCoprocessorPortReply()
+
+        def make_copro():
+            config_filename = self.default_config
+            self._set_copro(config_filename, request)
+            return default_reply
+
+        return self.request_wrapper(
+            make_copro, context, request, default_reply)
 
     def _get_mirror(self, request):
         dps, _ = self._validate_faucet_config(self.config_dir)
@@ -379,6 +409,22 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
 
         return self.request_wrapper(
             set_port_acl, context, request, default_reply)
+
+    def SetVlanOutAcl(self, request, context):  # pylint: disable=invalid-name
+        """Set output ACL on a VLAN."""
+        default_reply = faucetconfrpc_pb2.SetVlanOutAclReply()
+
+        def set_vlan_out_acl():
+            config_filename = self.default_config
+            vlan_name = request.vlan_name
+            acl_out = request.acl_out
+            config_yaml = '{vlans: {%s: {acl_out: %s}}}' % (vlan_name, acl_out)
+            self._set_config_file(
+                config_filename, config_yaml, merge=True)
+            return default_reply
+
+        return self.request_wrapper(
+            set_vlan_out_acl, context, request, default_reply)
 
     def AddPortAcl(self, request, context):  # pylint: disable=invalid-name
         """Add ACL to port."""
@@ -614,8 +660,9 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
 
         def get_acl_names():
             _, acls_conf = self._validate_faucet_config(self.config_dir)
-            acl_names = acls_conf.keys()
-            default_reply.acl_name[:] = acl_names  # pylint: disable=no-member
+            if acls_conf is not None:
+                acl_names = acls_conf.keys()
+                default_reply.acl_name[:] = acl_names  # pylint: disable=no-member
             return default_reply
 
         return self.request_wrapper(

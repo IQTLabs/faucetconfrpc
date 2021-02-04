@@ -164,6 +164,59 @@ class ServerIntTests(unittest.TestCase):
             hex_test_yaml_str, config_filename=self.default_config, merge=False)
         assert response is not None
 
+    def test_copro(self):
+        one_dp_yaml = {
+            'dps': {
+                'ovs1': {
+                    'dp_id': 1,
+                    'hardware': 'Open vSwitch',
+                    'interfaces': {
+                        1: {'native_vlan': 100}}}},
+        }
+        response = self.client.set_config_file(
+            yaml_dump(one_dp_yaml), config_filename=self.default_config, merge=False)
+        assert response is not None
+        response = self.client.make_coprocessor_port('ovs1', 1)
+        assert response is not None
+        copro_yaml = self.client.get_config_file(config_filename=self.default_config)
+        assert copro_yaml['dps']['ovs1']['interfaces'][1] == {
+            'description': 'coprocessor', 'coprocessor': {'strategy': 'vlan_vid'}}
+
+    def test_vlan_out_acl(self):
+        one_dp_yaml = {
+            'acls': {
+                'denyit': [{'rule': {}}]},
+            'dps': {
+                'ovs1': {
+                    'dp_id': 1,
+                    'hardware': 'Open vSwitch',
+                    'egress_pipeline': True,
+                    'interfaces': {
+                        1: {'native_vlan': 100}}}},
+        }
+        response = self.client.set_config_file(
+            yaml_dump(one_dp_yaml), config_filename=self.default_config, merge=False)
+        assert response is not None
+        response = self.client.set_vlan_out_acl('100', 'denyit')
+        assert response is not None
+        acl_yaml = self.client.get_config_file(config_filename=self.default_config)
+        assert acl_yaml['vlans'][100]['acl_out'] == 'denyit'
+
+    def test_empty(self):
+        os.remove(os.path.join(self.tmpdir, self.default_config))
+        one_dp_yaml = {
+            'dps': {
+                'ovs1': {
+                    'dp_id': 1,
+                    'hardware': 'Open vSwitch',
+                    'stack': {'priority': 1},
+                    'interfaces': {
+                        1: {'native_vlan': 100}}}},
+        }
+        response = self.client.set_config_file(
+            yaml_dump(one_dp_yaml), config_filename=self.default_config, merge=True)
+        assert response is not None
+
     def test_err(self):
         err_yaml = {
             'acls': {
@@ -182,6 +235,25 @@ class ServerIntTests(unittest.TestCase):
         response = self.client.set_config_file(
             yaml_dump(err_yaml), config_filename=self.default_config, merge=False)
         assert response is None
+
+    def test_dps_empty(self):
+        dps_yaml = {
+            'dps': {
+                'ovs1': {
+                    'dp_id': 1,
+                    'hardware': 'Open vSwitch',
+                    'interfaces': {
+                        1: {'native_vlan': 100},
+                    },
+                },
+            },
+        }
+        assert self.client.set_config_file(
+            yaml_dump(dps_yaml), config_filename=self.default_config, merge=False)
+        response = self.client.del_dps(['ovs1'])
+        assert response is not None
+        assert self.client.set_config_file(
+            yaml_dump(dps_yaml), config_filename=self.default_config, merge=False)
 
     def test_del_dps(self):
         three_dps_yaml = {
