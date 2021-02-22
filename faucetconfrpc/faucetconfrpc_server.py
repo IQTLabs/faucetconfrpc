@@ -386,7 +386,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
         port = dp.ports[request.port_no]
         acls_in = []
         if port.acls_in:
-            acls_in = list(acl_in._id for acl_in in port.acls_in)  # pylint: disable=protected-access
+            acls_in = [acl_in._id for acl_in in port.acls_in]  # pylint: disable=protected-access
         return acls_in
 
     def _set_port_acls(self, config_filename, request, acls_in):
