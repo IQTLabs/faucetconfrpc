@@ -5,7 +5,7 @@
 syntax = "proto3";
 
 package faucetconfserver;
-option go_package = ".;faucetconfserver";
+option go_package = "faucetconfserver/";
 
 // NOTE: currently some of these API calls allow specifying an optional config_file.
 // This will be removed in future so the client does not need/have knowledge of the underlying YAML store.
