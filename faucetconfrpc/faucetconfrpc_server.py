@@ -182,11 +182,10 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
         if config_dir is None:
             config_dir = self.config_dir
         config_filename = self._validate_filename(config_filename)
-        new_file = tempfile.NamedTemporaryFile(
-            mode='wt', dir=config_dir, delete=False)
-        new_file_name = new_file.name
-        new_file.write(yaml_dump(config_yaml))
-        new_file.close()
+        with tempfile.NamedTemporaryFile(
+                mode='wt', dir=config_dir, delete=False) as new_file:
+            new_file_name = new_file.name
+            new_file.write(yaml_dump(config_yaml))
         os.rename(new_file_name, os.path.join(config_dir, config_filename))
 
     def _set_config_file(self, config_filename, config_yaml, merge, del_yaml_keys=None):
@@ -386,7 +385,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
         port = dp.ports[request.port_no]
         acls_in = []
         if port.acls_in:
-            acls_in = list(acl_in._id for acl_in in port.acls_in)  # pylint: disable=protected-access
+            acls_in = [acl_in._id for acl_in in port.acls_in]  # pylint: disable=protected-access
         return acls_in
 
     def _set_port_acls(self, config_filename, request, acls_in):
