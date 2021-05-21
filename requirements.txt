@@ -1,4 +1,4 @@
-faucet==1.9.53
+faucet==1.9.54
 grpcio==1.38.0
 grpcio-tools==1.37.1
 pyyaml==5.3.1
