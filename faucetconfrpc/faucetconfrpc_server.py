@@ -729,14 +729,14 @@ def serve():
         ((private_key, certificate_chain),),
         root_certificate,
         require_client_auth=True)
-    server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
-    server_handler = Server(args.config_dir, args.default_config)
-    server_handler.add_counters()
-    faucetconfrpc_pb2_grpc.add_FaucetConfServerServicer_to_server(server_handler, server)
-    server.add_secure_port('%s:%u' % (args.host, args.port), server_credentials)
-    server.start()
-    start_http_server(args.prom_port)
-    server.wait_for_termination()
+    with grpc.server(futures.ThreadPoolExecutor(max_workers=1)) as server:
+        server_handler = Server(args.config_dir, args.default_config)
+        server_handler.add_counters()
+        faucetconfrpc_pb2_grpc.add_FaucetConfServerServicer_to_server(server_handler, server)
+        server.add_secure_port('%s:%u' % (args.host, args.port), server_credentials)
+        server.start()
+        start_http_server(args.prom_port)
+        server.wait_for_termination()
 
 
 if __name__ == '__main__':
