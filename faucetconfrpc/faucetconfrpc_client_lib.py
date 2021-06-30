@@ -12,8 +12,13 @@ class FaucetConfRpcClient:
     """faucetconfrpc client library."""
 
     def __init__(self, client_key, client_cert, ca_cert, server_addr):
+
+        def _read_file(filename):
+            with open(filename) as filename_h:
+                return filename_h.read().encode('utf8')
+
         client_cred_args = {
-            arg: open(keyfile).read().encode('utf8') for arg, keyfile in (
+            arg: _read_file(keyfilename) for arg, keyfilename in (
                 ('root_certificates', ca_cert),
                 ('certificate_chain', client_cert),
                 ('private_key', client_key))}
