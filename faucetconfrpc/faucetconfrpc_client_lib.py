@@ -15,7 +15,7 @@ class FaucetConfRpcClient:
         
         def _read_file(filename):
             with open(filename) as filename_h:
-                return filename_h.read().encode('utf8'):
+                return filename_h.read().encode('utf8')
         
         client_cred_args = {
             arg: _read_file(keyfilename) for arg, keyfilename in (
