@@ -725,8 +725,8 @@ def serve():
         certificate_chain = keyfile.read().encode('utf8')
     with open(args.cacert) as keyfile:
         root_certificate = keyfile.read().encode('utf8')
-    # TODO: force minimum TLS version.
-    # Currently not possible via https://github.com/grpc/grpc/blob/v1.38.x/include/grpc/impl/codegen/grpc_types.h,
+    # TODO: force minimum TLS version, currently not possible    # pylint: disable=fixme
+    # https://github.com/grpc/grpc/blob/v1.38.x/include/grpc/impl/codegen/grpc_types.h,
     # per https://github.com/grpc/grpc/issues/22304.
     server_credentials = grpc.ssl_server_credentials(
         ((private_key, certificate_chain),),
