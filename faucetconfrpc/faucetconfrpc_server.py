@@ -173,7 +173,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
 
     def _get_config_file(self, config_filename):
         try:
-            with open(self._validate_filename(config_filename)) as config_file:
+            with open(self._validate_filename(config_filename), encoding='utf8') as config_file:
                 return self._yaml_parse(config_file.read())
         except (FileNotFoundError, PermissionError) as err:
             raise _ServerError(f'Error: {err}')  # pylint: disable=raise-missing-from
@@ -717,14 +717,14 @@ def serve():
     args = parser.parse_args()
     if not os.path.isfile(args.default_config):
         logging.warning('unable to find %s, creating one instead', args.default_config)
-        with open(args.default_config, 'w') as file_in:
+        with open(args.default_config, 'w', encoding='utf8') as file_in:
             file_in.write('dps:')
-    with open(args.key) as keyfile:
-        private_key = keyfile.read().encode('utf8')
-    with open(args.cert) as keyfile:
-        certificate_chain = keyfile.read().encode('utf8')
-    with open(args.cacert) as keyfile:
-        root_certificate = keyfile.read().encode('utf8')
+    with open(args.key, 'rb', encoding=None) as keyfile:
+        private_key = keyfile.read()
+    with open(args.cert, 'rb', encoding=None) as keyfile:
+        certificate_chain = keyfile.read()
+    with open(args.cacert, 'rb', encoding=None) as keyfile:
+        root_certificate = keyfile.read()
     # TODO: force minimum TLS version, currently not possible    # pylint: disable=fixme
     # https://github.com/grpc/grpc/blob/v1.38.x/include/grpc/impl/codegen/grpc_types.h,
     # per https://github.com/grpc/grpc/issues/22304.
