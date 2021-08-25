@@ -1,5 +1,4 @@
 #!/bin/sh
 
-## TODO: not working under github actions.
-## pytype --exclude=faucetconfrpc/faucetconfrpc_pb2_grpc.py --exclude=faucetconfrpc/faucetconfrpc_pb2.py faucetconfrpc/*py
+PYTHONPATH=$pwd/faucetconfrpc:$PYTHONPATH pytype --exclude=faucetconfrpc/faucetconfrpc_pb2_grpc.py --exclude=faucetconfrpc/faucetconfrpc_pb2.py faucetconfrpc/*py
 pylint --ignore=faucetconfrpc_pb2_grpc.py,faucetconfrpc_pb2.py faucetconfrpc/*py
