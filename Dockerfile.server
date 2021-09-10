@@ -1,13 +1,14 @@
 FROM python:3.9-slim
 
 ENV PYTHONUNBUFFERED 1
+COPY faucet-requirements.txt faucet-requirements.txt
 COPY requirements.txt requirements.txt
 
 RUN apt-get update && \
-    apt-get install -y iproute2 python3-dev gcc g++ libyaml-dev && \
+    apt-get install -y iproute2 python3-dev git gcc g++ libyaml-dev && \
     pip3 install -U pip && \
-    pip3 install --no-cache-dir --upgrade -r requirements.txt && \
-    apt-get purge -y python3-dev gcc g++ && apt -y autoremove --purge && rm -rf /var/cache/* /root/.cache/*
+    pip3 install --no-cache-dir --upgrade -r faucet-requirements.txt -r requirements.txt && \
+    apt-get purge -y python3-dev gcc g++ git && apt -y autoremove --purge && rm -rf /var/cache/* /root/.cache/*
 
 COPY . /faucetconfrpc
 WORKDIR /faucetconfrpc

@@ -1,0 +1,10 @@
+git+https://github.com/c65sdn/chewie.git@master
+msgpack==1.0.2
+networkx>=1.9
+pbr==5.5.1
+git+https://github.com/c65sdn/ryu.git@master
+git+https://github.com/c65sdn/beka.git@master
+pytricia
+git+https://github.com/c65sdn/faucet.git@e7d113224f9104175be26d83557bb20c8bd28851
+pyyaml==5.4.1
+prometheus_client==0.11.0
