@@ -1,6 +1,6 @@
-faucet==1.9.55
+git+https://github.com/c65sdn/faucet.git@7ff1d1a5968e391083bcc317a72445628dadc4b6
 grpcio==1.40.0
 grpcio-tools==1.40.0
-pyyaml==5.3.1
+pyyaml==5.4.1
 protobuf==3.17.3
-prometheus_client==0.9.0
+prometheus_client==0.10.1
