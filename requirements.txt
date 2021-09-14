@@ -1,5 +1,5 @@
 -r https://raw.githubusercontent.com/c65sdn/faucet/e7d113224f9104175be26d83557bb20c8bd28851/requirements.txt
-git+https://github.com/c65sdn/faucet.git@e7d113224f9104175be26d83557bb20c8bd28851
+git+https://github.com/c65sdn/faucet.git@e7d113224f9104175be26d83557bb20c8bd28851#egg=faucet
 grpcio==1.40.0
 grpcio-tools==1.40.0
 pyyaml==5.4.1
