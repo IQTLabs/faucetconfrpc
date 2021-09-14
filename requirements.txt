@@ -1,6 +1,7 @@
-faucet==1.9.55
+-r https://raw.githubusercontent.com/c65sdn/faucet/e7d113224f9104175be26d83557bb20c8bd28851/requirements.txt
+git+https://github.com/c65sdn/faucet.git@e7d113224f9104175be26d83557bb20c8bd28851#egg=faucet
 grpcio==1.40.0
 grpcio-tools==1.40.0
-pyyaml==5.3.1
+pyyaml==5.4.1
 protobuf==3.17.3
-prometheus_client==0.9.0
+prometheus_client==0.11.0
