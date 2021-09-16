@@ -721,7 +721,7 @@ def serve():
     # TODO: force minimum TLS version, currently not possible    # pylint: disable=fixme
     # https://github.com/grpc/grpc/blob/v1.38.x/include/grpc/impl/codegen/grpc_types.h,
     # per https://github.com/grpc/grpc/issues/22304.
-    server_creds = grpc.ssl_server_credentials(
+    server_credentials = grpc.ssl_server_credentials(
         ((private_key, certificate_chain),),
         root_certificate,
         require_client_auth=True)
@@ -730,7 +730,7 @@ def serve():
         server_handler = Server(args.config_dir, args.default_config)
         server_handler.add_counters()
         faucetconfrpc_pb2_grpc.add_FaucetConfServerServicer_to_server(server_handler, server)
-        server.add_secure_port(f'{(args.host, args.port)}:{server_creds}')
+        server.add_secure_port(f'{args.host}:{args.port}', server_credentials)
         server.start()
         start_http_server(args.prom_port)
         server.wait_for_termination()
