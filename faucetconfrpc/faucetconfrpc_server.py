@@ -727,7 +727,7 @@ def serve():
         server_handler = Server(args.config_dir, args.default_config)
         server_handler.add_counters()
         faucetconfrpc_pb2_grpc.add_FaucetConfServerServicer_to_server(server_handler, server)
-        server.add_secure_port(f'{(args.host, args.port)}:{server_credentials}'
+        server.add_secure_port(f'{(args.host, args.port)}:{server_credentials}')
         server.start()
         start_http_server(args.prom_port)
         server.wait_for_termination()
