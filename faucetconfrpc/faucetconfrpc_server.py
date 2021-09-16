@@ -326,7 +326,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
         return (port, mirrors)
 
     def _set_mirror(self, config_filename, request, mirrors):
-        config_yaml = f'{{dps: {{{request.dp_name}: {{interfaces: {{{request.mirror_port_no}: {{mirror: {mirrors}}}}}}}}}}}')
+        config_yaml = f'{{dps: {{{request.dp_name}: {{interfaces: {{{request.mirror_port_no}: {{mirror: {mirrors}}}}}}}}}}}'
         self._set_config_file(
             config_filename, config_yaml, merge=True)
 
