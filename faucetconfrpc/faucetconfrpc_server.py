@@ -66,7 +66,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
         handler_re = re.compile(r'^\<function Server\.([^\.]+).+$')
         match = handler_re.match(str(request_handler))
         if not match:
-            raise _ServerError('could not parse request_handler: %s' % str(request_handler))
+            raise _ServerError(f'could not parse request_handler: {request_handler}')
         return match.group(1)
 
     @staticmethod
@@ -90,13 +90,12 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
             faucetconfrpc_str = self._describe_handler(request_handler)
             counter = self.grpc_counter_ok
             peer_ip, peer_id = self._peer_from_context(context)
-            log_prefix = 'peer_ip:%s peer_id:%s request:%s' % (
-                peer_ip, peer_id, self._flatten_str(request))
+            log_prefix = f'peer_ip:{peer_ip} peer_id:{peer_id} request:{self._flatten_str(request)}'
             try:
                 reply = request_handler()
                 logging.info('%s reply %s', log_prefix, self._flatten_str(reply))
             except (_ServerError, InvalidConfigError) as err:
-                log = '%s error %s' % (log_prefix, str(err))
+                log = f'{log_prefix} error {err}'
                 logging.error(log)
                 context.set_code(grpc.StatusCode.UNKNOWN)
                 context.set_details(log)
@@ -117,7 +116,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
                     else:
                         yaml_doc_a[k] = yaml_doc_b[k]
             else:
-                raise _ServerError('cannot merge %s and %s' % (yaml_doc_a, yaml_doc_b))
+                raise _ServerError(f'cannot merge {yaml_doc_a} and {yaml_doc_b}')
         return yaml_doc_a
 
     def _filename_for_yaml(self, _config_yaml):
@@ -143,7 +142,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
                 dps_conf = {}
             return (dps_conf, acls_conf)
         except InvalidConfigError as err:
-            raise _ServerError('Invalid config: %s' % err)  # pylint: disable=raise-missing-from
+            raise _ServerError(f'Invalid config: {err}')  # pylint: disable=raise-missing-from
 
     def _validate_config_tree(self, config_filename, config_yaml):
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -159,9 +158,9 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
         if safe_filename != filename:
             raise _ServerError('unexpected chars in filename')
         if not safe_filename.endswith('.yaml'):
-            raise _ServerError('filename %s must end with .yaml' % safe_filename)
+            raise _ServerError(f'filename {safe_filename} must end with .yaml')
         if os.path.exists(safe_filename) and not os.path.isfile(safe_filename):
-            raise _ServerError('cannot overwrite %s' % safe_filename)
+            raise _ServerError(f'cannot overwrite {safe_filename}')
         return safe_filename
 
     @staticmethod
@@ -206,12 +205,12 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
                     raise err
             self._replace_config_file(config_filename, new_config_yaml)
         except (FileNotFoundError, PermissionError, _ServerError) as err:
-            raise _ServerError('Cannot set FAUCET config: %s' % err)   # pylint: disable=raise-missing-from
+            raise _ServerError(f'Cannot set FAUCET config: {err}')   # pylint: disable=raise-missing-from
 
     def _del_keys_from_yaml(self, config_yaml_keys, new_config_yaml):
         config_yaml_keys = self._yaml_parse(config_yaml_keys)
         if not isinstance(config_yaml_keys, list):
-            raise _ServerError('config_yaml_keys %s not a list' % config_yaml_keys)
+            raise _ServerError(f'config_yaml_keys {config_yaml_keys} not a list')
         penultimate_key = new_config_yaml
         last_key = config_yaml_keys[-1]
         for key in config_yaml_keys[:-1]:
@@ -327,10 +326,8 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
         return (port, mirrors)
 
     def _set_mirror(self, config_filename, request, mirrors):
-        config_yaml = '{dps: {%s: {interfaces: {%u: {mirror: %s}}}}}' % (
-            request.dp_name,
-            request.mirror_port_no,
-            mirrors)
+        config_yaml = f'{{dps: {{{request.dp_name}: {{interfaces: ' \
+                      f'{{{request.mirror_port_no}: {{mirror: {mirrors}}}}}}}}}}}'
         self._set_config_file(
             config_filename, config_yaml, merge=True)
 
@@ -389,10 +386,8 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
         return acls_in
 
     def _set_port_acls(self, config_filename, request, acls_in):
-        config_yaml = '{dps: {%s: {interfaces: {%u: {acls_in: [%s]}}}}}' % (
-            request.dp_name,
-            request.port_no,
-            ','.join(acls_in))
+        config_yaml = f'{{dps: {{{request.dp_name}: {{interfaces: {{{request.port_no}: ' \
+                      f'{{acls_in: [{",".join(acls_in)}]}}}}}}}}}}'
         self._set_config_file(
             config_filename, config_yaml, merge=True)
 
@@ -417,7 +412,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
             config_filename = self.default_config
             vlan_name = request.vlan_name
             acl_out = request.acl_out
-            config_yaml = '{vlans: {%s: {acl_out: %s}}}' % (vlan_name, acl_out)
+            config_yaml = f'{{vlans: {{{vlan_name}: {{acl_out: {acl_out}}}}}}}'
             self._set_config_file(
                 config_filename, config_yaml, merge=True)
             return default_reply
@@ -591,10 +586,8 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
             config_filename = self.default_config
             config_yaml = self._get_config_file(config_filename)
             config_yaml.setdefault('acls', {})
-            acl_name = 'remote-mirror-%u-%s-%u' % (
-                request.tunnel_vid,
-                request.remote_dp_name,
-                request.remote_port_no)
+            acl_name = f'remote-mirror-{request.tunnel_vid}-{request.remote_dp_name}' \
+                       f'-{request.remote_port_no}'
             config_yaml['acls'][acl_name] = make_acl([
                 {
                     'vlan_vid': request.tunnel_vid,
@@ -737,7 +730,7 @@ def serve():
         server_handler = Server(args.config_dir, args.default_config)
         server_handler.add_counters()
         faucetconfrpc_pb2_grpc.add_FaucetConfServerServicer_to_server(server_handler, server)
-        server.add_secure_port('%s:%u' % (args.host, args.port), server_credentials)
+        server.add_secure_port(f'{args.host}:{args.port}', server_credentials)
         server.start()
         start_http_server(args.prom_port)
         server.wait_for_termination()

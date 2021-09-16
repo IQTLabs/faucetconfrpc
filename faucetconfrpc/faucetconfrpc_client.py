@@ -48,7 +48,7 @@ def main():
         'commands', type=str, nargs='+',
         help='rpc commands')
     args = parser.parse_args()
-    server_addr = '%s:%u' % (args.host, args.port)
+    server_addr = f'{args.host}:{args.port}'
     client = FaucetConfRpcClient(args.key, args.cert, args.cacert, server_addr)
 
     if args.commands[0] == 'list_rpcs':
@@ -60,7 +60,7 @@ def main():
 
     command = getattr(client, args.commands[0], None)
     if not command:
-        raise ClientError('no such rpc: %s' % args.commands[0])
+        raise ClientError(f'no such rpc: {args.commands[0]}')
     command_args = {}
     for args in args.commands[1:]:
         arg, val = args.split('=')
