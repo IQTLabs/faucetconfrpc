@@ -1,5 +1,5 @@
 c65faucet==1.0.19
-grpcio==1.40.0
+grpcio==1.42.0
 grpcio-tools==1.40.0
 pyyaml==6.0
 protobuf==3.19.1
