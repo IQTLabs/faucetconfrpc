@@ -1,5 +1,5 @@
 -r requirements.txt
 attrs==21.2.0
 pylint==2.12.2
-pytype==2021.11.29
+pytype==2021.12.8
 pytest==6.2.5
