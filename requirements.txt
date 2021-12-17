@@ -1,6 +1,6 @@
 c65faucet==1.0.22
 grpcio==1.43.0
-grpcio-tools==1.42.0
+grpcio-tools==1.43.0
 ruamel.yaml==0.17.17
 protobuf==3.19.1
 prometheus_client==0.12.0
