@@ -13,27 +13,23 @@ import shutil
 import sys
 import tempfile
 import threading
-import yaml
 
 import grpc
 
 from prometheus_client import start_http_server, Counter
+from ruamel.yaml.constructor import DuplicateKeyError
+from ruamel.yaml.scanner import ScannerError
+from ruamel.yaml.composer import ComposerError
+from ruamel.yaml.constructor import ConstructorError
+from ruamel.yaml.parser import ParserError
 
 from faucet import valve
 from faucet.config_parser import dp_parser
+from faucet.config_parser_util import yaml_load, yaml_dump
 from faucet.conf import InvalidConfigError
 
 from faucetconfrpc import faucetconfrpc_pb2
 from faucetconfrpc import faucetconfrpc_pb2_grpc
-
-
-def yaml_load(yaml_str):
-    """Wrap YAML safe load for consistency."""
-    return yaml.load(yaml_str, Loader=yaml.CSafeLoader)
-
-def yaml_dump(yaml_dict):
-    """Wrap YAML dump for consistency."""
-    return yaml.dump(yaml_dict, Dumper=yaml.CSafeDumper)
 
 
 class _ServerError(Exception):
@@ -167,7 +163,9 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
     def _yaml_parse(config_yaml_str):
         try:
             return yaml_load(config_yaml_str)
-        except (yaml.constructor.ConstructorError, yaml.parser.ParserError) as err:
+        except (TypeError, UnicodeDecodeError, ValueError,
+                ScannerError, DuplicateKeyError, ComposerError,
+                ConstructorError, ParserError) as err:  # pytype: disable=name-error
             raise _ServerError(f'YAML error: {err}')  # pylint: disable=raise-missing-from
 
     def _get_config_file(self, config_filename):
