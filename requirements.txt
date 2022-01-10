@@ -1,4 +1,4 @@
-c65faucet==1.0.22
+c65faucet==1.0.23
 grpcio==1.43.0
 grpcio-tools==1.43.0
 ruamel.yaml==0.17.20
