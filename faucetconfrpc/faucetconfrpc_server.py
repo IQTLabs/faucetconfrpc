@@ -17,15 +17,12 @@ import threading
 import grpc
 
 from prometheus_client import start_http_server, Counter
-from ruamel.yaml.constructor import DuplicateKeyError
-from ruamel.yaml.scanner import ScannerError
-from ruamel.yaml.composer import ComposerError
-from ruamel.yaml.constructor import ConstructorError
-from ruamel.yaml.parser import ParserError
 
 from faucet import valve
 from faucet.config_parser import dp_parser
-from faucet.config_parser_util import yaml_load, yaml_dump
+from faucet.config_parser_util import (
+    yaml_load, yaml_dump,
+    DuplicateKeyError, ScannerError, ComposerError, ConstructorError, ParserError)
 from faucet.conf import InvalidConfigError
 
 from faucetconfrpc import faucetconfrpc_pb2
