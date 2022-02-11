@@ -2,4 +2,4 @@
 attrs==21.4.0
 pylint==2.12.2
 pytype==2022.2.8
-pytest==7.0.0
+pytest==7.0.1
