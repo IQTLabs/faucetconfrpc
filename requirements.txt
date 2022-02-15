@@ -1,4 +1,4 @@
-c65faucet==1.0.26
+c65faucet==1.0.27
 grpcio==1.43.0
 grpcio-tools==1.43.0
 protobuf==3.19.4
