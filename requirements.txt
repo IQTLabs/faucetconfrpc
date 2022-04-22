@@ -1,5 +1,5 @@
 c65faucet==1.0.32
 grpcio==1.45.0
 grpcio-tools==1.45.0
-protobuf==3.20.0
+protobuf==3.20.1
 prometheus_client==0.14.1
