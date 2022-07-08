@@ -13,8 +13,16 @@ dependencies = [
     "prometheus_client==0.14.1"
 ]
 
+[project.optional-dependencies]
+test = [
+    "attrs==21.4.0",
+    "pylint==2.14.4",
+    "pytype==2022.6.30",
+    "pytest==7.1.2"
+]
+
 [project.urls]
-Home-page = "https://github.com/IQTLabs/faucetconfrpc"
+homepage = "https://github.com/IQTLabs/faucetconfrpc"
 
 [project.scripts]
 faucetconfrpc_server = "faucetconfrpc.faucetconfrpc_server:serve"
