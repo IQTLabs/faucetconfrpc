@@ -14,7 +14,7 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/IQTLabs/faucetconfrpc"
+Home-page = "https://github.com/IQTLabs/faucetconfrpc"
 
 [project.scripts]
 faucetconfrpc_server = "faucetconfrpc.faucetconfrpc_server:serve"
