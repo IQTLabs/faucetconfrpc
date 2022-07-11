@@ -4,7 +4,6 @@ ENV PYTHONUNBUFFERED 1
 
 RUN apt-get update && \
     apt-get install -y iproute2 python3-dev gcc git g++ libc6-dev libyaml-dev && \
-    apt-get upgrade -y && \
     pip3 install -U pip 
 
 COPY . /faucetconfrpc
