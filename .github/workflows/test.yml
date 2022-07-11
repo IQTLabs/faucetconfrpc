@@ -24,7 +24,7 @@ jobs:
         sudo apt-get update && \
         sudo apt install -y libpython3-dev protobuf-compiler && \
         sudo pip3 install setuptools pybind11 && \
-        sudo pip3 install .[test] && \
+        sudo pip3 install ".[test]" && \
         ./codecheck.sh && \
         PATH=~/go/bin:$PATH pytest ./test_faucetconfrpc.py && \
         docker build -f Dockerfile.server . && \
