@@ -1,4 +1,4 @@
 #!/bin/sh
 
-PYTHONPATH=$pwd/faucetconfrpc:$PYTHONPATH pytype --exclude=faucetconfrpc/faucetconfrpc_pb2_grpc.py --exclude=faucetconfrpc/faucetconfrpc_pb2.py faucetconfrpc/*py
-pylint --ignore=faucetconfrpc_pb2_grpc.py,faucetconfrpc_pb2.py faucetconfrpc/*py
+PYTHONPATH=$pwd/src/faucetconfrpc:$PYTHONPATH pytype --exclude=src/faucetconfrpc/faucetconfrpc_pb2_grpc.py --exclude=src/faucetconfrpc/faucetconfrpc_pb2.py src/faucetconfrpc/*py
+pylint --ignore=faucetconfrpc_pb2_grpc.py,faucetconfrpc_pb2.py src/faucetconfrpc/*py

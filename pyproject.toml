@@ -1,0 +1,51 @@
+[project]
+name = "faucetconfrpc"
+version = "0.22.35-dev"
+description = "utility to manage FAUCET config files via RPC"
+license = { file = "LICENSE" }
+readme = "README.md"
+
+dependencies = [
+    "c65faucet==1.0.36",
+    "grpcio==1.47.0",
+    "grpcio-tools==1.47.0",
+    "protobuf==3.20.1",
+    "prometheus_client==0.14.1"
+]
+
+[project.optional-dependencies]
+test = [
+    "attrs==21.4.0",
+    "pylint==2.14.4",
+    "pytype==2022.6.30",
+    "pytest==7.1.2"
+]
+
+[project.urls]
+homepage = "https://github.com/IQTLabs/faucetconfrpc"
+
+[project.scripts]
+faucetconfrpc_server = "faucetconfrpc.faucetconfrpc_server:serve"
+faucetconfrpc_client = "faucetconfrpc.faucetconfrpc_client:main"
+
+[build-system]
+requires = [
+    #"pbr >= 5.9.0",
+    "setuptools >= 49.0.0",
+    "wheel",
+]
+build-backend = "setuptools.build_meta"
+
+[tools.setuptools]
+packages = [ { include = "faucetconfrpc", from = "faucetconfrpc" } ]
+package-dir = {"" = "faucetconfrpc" }
+#python-module-name = "faucetconfrpc"
+#include-package-data = true
+py-modules = [ "faucetconfrpc" ]
+
+#[tools.setuptools.packages]
+#find = { namespace = false }
+
+[tool.setuptools.packages.find]
+where = [ "src" ]
+include = [ "*" ]

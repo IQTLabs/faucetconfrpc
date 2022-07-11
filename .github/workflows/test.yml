@@ -24,11 +24,11 @@ jobs:
         sudo apt-get update && \
         sudo apt install -y libpython3-dev protobuf-compiler && \
         sudo pip3 install setuptools pybind11 && \
-        sudo pip3 install -r test-requirements.txt && \
+        sudo pip3 install ".[test]" && \
         ./codecheck.sh && \
         PATH=~/go/bin:$PATH pytest ./test_faucetconfrpc.py && \
         docker build -f Dockerfile.server . && \
         go get github.com/golang/protobuf/protoc-gen-go && \
-        cd faucetconfrpc && PATH=~/go/bin:$PATH ./generate_pb_grpc.sh
+        cd src/faucetconfrpc && PATH=~/go/bin:$PATH ./generate_pb_grpc.sh
         # currently fails, no easy way to test locally
         #if [ "$(git diff)" != "" ] ; then echo protobufs out of date ; exit 1 ; fi
