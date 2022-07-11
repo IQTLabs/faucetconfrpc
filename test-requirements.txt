@@ -1,5 +1,0 @@
--r requirements.txt
-attrs==21.4.0
-pylint==2.14.4
-pytype==2022.6.30
-pytest==7.1.2
