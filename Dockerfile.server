@@ -2,7 +2,6 @@ FROM python:3.10-slim
 
 ENV PYTHONUNBUFFERED 1
 
-# TODO: wheels on non-x86 workaround with --no-binary: https://github.com/grpc/grpc/issues/27512
 RUN apt-get update && \
     apt-get install -y iproute2 python3-dev gcc git g++ libc6-dev libyaml-dev && \
     apt-get upgrade -y && \
@@ -10,7 +9,9 @@ RUN apt-get update && \
 
 COPY . /faucetconfrpc
 WORKDIR /faucetconfrpc
+# TODO: wheels on non-x86 workaround with --no-binary: https://github.com/grpc/grpc/issues/27512
 RUN pip3 --no-cache-dir install . && \
+    pip install --upgrade --force-reinstall grpcio grpcio-tools --no-binary :all: && \
     apt-get purge -y python3-dev gcc g++ && apt -y autoremove --purge && rm -rf /var/cache/* /root/.cache/*
 RUN python3 -c "from faucetconfrpc.faucetconfrpc_client_lib import FaucetConfRpcClient"
 RUN faucetconfrpc_client --help
