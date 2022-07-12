@@ -10,7 +10,7 @@ COPY . /faucetconfrpc
 WORKDIR /faucetconfrpc
 # TODO: wheels on non-x86 workaround with --no-binary: https://github.com/grpc/grpc/issues/27512
 RUN pip3 --no-cache-dir install . && \
-    pip install --upgrade --force-reinstall grpcio grpcio-tools --no-binary :all: && \
+    pip install --upgrade --force-reinstall grpcio grpcio-tools --no-binary grpcio,grpcio-tools && \
     apt-get purge -y python3-dev gcc g++ && apt -y autoremove --purge && rm -rf /var/cache/* /root/.cache/*
 RUN python3 -c "from faucetconfrpc.faucetconfrpc_client_lib import FaucetConfRpcClient"
 RUN faucetconfrpc_client --help
