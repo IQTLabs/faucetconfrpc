@@ -125,7 +125,7 @@ class ServerIntTests(unittest.TestCase):
         cls.server = subprocess.Popen(
             ['timeout',
              '10s',
-             './src/faucetconfrpc/faucetconfrpc_server.py',
+             './faucetconfrpc/faucetconfrpc_server.py',
              '--config_dir=%s' % cls.tmpdir,
              '--default_config=%s' % cls.default_config,
              '--port=%u' % cls.port,

@@ -47,5 +47,5 @@ py-modules = [ "faucetconfrpc" ]
 #find = { namespace = false }
 
 [tool.setuptools.packages.find]
-where = [ "src" ]
+where = [ "faucetconfrpc" ]
 include = [ "*" ]
