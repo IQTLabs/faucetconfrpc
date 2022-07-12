@@ -1,6 +1,6 @@
 [project]
 name = "faucetconfrpc"
-version = "0.22.36"
+version = "0.22.37-dev"
 description = "utility to manage FAUCET config files via RPC"
 license = { file = "LICENSE" }
 readme = "README.md"
