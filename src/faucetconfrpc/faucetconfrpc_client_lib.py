@@ -36,7 +36,7 @@ class FaucetConfRpcClient:
 
     def get_config_file(self, config_filename=None):
         """Get a YAML config file."""
-        response = self._call(self._stub.GetConfigFile, faucetconfrpc_pb2.GetConfigFileRequest(
+        response = self._call(self._stub.GetConfigFile, faucetconfrpc_pb2.GetConfigFileRequest(   # pylint: disable=no-member,disable=line-too-long # pytype: disable=module-attr
             config_filename=config_filename))
         if response is not None:
             return yaml_load(response.config_yaml)
@@ -47,7 +47,7 @@ class FaucetConfRpcClient:
         """Set a YAML config file."""
         if isinstance(config_yaml, dict):
             config_yaml = yaml_dump(config_yaml)
-        return self._call(self._stub.SetConfigFile, faucetconfrpc_pb2.SetConfigFileRequest(
+        return self._call(self._stub.SetConfigFile, faucetconfrpc_pb2.SetConfigFileRequest(   # pylint: disable=no-member,disable=line-too-long # pytype: disable=module-attr
             config_filename=config_filename,
             config_yaml=config_yaml,
             merge=merge,
@@ -57,58 +57,58 @@ class FaucetConfRpcClient:
         """Delete a key from YAML config file."""
         if isinstance(config_yaml_keys, list):
             config_yaml_keys = yaml_dump(config_yaml_keys)
-        return self._call(self._stub.DelConfigFromFile, faucetconfrpc_pb2.DelConfigFromFileRequest(
+        return self._call(self._stub.DelConfigFromFile, faucetconfrpc_pb2.DelConfigFromFileRequest(   # pylint: disable=no-member,disable=line-too-long # pytype: disable=module-attr
             config_filename=config_filename,
             config_yaml_keys=config_yaml_keys))
 
     def add_port_mirror(self, dp_name, port_no, mirror_port_no):
         """Add port mirroring."""
-        return self._call(self._stub.AddPortMirror, faucetconfrpc_pb2.AddPortMirrorRequest(
+        return self._call(self._stub.AddPortMirror, faucetconfrpc_pb2.AddPortMirrorRequest(   # pylint: disable=no-member,disable=line-too-long # pytype: disable=module-attr
             dp_name=dp_name, port_no=port_no, mirror_port_no=mirror_port_no))
 
     def remove_port_mirror(self, dp_name, port_no, mirror_port_no):
         """Remove port mirroring."""
-        return self._call(self._stub.RemovePortMirror, faucetconfrpc_pb2.RemovePortMirrorRequest(
+        return self._call(self._stub.RemovePortMirror, faucetconfrpc_pb2.RemovePortMirrorRequest(   # pylint: disable=no-member,disable=line-too-long # pytype: disable=module-attr
             dp_name=dp_name, port_no=port_no, mirror_port_no=mirror_port_no))
 
     def clear_port_mirror(self, dp_name, mirror_port_no):
         """Clear all mirroring on port."""
-        return self._call(self._stub.ClearPortMirror, faucetconfrpc_pb2.ClearPortMirrorRequest(
+        return self._call(self._stub.ClearPortMirror, faucetconfrpc_pb2.ClearPortMirrorRequest(   # pylint: disable=no-member,disable=line-too-long # pytype: disable=module-attr
             dp_name=dp_name, mirror_port_no=mirror_port_no))
 
     def add_port_acl(self, dp_name, port_no, acl):
         """Add port ACL."""
-        return self._call(self._stub.AddPortAcl, faucetconfrpc_pb2.AddPortAclRequest(
+        return self._call(self._stub.AddPortAcl, faucetconfrpc_pb2.AddPortAclRequest(   # pylint: disable=no-member,disable=line-too-long # pytype: disable=module-attr
             dp_name=dp_name, port_no=port_no, acl=acl))
 
     def set_port_acls(self, dp_name, port_no, acls):
         """Set port ACL."""
-        return self._call(self._stub.SetPortAcl, faucetconfrpc_pb2.SetPortAclRequest(
+        return self._call(self._stub.SetPortAcl, faucetconfrpc_pb2.SetPortAclRequest(   # pylint: disable=no-member,disable=line-too-long # pytype: disable=module-attr
             dp_name=dp_name, port_no=port_no, acls=acls))
 
     def set_vlan_out_acl(self, vlan_name, acl_out):
         """Set VLAN out ACL."""
-        return self._call(self._stub.SetVlanOutAcl, faucetconfrpc_pb2.SetVlanOutAclRequest(
+        return self._call(self._stub.SetVlanOutAcl, faucetconfrpc_pb2.SetVlanOutAclRequest(   # pylint: disable=no-member,disable=line-too-long # pytype: disable=module-attr
             vlan_name=vlan_name, acl_out=acl_out))
 
     def remove_port_acl(self, dp_name, port_no, acl=None):
         """Remove port ACL."""
         if acl:
-            return self._call(self._stub.RemovePortAcl, faucetconfrpc_pb2.RemovePortAclRequest(
+            return self._call(self._stub.RemovePortAcl, faucetconfrpc_pb2.RemovePortAclRequest(   # pylint: disable=no-member,disable=line-too-long # pytype: disable=module-attr
                 dp_name=dp_name, port_no=port_no, acl=acl))
-        return self._call(self._stub.RemovePortAcl, faucetconfrpc_pb2.RemovePortAclRequest(
+        return self._call(self._stub.RemovePortAcl, faucetconfrpc_pb2.RemovePortAclRequest(   # pylint: disable=no-member,disable=line-too-long # pytype: disable=module-attr
             dp_name=dp_name, port_no=port_no, acl=acl))
 
     def get_dp_info(self, dp_name=''):
         """Get DP info."""
-        return self._call(self._stub.GetDpInfo, faucetconfrpc_pb2.GetDpInfoRequest(
+        return self._call(self._stub.GetDpInfo, faucetconfrpc_pb2.GetDpInfoRequest(   # pylint: disable=no-member,disable=line-too-long # pytype: disable=module-attr
             dp_name=dp_name))
 
     def set_dp_interfaces(self, dp_interfaces_requests=None):
         """Set DP interfaces."""
         if not dp_interfaces_requests:
             dp_interfaces_requests = []
-        request = faucetconfrpc_pb2.SetDpInterfacesRequest()
+        request = faucetconfrpc_pb2.SetDpInterfacesRequest()   # pylint: disable=no-member,disable=line-too-long # pytype: disable=module-attr
         for dp_name, dp_interfaces in dp_interfaces_requests:
             dp_request = request.interfaces_config.add()  # pylint: disable=no-member
             dp_request.dp_name = dp_name
@@ -122,7 +122,7 @@ class FaucetConfRpcClient:
         """Delete DP interfaces."""
         if not dp_interfaces_requests:
             dp_interfaces_requests = []
-        request = faucetconfrpc_pb2.DelDpInterfacesRequest()
+        request = faucetconfrpc_pb2.DelDpInterfacesRequest()   # pylint: disable=no-member,disable=line-too-long # pytype: disable=module-attr
         request.delete_empty_dp = delete_empty_dp
         for dp_name, dp_interfaces in dp_interfaces_requests:
             dp_request = request.interfaces_config.add()  # pylint: disable=no-member
@@ -134,7 +134,7 @@ class FaucetConfRpcClient:
 
     def del_dps(self, dps):
         """Delete DPs."""
-        request = faucetconfrpc_pb2.DelDpsRequest()
+        request = faucetconfrpc_pb2.DelDpsRequest()   # pylint: disable=no-member,disable=line-too-long # pytype: disable=module-attr
         for dp_name in dps:
             dp_request = request.interfaces_config.add()  # pylint: disable=no-member
             dp_request.name = dp_name
@@ -143,7 +143,7 @@ class FaucetConfRpcClient:
     def set_remote_mirror_port(self, dp_name='', port_no=0, tunnel_vid=0,  # pylint: disable=too-many-arguments
                                remote_dp_name='', remote_port_no=''):
         """Set a port to be a remote mirror via tunnel."""
-        request = faucetconfrpc_pb2.SetRemoteMirrorPortRequest()
+        request = faucetconfrpc_pb2.SetRemoteMirrorPortRequest()   # pylint: disable=no-member,disable=line-too-long # pytype: disable=module-attr
         request.dp_name = dp_name
         request.port_no = port_no
         request.tunnel_vid = tunnel_vid
@@ -153,24 +153,24 @@ class FaucetConfRpcClient:
 
     def get_dp_names(self):
         """Get a list of DP names."""
-        request = faucetconfrpc_pb2.GetDpNamesRequest()
+        request = faucetconfrpc_pb2.GetDpNamesRequest()   # pylint: disable=no-member,disable=line-too-long # pytype: disable=module-attr
         return self._call(self._stub.GetDpNames, request)
 
     def get_dp_ids(self):
         """Get a list of DP IDs."""
-        request = faucetconfrpc_pb2.GetDpIDsRequest()
+        request = faucetconfrpc_pb2.GetDpIDsRequest()   # pylint: disable=no-member,disable=line-too-long # pytype: disable=module-attr
         return self._call(self._stub.GetDpIDs, request)
 
     def get_acl_names(self):
         """Get a list of ACL names."""
-        request = faucetconfrpc_pb2.GetAclNamesRequest()
+        request = faucetconfrpc_pb2.GetAclNamesRequest()   # pylint: disable=no-member,disable=line-too-long # pytype: disable=module-attr
         return self._call(self._stub.GetAclNames, request)
 
     def set_dps(self, dps_config=None):
         """Set DPs config."""
         if dps_config is None:
             dps_config = {}
-        request = faucetconfrpc_pb2.SetDpsRequest()
+        request = faucetconfrpc_pb2.SetDpsRequest()   # pylint: disable=no-member,disable=line-too-long # pytype: disable=module-attr
         for dp_name, config_yaml in dps_config.items():
             dp_request = request.dp_config.add()  # pylint: disable=no-member
             dp_request.dp_name = dp_name
@@ -180,7 +180,7 @@ class FaucetConfRpcClient:
     def make_coprocessor_port(self, dp_name='', port_no=0, description='coprocessor',
             strategy='vlan_vid'):
         """Make a coprocessor port."""
-        request = faucetconfrpc_pb2.MakeCoprocessorPortRequest()
+        request = faucetconfrpc_pb2.MakeCoprocessorPortRequest()   # pylint: disable=no-member,disable=line-too-long # pytype: disable=module-attr
         request.dp_name = dp_name
         request.port_no = port_no
         request.description = description

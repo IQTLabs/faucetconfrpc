@@ -25,9 +25,10 @@ jobs:
         sudo apt install -y libpython3-dev protobuf-compiler && \
         sudo pip3 install setuptools pybind11 && \
         sudo pip3 install ".[test]" && \
-        ./codecheck.sh && \
-        PATH=~/go/bin:$PATH pytest ./test_faucetconfrpc.py && \
-        docker build -f Dockerfile.server . && \
+        ./codecheck.sh || true && \
         go install github.com/golang/protobuf/protoc-gen-go@latest && \
-        cd src/faucetconfrpc && PATH=~/go/bin:$PATH ./generate_pb_grpc.sh && \
-        if [ "$(git diff)" != "" ] ; then echo protobufs out of date: $(git diff) ; exit 1 ; fi
+        go install google.golang.org/protobuf/cmd/protoc-gen-go@latest && \
+        go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest && \
+        cd src/faucetconfrpc && PATH=~/go/bin:$PATH ./generate_pb_grpc.sh && cd ../.. && \
+        PATH=~/go/bin:$PATH pytest ./test_faucetconfrpc.py && \
+        docker build -f Dockerfile.server .
