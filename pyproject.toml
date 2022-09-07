@@ -6,7 +6,7 @@ license = { file = "LICENSE" }
 readme = "README.md"
 
 dependencies = [
-    "c65faucet==1.0.36",
+    "c65faucet==1.0.39",
     "grpcio==1.47.0",
     "grpcio-tools==1.47.0",
     "protobuf==3.20.1",
