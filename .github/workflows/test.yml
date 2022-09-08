@@ -19,7 +19,7 @@ jobs:
         PYTHONPATH: "."
         GO111MODULE: "on"
       run: |
-        go get github.com/square/certstrap && \
+        go install github.com/square/certstrap@latest && \
         PATH=~/go/bin:$PATH certstrap -v && \
         sudo apt-get update && \
         sudo apt install -y libpython3-dev protobuf-compiler && \
