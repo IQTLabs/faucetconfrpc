@@ -228,13 +228,13 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
     def GetConfigFile(self, request, context):  # pylint: disable=invalid-name
         """Return existing file contents as YAML string."""
 
-        default_reply = faucetconfrpc_pb2.GetConfigFileReply()
+        default_reply = faucetconfrpc_pb2.GetConfigFileReply()   # pylint: disable=no-member # pytype: disable=module-attr
 
         def get_config_file():
             config_filename = request.config_filename
             if not config_filename:
                 config_filename = self.default_config
-            return faucetconfrpc_pb2.GetConfigFileReply(
+            return faucetconfrpc_pb2.GetConfigFileReply(   # pylint: disable=no-member # pytype: disable=module-attr
                 config_yaml=yaml_dump(self._get_config_file(config_filename)))
 
         return self.request_wrapper(
@@ -243,7 +243,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
     def GetDpInfo(self, request, context):  # pylint: disable=invalid-name
         """Return parsed DP info."""
 
-        default_reply = faucetconfrpc_pb2.GetDpInfoReply()
+        default_reply = faucetconfrpc_pb2.GetDpInfoReply()   # pylint: disable=no-member # pytype: disable=module-attr
 
         def get_dp_info():
             config_filename = request.config_filename
@@ -274,7 +274,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
     def SetConfigFile(self, request, context):  # pylint: disable=invalid-name
         """Overwrite/update config file contents with provided YAML."""
 
-        default_reply = faucetconfrpc_pb2.SetConfigFileReply()
+        default_reply = faucetconfrpc_pb2.SetConfigFileReply()   # pylint: disable=no-member # pytype: disable=module-attr
 
         def set_config_file():
             config_filename = request.config_filename
@@ -300,7 +300,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
     def MakeCoprocessorPort(self, request, context):  # pylint: disable=invalid-name
         """Make a port a copro port."""
 
-        default_reply = faucetconfrpc_pb2.MakeCoprocessorPortReply()
+        default_reply = faucetconfrpc_pb2.MakeCoprocessorPortReply()   # pylint: disable=no-member # pytype: disable=module-attr
 
         def make_copro():
             config_filename = self.default_config
@@ -329,7 +329,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
     def AddPortMirror(self, request, context):  # pylint: disable=invalid-name
         """Add mirroring for port."""
 
-        default_reply = faucetconfrpc_pb2.AddPortMirrorReply()
+        default_reply = faucetconfrpc_pb2.AddPortMirrorReply()   # pylint: disable=no-member # pytype: disable=module-attr
 
         def add_port_mirror():
             config_filename = self.default_config
@@ -345,7 +345,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
     def RemovePortMirror(self, request, context):  # pylint: disable=invalid-name
         """Remove mirroring for port."""
 
-        default_reply = faucetconfrpc_pb2.AddPortMirrorReply()
+        default_reply = faucetconfrpc_pb2.AddPortMirrorReply()   # pylint: disable=no-member # pytype: disable=module-attr
 
         def remove_port_mirror():
             config_filename = self.default_config
@@ -361,7 +361,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
     def ClearPortMirror(self, request, context):  # pylint: disable=invalid-name
         """Remove all mirroring on port."""
 
-        default_reply = faucetconfrpc_pb2.ClearPortMirrorReply()
+        default_reply = faucetconfrpc_pb2.ClearPortMirrorReply()   # pylint: disable=no-member # pytype: disable=module-attr
 
         def clear_port_mirror():
             config_filename = self.default_config
@@ -389,7 +389,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
     def SetPortAcl(self, request, context):  # pylint: disable=invalid-name
         """Set ACL list on port."""
 
-        default_reply = faucetconfrpc_pb2.SetPortAclReply()
+        default_reply = faucetconfrpc_pb2.SetPortAclReply()   # pylint: disable=no-member # pytype: disable=module-attr
 
         def set_port_acl():
             config_filename = self.default_config
@@ -401,7 +401,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
 
     def SetVlanOutAcl(self, request, context):  # pylint: disable=invalid-name
         """Set output ACL on a VLAN."""
-        default_reply = faucetconfrpc_pb2.SetVlanOutAclReply()
+        default_reply = faucetconfrpc_pb2.SetVlanOutAclReply()   # pylint: disable=no-member # pytype: disable=module-attr
 
         def set_vlan_out_acl():
             config_filename = self.default_config
@@ -418,7 +418,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
     def AddPortAcl(self, request, context):  # pylint: disable=invalid-name
         """Add ACL to port."""
 
-        default_reply = faucetconfrpc_pb2.AddPortAclReply()
+        default_reply = faucetconfrpc_pb2.AddPortAclReply()   # pylint: disable=no-member # pytype: disable=module-attr
 
         def add_port_acl():
             config_filename = self.default_config
@@ -434,7 +434,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
     def RemovePortAcl(self, request, context):  # pylint: disable=invalid-name
         """Remove ACL from port."""
 
-        default_reply = faucetconfrpc_pb2.RemovePortAclReply()
+        default_reply = faucetconfrpc_pb2.RemovePortAclReply()   # pylint: disable=no-member # pytype: disable=module-attr
 
         def remove_port_acl():
             config_filename = self.default_config
@@ -453,7 +453,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
     def DelConfigFromFile(self, request, context):  # pylint: disable=invalid-name
         """Delete config file contents based on provided key."""
 
-        default_reply = faucetconfrpc_pb2.DelConfigFromFileReply()
+        default_reply = faucetconfrpc_pb2.DelConfigFromFileReply()   # pylint: disable=no-member # pytype: disable=module-attr
 
         def del_config_from_file():
             config_filename = request.config_filename
@@ -469,7 +469,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
     def SetDpInterfaces(self, request, context):  # pylint: disable=invalid-name
         """Replace interfaces config."""
 
-        default_reply = faucetconfrpc_pb2.SetDpInterfacesReply()
+        default_reply = faucetconfrpc_pb2.SetDpInterfacesReply()   # pylint: disable=no-member # pytype: disable=module-attr
 
         def set_dp_interfaces():
             config_filename = self.default_config
@@ -489,7 +489,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
     def SetDps(self, request, context):  # pylint: disable=invalid-name
         """Replace DPs config including reservation of DP ID."""
 
-        default_reply = faucetconfrpc_pb2.SetDpsReply()
+        default_reply = faucetconfrpc_pb2.SetDpsReply()   # pylint: disable=no-member # pytype: disable=module-attr
 
         def set_dps():
             config_filename = self.default_config
@@ -521,7 +521,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
     def DelDps(self, request, context):  # pylint: disable=invalid-name
         """Delete DPs altogether."""
 
-        default_reply = faucetconfrpc_pb2.DelDpsReply()
+        default_reply = faucetconfrpc_pb2.DelDpsReply()   # pylint: disable=no-member # pytype: disable=module-attr
 
         def del_dps():
             config_filename = self.default_config
@@ -537,7 +537,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
 
     def DelDpInterfaces(self, request, context):  # pylint: disable=invalid-name
 
-        default_reply = faucetconfrpc_pb2.DelDpInterfacesReply()
+        default_reply = faucetconfrpc_pb2.DelDpInterfacesReply()   # pylint: disable=no-member # pytype: disable=module-attr
 
         def del_dp_interfaces():
             config_filename = self.default_config
@@ -572,7 +572,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
 
     def SetRemoteMirrorPort(self, request, context):  # pylint: disable=invalid-name
 
-        default_reply = faucetconfrpc_pb2.SetRemoteMirrorPortReply()
+        default_reply = faucetconfrpc_pb2.SetRemoteMirrorPortReply()   # pylint: disable=no-member # pytype: disable=module-attr
 
         def make_acl(rules):
             return [{'rule': rule} for rule in rules]
@@ -615,7 +615,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
 
     def GetDpNames(self, request, context):  # pylint: disable=invalid-name
 
-        default_reply = faucetconfrpc_pb2.GetDpNamesReply()
+        default_reply = faucetconfrpc_pb2.GetDpNamesReply()   # pylint: disable=no-member # pytype: disable=module-attr
 
         def get_dp_names():
             config_filename = self.default_config
@@ -629,7 +629,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
 
     def GetDpIDs(self, request, context):  # pylint: disable=invalid-name
 
-        default_reply = faucetconfrpc_pb2.GetDpIDsReply()
+        default_reply = faucetconfrpc_pb2.GetDpIDsReply()   # pylint: disable=no-member # pytype: disable=module-attr
 
         def get_dp_ids():
             config_filename = self.default_config
@@ -643,7 +643,7 @@ class Server(faucetconfrpc_pb2_grpc.FaucetConfServerServicer):  # pylint: disabl
 
     def GetAclNames(self, request, context):  # pylint: disable=invalid-name
 
-        default_reply = faucetconfrpc_pb2.GetAclNamesReply()
+        default_reply = faucetconfrpc_pb2.GetAclNamesReply()   # pylint: disable=no-member # pytype: disable=module-attr
 
         def get_acl_names():
             _, acls_conf = self._validate_faucet_config(self.config_dir)
@@ -724,7 +724,7 @@ def serve():
         server = grpc.server(executor)
         server_handler = Server(args.config_dir, args.default_config)
         server_handler.add_counters()
-        faucetconfrpc_pb2_grpc.add_FaucetConfServerServicer_to_server(server_handler, server)
+        faucetconfrpc_pb2_grpc.add_FaucetConfServerServicer_to_server(server_handler, server)   # pylint: disable=no-member,disable=line-too-long # pytype: disable=module-attr
         server.add_secure_port(f'{args.host}:{args.port}', server_credentials)
         server.start()
         start_http_server(args.prom_port)
