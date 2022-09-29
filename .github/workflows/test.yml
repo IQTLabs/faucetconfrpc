@@ -7,6 +7,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+    - uses: actions/setup-go@v3
+      with:
+        go-version: '>=1.19.1'
+    - run: go version
     - name: shell_test
       run: |
         wget "https://github.com/koalaman/shellcheck/releases/download/stable/shellcheck-stable.linux.x86_64.tar.xz" && \
@@ -25,10 +29,18 @@ jobs:
         sudo apt install -y libpython3-dev protobuf-compiler && \
         sudo pip3 install setuptools pybind11 && \
         sudo pip3 install ".[test]" && \
-        ./codecheck.sh || true && \
+        ./tests/codecheck.sh || true && \
         go install github.com/golang/protobuf/protoc-gen-go@latest && \
         go install google.golang.org/protobuf/cmd/protoc-gen-go@latest && \
         go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest && \
         cd src/faucetconfrpc && PATH=~/go/bin:$PATH ./generate_pb_grpc.sh && cd ../.. && \
-        PATH=~/go/bin:$PATH pytest ./test_faucetconfrpc.py && \
+        PATH=~/go/bin:$PATH pytest ./tests/test_faucetconfrpc.py && \
         docker build -f Dockerfile.server .
+    - if: ${{ github.event_name == 'pull_request' }}
+      name: golang install test
+      env:
+        HEAD_OWNER: ${{ github.event.pull_request.head.repo.owner.login }}
+        HEAD_REPO: ${{ github.event.pull_request.head.repo.name }}
+      run: |
+        cd tests/gotest && echo -e "module gotest\nrequire (\n\tgithub.com/${HEAD_OWNER}/${HEAD_REPO} ${GITHUB_HEAD_REF}\n\tgoogle.golang.org/grpc latest\n)" > go.mod && \
+        cat go.mod && go mod download && go get gotest && go build && cd ../..
