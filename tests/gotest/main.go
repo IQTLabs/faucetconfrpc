@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/iqtlabs/faucetconfrpc/faucetconfrpc"
+	"github.com/iqtlabs/faucetconfrpc/faucetconfserver"
 )
 
 type faucetconfrpcer struct {
