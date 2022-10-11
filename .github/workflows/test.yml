@@ -27,8 +27,8 @@ jobs:
         PATH=~/go/bin:$PATH certstrap -v && \
         sudo apt-get update && \
         sudo apt install -y libpython3-dev protobuf-compiler && \
-        sudo pip3 install setuptools pybind11 && \
-        sudo pip3 install ".[test]" && \
+        sudo pip3 install poetry==1.1.15 && \
+        sudo poetry install && \
         ./tests/codecheck.sh || true && \
         go install github.com/golang/protobuf/protoc-gen-go@latest && \
         go install google.golang.org/protobuf/cmd/protoc-gen-go@latest && \
