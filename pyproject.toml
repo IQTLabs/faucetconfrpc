@@ -11,7 +11,7 @@ c65faucet = "1.0.39"
 grpcio = "1.49.1"
 grpcio-tools = "1.49.1"
 protobuf = "4.21.7"
-prometheus_client = "0.14.1"
+prometheus_client = "0.15.0"
 pybind11 = "2.10.0"
 
 [tool.poetry.dev-dependencies]
