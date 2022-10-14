@@ -13,7 +13,7 @@ grpcio-tools = "1.49.1"
 protobuf = "4.21.7"
 prometheus_client = "0.15.0"
 pybind11 = "2.10.0"
-os-ken = "2.4.0"
+os-ken = "2.5.0"
 
 [tool.poetry.dev-dependencies]
 attrs = "22.1.0"
