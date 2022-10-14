@@ -42,6 +42,7 @@ jobs:
       env:
         HEAD_OWNER: ${{ github.event.pull_request.head.repo.owner.login }}
         HEAD_REPO: ${{ github.event.pull_request.head.repo.name }}
+      # TODO: fix requirement for branch not to begin with "v".
       run: |
         cd tests/gotest && echo -e "module gotest\nrequire (\n\tgithub.com/${HEAD_OWNER}/${HEAD_REPO} ${GITHUB_HEAD_REF}\n\tgoogle.golang.org/grpc latest\n)" > go.mod && \
         cat go.mod && go mod download && go get gotest && go build && cd ../..
