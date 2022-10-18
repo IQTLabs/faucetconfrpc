@@ -37,12 +37,8 @@ jobs:
         cd src/faucetconfrpc && PATH=~/go/bin:$PATH ./generate_pb_grpc.sh && cd ../.. && \
         PATH=~/go/bin:$PATH pytest ./tests/test_faucetconfrpc.py && \
         docker build -f Dockerfile.server .
-    - if: ${{ github.event_name == 'pull_request' }}
-      name: golang install test
-      env:
-        HEAD_OWNER: ${{ github.event.pull_request.head.repo.owner.login }}
-        HEAD_REPO: ${{ github.event.pull_request.head.repo.name }}
-      # TODO: fix requirement for branch not to begin with "v".
+    - name: golang install test
       run: |
-        cd tests/gotest && echo -e "module gotest\nrequire (\n\tgithub.com/${HEAD_OWNER}/${HEAD_REPO} ${GITHUB_HEAD_REF}\n\tgoogle.golang.org/grpc latest\n)" > go.mod && \
+        echo "module iqtlabs/faucetconfrpc" > go.mod
+        cd tests/gotest && echo -e "module gotest\nrequire (\n\tgithub.com/iqtlabs/faucetconfrpc latest\n\tgoogle.golang.org/grpc latest\n)\nreplace github.com/iqtlabs/faucetconfrpc => ../.." > go.mod && \
         cat go.mod && go mod download && go get gotest && go build && cd ../..
