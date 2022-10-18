@@ -39,6 +39,6 @@ jobs:
         docker build -f Dockerfile.server .
     - name: golang install test
       run: |
-        echo "module iqtlabs/faucetconfrpc" > go.mod
+        echo "module iqtlabs/faucetconfrpc" > go.mod && \
         cd tests/gotest && echo -e "module gotest\nrequire (\n\tgithub.com/iqtlabs/faucetconfrpc latest\n\tgoogle.golang.org/grpc latest\n)\nreplace github.com/iqtlabs/faucetconfrpc => ../.." > go.mod && \
         cat go.mod && go mod download && go get gotest && go build && cd ../..
