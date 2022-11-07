@@ -39,20 +39,20 @@ pbr = ">=1.9"
 
 [[package]]
 name = "c65chewie"
-version = "1.0.2"
+version = "1.0.3"
 description = "A bare-bones EAPOL/802.1x implementation"
 category = "main"
 optional = false
-python-versions = ">=3.5"
+python-versions = ">=3.7"
 
 [package.dependencies]
-eventlet = "*"
+eventlet = ">=0.25.1,<=0.33.0"
 pbr = ">=1.9"
 transitions = "*"
 
 [[package]]
 name = "c65faucet"
-version = "1.0.40"
+version = "1.0.43"
 description = "Faucet is an OpenFlow controller that implements a layer 2 and layer 3 switch."
 category = "main"
 optional = false
@@ -60,7 +60,7 @@ python-versions = ">=3.7"
 
 [package.dependencies]
 c65beka = "1.0.0"
-c65chewie = "1.0.2"
+c65chewie = "1.0.3"
 influxdb = ">=2.12.0"
 networkx = ">=1.9"
 pbr = ">=1.9"
@@ -135,7 +135,7 @@ wmi = ["wmi (>=1.5.1,<2.0.0)"]
 
 [[package]]
 name = "eventlet"
-version = "0.33.1"
+version = "0.33.0"
 description = "Highly concurrent networking library"
 category = "main"
 optional = false
@@ -813,7 +813,7 @@ python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,>=2.7"
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8 <3.11"
-content-hash = "8af367421f862cc6fe7b71613f4e0f6ea60eb6eab6ea4fcb6b4ae9c47d9ebafd"
+content-hash = "61157a3dcd7ce21e358bcc97997db3d37e89f08cd67ecfb0d1fb78c56177ce4c"
 
 [metadata.files]
 astroid = [
@@ -828,10 +828,10 @@ c65beka = [
     {file = "c65beka-1.0.0.tar.gz", hash = "sha256:c9269f6bd133e612ebbc82e3b0e3ceb74e3b4311b5b7a310f3890a6d380265ee"},
 ]
 c65chewie = [
-    {file = "c65chewie-1.0.2.tar.gz", hash = "sha256:63c50531f46ff12379b646547a7eac9bd40b63e8776d40646e2ece03fabcca0c"},
+    {file = "c65chewie-1.0.3.tar.gz", hash = "sha256:aa4cbb63e4375b0990e9ede7436d2736641ba90f11e17ceccdd7e840c1c3768d"},
 ]
 c65faucet = [
-    {file = "c65faucet-1.0.40.tar.gz", hash = "sha256:84e44390bb26405e0dc8fd8232c54eeb5a00767ea59be7f9abc9c426cdf4ba4d"},
+    {file = "c65faucet-1.0.43.tar.gz", hash = "sha256:2dcaa136633b812d9b5af39c2fb3e4d5cfe4d7659af69fee0656c0da9c5b1816"},
 ]
 certifi = [
     {file = "certifi-2022.9.24-py3-none-any.whl", hash = "sha256:90c1a32f1d68f940488354e36370f6cca89f0f106db09518524c88d6ed83f382"},
@@ -858,8 +858,8 @@ dnspython = [
     {file = "dnspython-2.2.1.tar.gz", hash = "sha256:0f7569a4a6ff151958b64304071d370daa3243d15941a7beedf0c9fe5105603e"},
 ]
 eventlet = [
-    {file = "eventlet-0.33.1-py2.py3-none-any.whl", hash = "sha256:a085922698e5029f820cf311a648ac324d73cec0e4792877609d978a4b5bbf31"},
-    {file = "eventlet-0.33.1.tar.gz", hash = "sha256:afbe17f06a58491e9aebd7a4a03e70b0b63fd4cf76d8307bae07f280479b1515"},
+    {file = "eventlet-0.33.0-py2.py3-none-any.whl", hash = "sha256:d10a8fcc9e33381905d9873303fde96ebe3541c03fb795055d2c7347dce0639c"},
+    {file = "eventlet-0.33.0.tar.gz", hash = "sha256:80144f489c1bb273a51b6f96ff9785a382d2866b9bab1f5bd748385019f4141f"},
 ]
 exceptiongroup = [
     {file = "exceptiongroup-1.0.1-py3-none-any.whl", hash = "sha256:4d6c0aa6dd825810941c792f53d7b8d71da26f5e5f84f20f9508e8f2d33b140a"},
@@ -1300,6 +1300,13 @@ pyyaml = [
     {file = "PyYAML-6.0-cp310-cp310-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl", hash = "sha256:f84fbc98b019fef2ee9a1cb3ce93e3187a6df0b2538a651bfb890254ba9f90b5"},
     {file = "PyYAML-6.0-cp310-cp310-win32.whl", hash = "sha256:2cd5df3de48857ed0544b34e2d40e9fac445930039f3cfe4bcc592a1f836d513"},
     {file = "PyYAML-6.0-cp310-cp310-win_amd64.whl", hash = "sha256:daf496c58a8c52083df09b80c860005194014c3698698d1a57cbcfa182142a3a"},
+    {file = "PyYAML-6.0-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:d4b0ba9512519522b118090257be113b9468d804b19d63c71dbcf4a48fa32358"},
+    {file = "PyYAML-6.0-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:81957921f441d50af23654aa6c5e5eaf9b06aba7f0a19c18a538dc7ef291c5a1"},
+    {file = "PyYAML-6.0-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:afa17f5bc4d1b10afd4466fd3a44dc0e245382deca5b3c353d8b757f9e3ecb8d"},
+    {file = "PyYAML-6.0-cp311-cp311-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:dbad0e9d368bb989f4515da330b88a057617d16b6a8245084f1b05400f24609f"},
+    {file = "PyYAML-6.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:432557aa2c09802be39460360ddffd48156e30721f5e8d917f01d31694216782"},
+    {file = "PyYAML-6.0-cp311-cp311-win32.whl", hash = "sha256:bfaef573a63ba8923503d27530362590ff4f576c626d86a9fed95822a8255fd7"},
+    {file = "PyYAML-6.0-cp311-cp311-win_amd64.whl", hash = "sha256:01b45c0191e6d66c470b6cf1b9531a771a83c1c4208272ead47a3ae4f2f603bf"},
     {file = "PyYAML-6.0-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:897b80890765f037df3403d22bab41627ca8811ae55e9a722fd0392850ec4d86"},
     {file = "PyYAML-6.0-cp36-cp36m-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:50602afada6d6cbfad699b0c7bb50d5ccffa7e46a3d738092afddc1f9758427f"},
     {file = "PyYAML-6.0-cp36-cp36m-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:48c346915c114f5fdb3ead70312bd042a953a8ce5c7106d5bfb1a5254e47da92"},
