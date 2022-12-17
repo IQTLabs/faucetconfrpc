@@ -17,7 +17,7 @@ os-ken = "2.4.0"
 
 [tool.poetry.dev-dependencies]
 attrs = "22.1.0"
-pylint = "2.15.8"
+pylint = "2.15.9"
 pytype = "2022.12.15"
 pytest = "7.2.0"
 
