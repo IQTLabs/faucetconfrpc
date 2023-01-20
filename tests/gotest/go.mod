@@ -3,7 +3,7 @@ module gotest
 go 1.18
 
 require (
-	github.com/iqtlabs/faucetconfrpc v0.22.43
+	github.com/iqtlabs/faucetconfrpc v0.22.45
 	google.golang.org/grpc v1.50.1
 )
 
