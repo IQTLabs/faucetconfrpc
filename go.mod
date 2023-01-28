@@ -1,1 +1,1 @@
-module iqtlabs/faucetconfrpc
+module github.com/iqtlabs/faucetconfrpc
