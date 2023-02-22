@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "faucetconfrpc"
-version = "0.22.47"
+version = "0.22.48"
 description = "utility to manage FAUCET config files via RPC"
 authors = ["Charlie Lewis <clewis@iqt.org>"]
 license = "Apache-2.0"
