@@ -36,7 +36,10 @@ jobs:
         go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest && \
         cd src/faucetconfrpc && PATH=~/go/bin:$PATH ./generate_pb_grpc.sh && cd ../.. && \
         PATH=~/go/bin:$PATH pytest ./tests/test_faucetconfrpc.py && \
-        docker build -f Dockerfile.server .
+        docker buildx create --use && \
+        docker buildx build \
+          --platform linux/amd64,linux/arm64 \
+          --file Dockerfile.server .
     - name: golang install test
       run: |
         echo "module iqtlabs/faucetconfrpc" > go.mod && \

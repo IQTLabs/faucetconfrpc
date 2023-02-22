@@ -39,12 +39,12 @@ jobs:
         DOCKER_CLI_EXPERIMENTAL: enabled
       run: |
         docker buildx build \
-          --platform linux/amd64,linux/arm/v7,linux/arm64 \
+          --platform linux/amd64,linux/arm64 \
           --push \
           --file Dockerfile.server \
           -t iqtlabs/faucetconfrpc:${{ steps.change_version.outputs.VERSION }} . && \
         docker buildx build \
-          --platform linux/amd64,linux/arm/v7,linux/arm64 \
+          --platform linux/amd64,linux/arm64 \
           --push --no-cache \
           -t iqtlabs/faucet-certstrap:${{ steps.change_version.outputs.VERSION }} certstrap
       if: github.repository == 'iqtlabs/faucetconfrpc' && github.event_name == 'push'
