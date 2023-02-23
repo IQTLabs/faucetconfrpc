@@ -39,6 +39,7 @@ jobs:
         DOCKER_CLI_EXPERIMENTAL: enabled
       run: |
         docker buildx build \
+          --shm-size=1G \
           --platform linux/amd64,linux/arm/v7,linux/arm64 \
           --push \
           --file Dockerfile.server \
