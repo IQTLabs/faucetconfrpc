@@ -20,7 +20,7 @@ ENV PYTHONUNBUFFERED 1
 
 COPY --from=pynacl-builder /usr/local /usr/local
 COPY --from=grpc-builder /usr/local /usr/local
-RUN apt-get update && apt-get install -y iproute2 python3-dev gcc git g++ libc6-dev libyaml-dev libffi-dev libxslt-dev libxml2-dev make curl libssl-dev
+RUN apt-get update && apt-get install -y python3-dev gcc git g++ libc6-dev libyaml-dev libffi-dev libxslt-dev libxml2-dev make curl libssl-dev
 RUN pip3 install -U pip
 
 COPY . /faucetconfrpc
@@ -30,10 +30,12 @@ RUN pip3 --no-cache-dir install .
 
 FROM python:3.10-slim
 COPY --from=builder /usr/local /usr/local
+RUN apt-get update && apt-get install -y iproute2
 
 RUN python3 -c "from faucetconfrpc.faucetconfrpc_client_lib import FaucetConfRpcClient"
 RUN faucetconfrpc_client --help
 RUN faucetconfrpc_server --help
+RUN ss --help
 
 EXPOSE 59999
 
