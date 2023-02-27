@@ -1,5 +1,10 @@
 FROM python:3.9-slim as builder
 
+ARG PIP_INDEX_URL
+ARG PIP_TRUSTED_HOST
+ENV PIP_INDEX_URL=${PIP_INDEX_URL}
+ENV PIP_TRUSTED_HOST=${PIP_TRUSTED_HOST}
+
 # TODO: when piwheels has python3.10, upgrade
 # TODO: use piwheels for armv7l specifically until/if ever mainline wheels available.
 RUN if [ "$(uname -m)" = "armv7l" ] ; then echo "using piwheels" ; /bin/echo -e "[global]\nextra-index-url=https://www.piwheels.org/simple\n" > /etc/pip.conf ; fi
