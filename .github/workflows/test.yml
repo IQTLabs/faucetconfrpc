@@ -38,7 +38,7 @@ jobs:
         PATH=~/go/bin:$PATH pytest ./tests/test_faucetconfrpc.py && \
         docker buildx create --use && \
         docker buildx build \
-          --platform linux/amd64,linux/arm64 \
+          --platform linux/arm/v7,linux/amd64,linux/arm64 \
           --file Dockerfile.server .
     - name: golang install test
       run: |
