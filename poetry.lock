@@ -65,7 +65,7 @@ transitions = "*"
 
 [[package]]
 name = "c65faucet"
-version = "1.0.48"
+version = "1.0.49"
 description = "Faucet is an OpenFlow controller that implements a layer 2 and layer 3 switch."
 category = "main"
 optional = false
@@ -955,7 +955,7 @@ python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,>=2.7"
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8 <3.11"
-content-hash = "8198599a38ce3e852118bb6bf4d3e403e848c218f4d40ca5726fc7ac33079db1"
+content-hash = "d1e7b84be3c541c3857ba56637ee852180dbe22eab4bab6354beee051cc54b55"
 
 [metadata.files]
 astroid = [
@@ -996,7 +996,7 @@ c65chewie = [
     {file = "c65chewie-1.0.4.tar.gz", hash = "sha256:e99122b80836dafb35d6f2b8e157e8c1defd60ccd339a7e6cf2542109ef4e939"},
 ]
 c65faucet = [
-    {file = "c65faucet-1.0.48.tar.gz", hash = "sha256:00b5adce3ff1d7427de7cd52bdd714f0729067aeabe906f5b5dfadb006d3aa43"},
+    {file = "c65faucet-1.0.49.tar.gz", hash = "sha256:8e034dfb6165f763beb2bcd5376d7f8098d01c1e1fa1281f8738abef9b25ae4c"},
 ]
 certifi = [
     {file = "certifi-2022.12.7-py3-none-any.whl", hash = "sha256:4ad3232f5e926d6718ec31cfc1fcadfde020920e278684144551c91769c7bc18"},
