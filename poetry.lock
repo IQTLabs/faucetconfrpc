@@ -65,7 +65,7 @@ transitions = "*"
 
 [[package]]
 name = "c65faucet"
-version = "1.0.49"
+version = "1.0.50"
 description = "Faucet is an OpenFlow controller that implements a layer 2 and layer 3 switch."
 category = "main"
 optional = false
@@ -80,7 +80,7 @@ os_ken = "2.6.0"
 pbr = ">=1.9"
 prometheus_client = "0.16.0"
 pytricia = ">=1.0.0"
-"ruamel.yaml" = "0.17.21"
+"ruamel.yaml" = "0.17.22"
 
 [[package]]
 name = "certifi"
@@ -801,7 +801,7 @@ middleware = ["webob"]
 
 [[package]]
 name = "ruamel.yaml"
-version = "0.17.21"
+version = "0.17.22"
 description = "ruamel.yaml is a YAML parser/emitter that supports roundtrip preservation of comments, seq/map flow style, and map key order"
 category = "main"
 optional = false
@@ -955,7 +955,7 @@ python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,>=2.7"
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8 <3.11"
-content-hash = "7a503487f7bf0adac6275bc9a3129bac61e694420b7e785249ad378555bf59e6"
+content-hash = "83d39bf49bc4aa413078700313cb0b30ce995f5bff015139bbb2ee22bfd2c365"
 
 [metadata.files]
 astroid = [
@@ -996,7 +996,7 @@ c65chewie = [
     {file = "c65chewie-1.0.4.tar.gz", hash = "sha256:e99122b80836dafb35d6f2b8e157e8c1defd60ccd339a7e6cf2542109ef4e939"},
 ]
 c65faucet = [
-    {file = "c65faucet-1.0.49.tar.gz", hash = "sha256:8e034dfb6165f763beb2bcd5376d7f8098d01c1e1fa1281f8738abef9b25ae4c"},
+    {file = "c65faucet-1.0.50.tar.gz", hash = "sha256:f759b7cac43765750840a83c2632f2835329d359fd8211680eb41147022993a0"},
 ]
 certifi = [
     {file = "certifi-2022.12.7-py3-none-any.whl", hash = "sha256:4ad3232f5e926d6718ec31cfc1fcadfde020920e278684144551c91769c7bc18"},
@@ -1878,8 +1878,8 @@ routes = [
     {file = "Routes-2.5.1.tar.gz", hash = "sha256:b6346459a15f0cbab01a45a90c3d25caf980d4733d628b4cc1952b865125d053"},
 ]
 "ruamel.yaml" = [
-    {file = "ruamel.yaml-0.17.21-py3-none-any.whl", hash = "sha256:742b35d3d665023981bd6d16b3d24248ce5df75fdb4e2924e93a05c1f8b61ca7"},
-    {file = "ruamel.yaml-0.17.21.tar.gz", hash = "sha256:8b7ce697a2f212752a35c1ac414471dc16c424c9573be4926b56ff3f5d23b7af"},
+    {file = "ruamel.yaml-0.17.22-py3-none-any.whl", hash = "sha256:b4c6e66d103d8af198aa6139580ab735169be4922eb4c515ac121bdabf6f9361"},
+    {file = "ruamel.yaml-0.17.22.tar.gz", hash = "sha256:c22ec58aaca5105f771cb8f7ac45ad631b5e8b00454ebe1822d442fb696e9e62"},
 ]
 "ruamel.yaml.clib" = [
     {file = "ruamel.yaml.clib-0.2.7-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:d5859983f26d8cd7bb5c287ef452e8aacc86501487634573d260968f753e1d71"},
