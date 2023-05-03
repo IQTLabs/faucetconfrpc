@@ -2,7 +2,7 @@ module gotest
 
 go 1.18
 
-require github.com/iqtlabs/faucetconfrpc v0.55.52
+require github.com/iqtlabs/faucetconfrpc v0.55.53
 
 require (
 	github.com/golang/protobuf v1.5.2 // indirect
