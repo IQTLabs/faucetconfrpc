@@ -81,12 +81,14 @@ class ServerIntTests(unittest.TestCase):
 
     @classmethod
     def _wait_for_port(cls, host, port, timeout=10):
+        sock_ret = None
         for _ in range(timeout):
             with closing(socket.socket(socket.AF_INET, socket.SOCK_STREAM)) as sock:
-                if sock.connect_ex((host, port)) == 0:
+                sock_ret = sock.connect_ex((host, port))
+                if sock_ret == 0:
                     return  # pytype: disable=not-callable
             time.sleep(1)
-        cls.fail('server did not start')
+        cls.fail(cls, f'server did not start (cannot connect to port {port}: {sock_ret}')
 
     @classmethod
     def tearDownClass(cls):
@@ -124,7 +126,8 @@ class ServerIntTests(unittest.TestCase):
 
         cls.server = subprocess.Popen(
             ['timeout',
-             '10s',
+             '30s',
+             'python3',
              './src/faucetconfrpc/faucetconfrpc_server.py',
              '--config_dir=%s' % cls.tmpdir,
              '--default_config=%s' % cls.default_config,
