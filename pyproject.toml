@@ -11,7 +11,7 @@ c65faucet = "1.0.53"
 grpcio = "1.55.0"
 grpcio-tools = "1.55.0"
 protobuf = "4.23.1"
-prometheus_client = "0.16.0"
+prometheus_client = "0.17.0"
 pybind11 = "2.10.4"
 os-ken = "2.6.0"
 # dnspython 2.3.0 is not compatible with eventlet
