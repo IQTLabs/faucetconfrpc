@@ -104,13 +104,13 @@ transitions = "*"
 
 [[package]]
 name = "c65faucet"
-version = "1.0.54"
+version = "1.0.56"
 description = "Faucet is an OpenFlow controller that implements a layer 2 and layer 3 switch."
 category = "main"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "c65faucet-1.0.54.tar.gz", hash = "sha256:24bd7a056ec4a0ebbd6f3f42721fa161c386e858c3a538d80eee427801ed7988"},
+    {file = "c65faucet-1.0.56.tar.gz", hash = "sha256:4d71b77dce68e0ea957701d07a809074fe2cec16488992a9698971266523df76"},
 ]
 
 [package.dependencies]
@@ -122,7 +122,7 @@ os_ken = "2.6.0"
 pbr = ">=1.9"
 prometheus_client = "0.17.0"
 pytricia = ">=1.0.0"
-"ruamel.yaml" = "0.17.26"
+"ruamel.yaml" = "0.17.28"
 
 [[package]]
 name = "certifi"
@@ -1718,15 +1718,15 @@ docs = ["Sphinx", "webob"]
 middleware = ["webob"]
 
 [[package]]
-name = "ruamel.yaml"
-version = "0.17.26"
+name = "ruamel-yaml"
+version = "0.17.28"
 description = "ruamel.yaml is a YAML parser/emitter that supports roundtrip preservation of comments, seq/map flow style, and map key order"
 category = "main"
 optional = false
 python-versions = ">=3"
 files = [
-    {file = "ruamel.yaml-0.17.26-py3-none-any.whl", hash = "sha256:25d0ee82a0a9a6f44683dcf8c282340def4074a4562f3a24f55695bb254c1693"},
-    {file = "ruamel.yaml-0.17.26.tar.gz", hash = "sha256:baa2d0a5aad2034826c439ce61c142c07082b76f4791d54145e131206e998059"},
+    {file = "ruamel.yaml-0.17.28-py3-none-any.whl", hash = "sha256:823aff68f88260805049d6a4825e36cb7f1e273a7dd8f391e7b35a16a67a30ea"},
+    {file = "ruamel.yaml-0.17.28.tar.gz", hash = "sha256:3bf6df1c481d2463a633be6ee86e8aece941bb3298a9a0cd6d0865f47b1ddce6"},
 ]
 
 [package.dependencies]
@@ -2058,4 +2058,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8 <3.11"
-content-hash = "03edf8a63d2157460968b05a08384c5141d8fc9d8abb0c13d427f6c934918cf3"
+content-hash = "7550b4370222da17af702bfefc632aaa3a7b42cd3f3c40e19fffdea791800307"
