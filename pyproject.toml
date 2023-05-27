@@ -19,7 +19,7 @@ os-ken = "2.6.0"
 dnspython = "<2.3.1"
 pyopenssl = ">22.1.0"
 # TODO: workaround broken piwheels cryptography
-cryptography = "<40.0.2"
+cryptography = "<40.0.3"
 
 [tool.poetry.dev-dependencies]
 attrs = "23.1.0"
