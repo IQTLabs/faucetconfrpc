@@ -104,13 +104,13 @@ transitions = "*"
 
 [[package]]
 name = "c65faucet"
-version = "1.0.56"
+version = "1.0.57"
 description = "Faucet is an OpenFlow controller that implements a layer 2 and layer 3 switch."
 category = "main"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "c65faucet-1.0.56.tar.gz", hash = "sha256:4d71b77dce68e0ea957701d07a809074fe2cec16488992a9698971266523df76"},
+    {file = "c65faucet-1.0.57.tar.gz", hash = "sha256:b60b7fa816b98b282d096c7965a95e0b789ac33e7ee6412c7579ac9d44204b4d"},
 ]
 
 [package.dependencies]
@@ -122,7 +122,7 @@ os_ken = "2.6.0"
 pbr = ">=1.9"
 prometheus_client = "0.17.0"
 pytricia = ">=1.0.0"
-"ruamel.yaml" = "0.17.28"
+"ruamel.yaml" = "0.17.32"
 
 [[package]]
 name = "certifi"
@@ -1535,6 +1535,18 @@ category = "dev"
 optional = false
 python-versions = "<3.11,>=3.7"
 files = [
+    {file = "pytype-2023.6.16-cp310-cp310-macosx_11_0_x86_64.whl", hash = "sha256:13e46bbd3ad7878a93208bf93794b08462c83fc0b072de1874cef9befb8f60d7"},
+    {file = "pytype-2023.6.16-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:121dc688919706534ab941e8351c03b5ed71b38e40de330cefaf4eed6bc457ab"},
+    {file = "pytype-2023.6.16-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:0d39450be77ae699d2081f1cbbb0c90718e05ccdb7b9a7b0edbdbc1f5e597a5a"},
+    {file = "pytype-2023.6.16-cp37-cp37m-macosx_10_15_x86_64.whl", hash = "sha256:b5a820c2c47b4ecb4e7913796af7357d91c61d53e3f740682999bf1036fcec3c"},
+    {file = "pytype-2023.6.16-cp37-cp37m-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:69c134b3be3a3caedcca4b720665637894c412991f62644b2623c892efdb473f"},
+    {file = "pytype-2023.6.16-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:b504c5e0dd0289351961f65779db75da32f1e799700b2ba0d1ba80647c5e04ee"},
+    {file = "pytype-2023.6.16-cp38-cp38-macosx_10_15_x86_64.whl", hash = "sha256:626c547c10e1abfb3264eed8db096e9f6f7982b04063812482b31f47d2eace3e"},
+    {file = "pytype-2023.6.16-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:1e199b74979bf9a5bfadd9c0ad47e6e5cf0515f5de29b95c5f49c9198838cd41"},
+    {file = "pytype-2023.6.16-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:8d093353f1621402f89a697edbcabe1421467cdfbb797080244e65f60ac27da9"},
+    {file = "pytype-2023.6.16-cp39-cp39-macosx_11_0_x86_64.whl", hash = "sha256:0664f3e885058099a009b3e4723c8cec0c8bc5855c913467e5bbc6528ad4ea1e"},
+    {file = "pytype-2023.6.16-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:2c7836fcaf3eedb430decd03156bf318972d988fb64862c1cdda07d4bc4572b6"},
+    {file = "pytype-2023.6.16-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:3095d8831f2f56b0c7ca5cfde54ec812fab7ff94656bba5799ce4c811ed352c3"},
     {file = "pytype-2023.6.16.tar.gz", hash = "sha256:af8e55594ce1389f9944dd283ebe8bba0a43b404f6c9ed99e9fb964b69629454"},
 ]
 
@@ -1711,14 +1723,14 @@ middleware = ["webob"]
 
 [[package]]
 name = "ruamel-yaml"
-version = "0.17.28"
+version = "0.17.32"
 description = "ruamel.yaml is a YAML parser/emitter that supports roundtrip preservation of comments, seq/map flow style, and map key order"
 category = "main"
 optional = false
 python-versions = ">=3"
 files = [
-    {file = "ruamel.yaml-0.17.28-py3-none-any.whl", hash = "sha256:823aff68f88260805049d6a4825e36cb7f1e273a7dd8f391e7b35a16a67a30ea"},
-    {file = "ruamel.yaml-0.17.28.tar.gz", hash = "sha256:3bf6df1c481d2463a633be6ee86e8aece941bb3298a9a0cd6d0865f47b1ddce6"},
+    {file = "ruamel.yaml-0.17.32-py3-none-any.whl", hash = "sha256:23cd2ed620231677564646b0c6a89d138b6822a0d78656df7abda5879ec4f447"},
+    {file = "ruamel.yaml-0.17.32.tar.gz", hash = "sha256:ec939063761914e14542972a5cba6d33c23b0859ab6342f61cf070cfc600efc2"},
 ]
 
 [package.dependencies]
@@ -2051,4 +2063,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8 <3.11"
-content-hash = "ab74447563b6589855b9f4fa11a5ef28f64f0413baeebbe93d85a2deab020816"
+content-hash = "b311f87db705ef58e06176ebb71ae2a7d89f0da33c604b97163310bdb2158238"
