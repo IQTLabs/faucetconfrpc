@@ -1423,18 +1423,18 @@ files = [
 
 [[package]]
 name = "pybind11"
-version = "2.11.0"
+version = "2.11.1"
 description = "Seamless operability between C++11 and Python"
 category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "pybind11-2.11.0-py3-none-any.whl", hash = "sha256:307443ea89b73ce88f68fa48687d160c036622a54bc2a25aae9d5ea792bef268"},
-    {file = "pybind11-2.11.0.tar.gz", hash = "sha256:03006fb261379ed19cb0171a9cc6238d64da8a31b3f5e754cb276d4615449217"},
+    {file = "pybind11-2.11.1-py3-none-any.whl", hash = "sha256:33cdd02a6453380dd71cc70357ce388ad1ee8d32bd0e38fc22b273d050aa29b3"},
+    {file = "pybind11-2.11.1.tar.gz", hash = "sha256:00cd59116a6e8155aecd9174f37ba299d1d397ed4a6b86ac1dfe01b3e40f2cc4"},
 ]
 
 [package.extras]
-global = ["pybind11-global (==2.11.0)"]
+global = ["pybind11-global (==2.11.1)"]
 
 [[package]]
 name = "pycparser"
@@ -2146,4 +2146,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8 <3.11"
-content-hash = "1526f02277f7a8923a404596b57cbe176f5990a6f7aa1b156314991186ae3667"
+content-hash = "dd8985b7ea99f9cfc8f85fa9dc54d8675378a8b9f66a6c3f162b318d7643e8bc"
