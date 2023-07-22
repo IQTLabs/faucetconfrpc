@@ -1,4 +1,4 @@
-FROM python:3.9-slim as builder
+FROM ubuntu:jammy as builder
 
 ARG PIP_INDEX_URL
 ARG PIP_TRUSTED_HOST
@@ -12,16 +12,16 @@ RUN if [ "$(uname -m)" = "armv7l" ] ; then echo "using piwheels" ; /bin/echo -e 
 COPY . /faucetconfrpc
 WORKDIR /faucetconfrpc
 
-RUN apt-get update && apt-get install -y python3-dev gcc git g++ libc6-dev libyaml-dev libffi-dev libxml2-dev libxslt-dev make
-RUN pip3 install -U pip
+RUN apt-get update && apt-get install -y python3-dev gcc git g++ libc6-dev libyaml-dev libffi-dev libxml2-dev libxslt-dev make python3-pip
 
-RUN pip3 --no-cache-dir install .
+RUN pip install -U pip
+RUN pip --no-cache-dir install .
 
-FROM python:3.9-slim
+FROM ubuntu:jammy
 
 COPY --from=builder /usr/local /usr/local
 
-RUN apt-get update && apt-get install -y iproute2 libatomic1
+RUN apt-get update && apt-get install -y python3 iproute2 libatomic1
 
 RUN python3 -c "from faucetconfrpc.faucetconfrpc_client_lib import FaucetConfRpcClient"
 RUN faucetconfrpc_client --help
