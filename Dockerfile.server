@@ -1,4 +1,4 @@
-FROM python:3.9-slim as builder
+FROM python:3.11-slim as builder
 
 ARG PIP_INDEX_URL
 ARG PIP_TRUSTED_HOST
@@ -17,7 +17,7 @@ RUN pip3 install -U pip
 
 RUN pip3 --no-cache-dir install .
 
-FROM python:3.9-slim
+FROM python:3.11-slim
 
 COPY --from=builder /usr/local /usr/local
 
