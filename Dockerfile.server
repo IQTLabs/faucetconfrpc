@@ -12,7 +12,7 @@ RUN if [ "$(uname -m)" = "armv7l" ] ; then echo "using piwheels" ; /bin/echo -e 
 COPY . /faucetconfrpc
 WORKDIR /faucetconfrpc
 
-RUN apt-get update && apt-get install -y python3-dev gcc git g++ libc6-dev libyaml-dev libffi-dev libxml2-dev libxslt-dev make python3-pip rustc
+RUN apt-get update && apt-get install -y python3-dev gcc git g++ libc6-dev libyaml-dev libffi-dev libxml2-dev libxslt-dev make python3-pip rustc cargo
 
 RUN pip install -U pip
 RUN pip --no-cache-dir install .
