@@ -49,7 +49,6 @@ jobs:
       run: |
         ./tests/codecheck.sh && \
         PATH=~/go/bin:$PATH pytest -s ./tests/test_faucetconfrpc.py && \
-        docker buildx create --use && \
         docker buildx build \
           --allow security.insecure \
           --platform linux/arm/v7,linux/amd64,linux/arm64 \
