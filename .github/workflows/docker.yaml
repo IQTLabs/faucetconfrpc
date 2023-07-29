@@ -38,6 +38,9 @@ jobs:
       env:
         DOCKER_CLI_EXPERIMENTAL: enabled
       run: |
+        sudo apt-get update && sudo apt-get -y qemu-user && \
+        echo -e 'experimental = true\ninsecure-entitlements  = [ "security.insecure" ]' > /tmp/buildx.toml && \
+        docker buildx create --use && \
         docker buildx build \
           --allow security.insecure \
           --platform linux/arm/v7,linux/amd64,linux/arm64 \
