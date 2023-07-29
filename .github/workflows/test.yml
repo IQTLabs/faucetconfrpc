@@ -49,7 +49,7 @@ jobs:
       run: |
         ./tests/codecheck.sh && \
         PATH=~/go/bin:$PATH pytest -s ./tests/test_faucetconfrpc.py && \
-        sudo apt-get update && sudo apt-get -y qemu-user && \
+        sudo apt-get update && sudo apt-get -y install qemu-user && \
         echo -e 'experimental = true\ninsecure-entitlements  = [ "security.insecure" ]' > /tmp/buildx.toml && \
         docker buildx create --use && \
         docker buildx build \
