@@ -38,7 +38,7 @@ jobs:
       env:
         DOCKER_CLI_EXPERIMENTAL: enabled
       run: |
-        sudo apt-get update && sudo apt-get -y install qemu-user && \
+        ./install-docker.sh && \
         docker buildx create --buildkitd-flags '--allow-insecure-entitlement security.insecure' --use && \
         docker buildx build \
           --allow security.insecure \
