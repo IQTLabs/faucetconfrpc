@@ -50,10 +50,8 @@ jobs:
         ./tests/codecheck.sh && \
         PATH=~/go/bin:$PATH pytest -s ./tests/test_faucetconfrpc.py && \
         sudo apt-get update && sudo apt-get -y install qemu-user && \
-        echo -e 'experimental = true\ninsecure-entitlements  = [ "security.insecure" ]' > /tmp/buildx.toml && \
         docker buildx create --use && \
         docker buildx build \
-          --config /tmp/buildx.toml \
           --platform linux/arm/v7,linux/amd64,linux/arm64 \
           --file Dockerfile.server .
     - name: golang install test
