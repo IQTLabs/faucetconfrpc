@@ -6,7 +6,7 @@ ARG PIP_TRUSTED_HOST
 ENV PIP_INDEX_URL=${PIP_INDEX_URL}
 ENV PIP_TRUSTED_HOST=${PIP_TRUSTED_HOST}
 # https://github.com/rust-lang/cargo/issues/8719
-ENV CARGO_REGISTRIES_CRATES_IO_PROTOCOL=spars
+ENV CARGO_REGISTRIES_CRATES_IO_PROTOCOL=sparse
 
 # TODO: when piwheels has python3.10, upgrade
 # TODO: use piwheels for armv7l specifically until/if ever mainline wheels available.
