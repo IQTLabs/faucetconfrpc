@@ -49,7 +49,7 @@ jobs:
       run: |
         ./tests/codecheck.sh && \
         PATH=~/go/bin:$PATH pytest -s ./tests/test_faucetconfrpc.py && \
-        sudo apt-get -y update && sudo apt-get -y install qemu-user ca-certificates curl gnupg \
+        sudo apt-get -y update && sudo apt-get -y install qemu-user ca-certificates curl gnupg
         for pkg in docker.io docker-doc docker-compose podman-docker containerd runc; do sudo apt-get remove $pkg; done 
         sudo install -m 0755 -d /etc/apt/keyrings
         curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg 
