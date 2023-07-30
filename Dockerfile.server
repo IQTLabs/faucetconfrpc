@@ -20,7 +20,7 @@ RUN apt-get update && apt-get install -y python3-dev gcc git g++ libc6-dev libya
 RUN pip install -U pip
 RUN dd if=/dev/zero of=cargofs bs=1M count=50
 RUN mkfs.vfat cargofs
-RUN --security=insecure mkdir -p /root/.cargo && chmod 777 /root/.cargo && mount -t vfat file /root/.cargo
+RUN --security=insecure mkdir -p /root/.cargo && chmod 777 /root/.cargo && mount -t vfat cargofs /root/.cargo
 RUN pip --no-cache-dir install .
 
 FROM ubuntu:jammy
