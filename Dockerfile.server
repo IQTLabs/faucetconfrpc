@@ -6,7 +6,7 @@ ARG PIP_TRUSTED_HOST
 ENV PIP_INDEX_URL=${PIP_INDEX_URL}
 ENV PIP_TRUSTED_HOST=${PIP_TRUSTED_HOST}
 # https://github.com/rust-lang/cargo/issues/8719
-ENV CARGO_REGISTRIES_CRATES_IO_PROTOCOL=sparse
+# ENV CARGO_REGISTRIES_CRATES_IO_PROTOCOL=sparse
 
 # TODO: when piwheels has python3.10, upgrade
 # TODO: use piwheels for armv7l specifically until/if ever mainline wheels available.
@@ -18,9 +18,9 @@ WORKDIR /faucetconfrpc
 RUN apt-get update && apt-get install -y python3-dev gcc git g++ libc6-dev libyaml-dev libffi-dev libxml2-dev libxslt-dev make python3-pip rustc cargo dosfstools
 
 RUN pip install -U pip
-# RUN dd if=/dev/zero of=file bs=1M count=50
-# RUN mkfs.vfat file
-# RUN --security=insecure mkdir -p /root/.cargo && chmod 777 /root/.cargo && mount -t vfat file /root/.cargo
+RUN dd if=/dev/zero of=cargofs bs=1M count=50
+RUN mkfs.vfat cargofs
+RUN --security=insecure mkdir -p /root/.cargo && chmod 777 /root/.cargo && mount -t vfat file /root/.cargo
 RUN pip --no-cache-dir install .
 
 FROM ubuntu:jammy
