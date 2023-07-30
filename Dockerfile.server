@@ -13,12 +13,10 @@ RUN if [ "$(uname -m)" = "armv7l" ] ; then echo "using piwheels" ; /bin/echo -e 
 COPY . /faucetconfrpc
 WORKDIR /faucetconfrpc
 
-RUN apt-get update && apt-get install -y python3-dev gcc git g++ libc6-dev libyaml-dev libffi-dev libxml2-dev libxslt-dev make python3-pip rustc cargo dosfstools
+RUN apt-get update && apt-get install -y python3-dev gcc git g++ libc6-dev libyaml-dev libffi-dev libxml2-dev libxslt-dev make python3-pip cargo dosfstools
 
 RUN pip install -U pip
-# RUN dd if=/dev/zero of=file bs=1M count=50
-# RUN mkfs.vfat file
-# RUN --security=insecure mkdir -p /root/.cargo && chmod 777 /root/.cargo && mount -t vfat file /root/.cargo
+RUN pip install -U cryptography
 RUN pip --no-cache-dir install .
 
 FROM ubuntu:jammy
