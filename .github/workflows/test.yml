@@ -3,6 +3,18 @@ name: test
 on: [push, pull_request]
 
 jobs:
+  docker-test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: docker build test
+      run: |
+        ./install-docker.sh && \
+        docker buildx create --buildkitd-flags '--allow-insecure-entitlement security.insecure' --use && \
+        docker buildx build \
+          --allow security.insecure \
+          --platform linux/arm/v7,linux/amd64,linux/arm64 \
+          --file Dockerfile.server .
   test:
     runs-on: ubuntu-latest
     steps:
@@ -48,11 +60,7 @@ jobs:
         PYTHONPATH: "."
       run: |
         ./tests/codecheck.sh && \
-        PATH=~/go/bin:$PATH pytest -s ./tests/test_faucetconfrpc.py && \
-        docker buildx create --use && \
-        docker buildx build \
-          --platform linux/arm/v7,linux/amd64,linux/arm64 \
-          --file Dockerfile.server .
+        PATH=~/go/bin:$PATH pytest -s ./tests/test_faucetconfrpc.py
     - name: golang install test
       run: |
         echo "module iqtlabs/faucetconfrpc" > go.mod && \
