@@ -12,7 +12,7 @@ RUN if [ "$(uname -m)" = "armv7l" ] ; then echo "using piwheels" ; /bin/echo -e 
 COPY . /faucetconfrpc
 WORKDIR /faucetconfrpc
 
-RUN apt-get update && apt-get install -y python3-dev gcc git g++ libc6-dev libyaml-dev libffi-dev libxml2-dev libxslt-dev make python3-pip
+RUN apt-get update && apt-get install -y curl python3-dev gcc git g++ libc6-dev libyaml-dev libffi-dev libxml2-dev libxslt-dev make python3-pip
 
 RUN pip install -U pip
 RUN --mount=type=tmpfs,target=/root/.cargo /bin/bash -c 'curl https://sh.rustup.rs -sSf | bash -s -- -y && source ~/.cargo/env pip --no-cache-dir install .'
