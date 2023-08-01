@@ -1,4 +1,3 @@
-# syntax = docker/dockerfile:experimental
 FROM ubuntu:jammy as builder
 
 ARG PIP_INDEX_URL
