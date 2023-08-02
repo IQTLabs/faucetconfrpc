@@ -39,9 +39,8 @@ jobs:
         DOCKER_CLI_EXPERIMENTAL: enabled
       run: |
         ./install-docker.sh && \
-        docker buildx create --buildkitd-flags '--allow-insecure-entitlement security.insecure' --use && \
+        docker buildx create --use && \
         docker buildx build \
-          --allow security.insecure \
           --platform linux/arm/v7,linux/amd64,linux/arm64 \
           --push \
           --file Dockerfile.server \
