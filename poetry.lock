@@ -102,13 +102,13 @@ transitions = "*"
 
 [[package]]
 name = "c65faucet"
-version = "1.0.60"
+version = "1.0.62"
 description = "Faucet is an OpenFlow controller that implements a layer 2 and layer 3 switch."
 category = "main"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "c65faucet-1.0.60.tar.gz", hash = "sha256:baa24f1bd842bf59502e204a56ffd0d7bb6caea24d50e523711b4c28aaad4a78"},
+    {file = "c65faucet-1.0.62.tar.gz", hash = "sha256:95d4e0812468415f15cc20adf7657c31d611768b28985f34403088c09a66ba51"},
 ]
 
 [package.dependencies]
@@ -120,7 +120,7 @@ os_ken = "2.7.0"
 pbr = ">=1.9"
 prometheus_client = "0.17.1"
 pytricia = ">=1.0.0"
-"ruamel.yaml" = "0.17.32"
+"ruamel.yaml" = "0.17.35"
 
 [[package]]
 name = "certifi"
@@ -1736,18 +1736,18 @@ middleware = ["webob"]
 
 [[package]]
 name = "ruamel-yaml"
-version = "0.17.32"
+version = "0.17.35"
 description = "ruamel.yaml is a YAML parser/emitter that supports roundtrip preservation of comments, seq/map flow style, and map key order"
 category = "main"
 optional = false
 python-versions = ">=3"
 files = [
-    {file = "ruamel.yaml-0.17.32-py3-none-any.whl", hash = "sha256:23cd2ed620231677564646b0c6a89d138b6822a0d78656df7abda5879ec4f447"},
-    {file = "ruamel.yaml-0.17.32.tar.gz", hash = "sha256:ec939063761914e14542972a5cba6d33c23b0859ab6342f61cf070cfc600efc2"},
+    {file = "ruamel.yaml-0.17.35-py3-none-any.whl", hash = "sha256:b105e3e6fc15b41fdb201ba1b95162ae566a4ef792b9f884c46b4ccc5513a87a"},
+    {file = "ruamel.yaml-0.17.35.tar.gz", hash = "sha256:801046a9caacb1b43acc118969b49b96b65e8847f29029563b29ac61d02db61b"},
 ]
 
 [package.dependencies]
-"ruamel.yaml.clib" = {version = ">=0.2.7", markers = "platform_python_implementation == \"CPython\" and python_version < \"3.12\""}
+"ruamel.yaml.clib" = {version = ">=0.2.7", markers = "platform_python_implementation == \"CPython\" and python_version < \"3.13\""}
 
 [package.extras]
 docs = ["ryd"]
@@ -2076,4 +2076,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8 <3.11"
-content-hash = "5e6e8541a648aaf3f871ad75e337f9dcecb02515cc7da67e118ddeda34a04ce4"
+content-hash = "2b8d800c3da4197bd9432b02d76b975d2c55369b036fba55d0cf5a12a5ae6ace"
