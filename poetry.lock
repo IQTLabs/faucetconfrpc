@@ -102,13 +102,13 @@ transitions = "*"
 
 [[package]]
 name = "c65faucet"
-version = "1.0.60"
+version = "1.0.62"
 description = "Faucet is an OpenFlow controller that implements a layer 2 and layer 3 switch."
 category = "main"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "c65faucet-1.0.60.tar.gz", hash = "sha256:baa24f1bd842bf59502e204a56ffd0d7bb6caea24d50e523711b4c28aaad4a78"},
+    {file = "c65faucet-1.0.62.tar.gz", hash = "sha256:95d4e0812468415f15cc20adf7657c31d611768b28985f34403088c09a66ba51"},
 ]
 
 [package.dependencies]
@@ -120,7 +120,7 @@ os_ken = "2.7.0"
 pbr = ">=1.9"
 prometheus_client = "0.17.1"
 pytricia = ">=1.0.0"
-"ruamel.yaml" = "0.17.32"
+"ruamel.yaml" = "0.17.35"
 
 [[package]]
 name = "certifi"
@@ -1320,25 +1320,25 @@ twisted = ["twisted"]
 
 [[package]]
 name = "protobuf"
-version = "4.24.3"
+version = "4.24.4"
 description = ""
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "protobuf-4.24.3-cp310-abi3-win32.whl", hash = "sha256:20651f11b6adc70c0f29efbe8f4a94a74caf61b6200472a9aea6e19898f9fcf4"},
-    {file = "protobuf-4.24.3-cp310-abi3-win_amd64.whl", hash = "sha256:3d42e9e4796a811478c783ef63dc85b5a104b44aaaca85d4864d5b886e4b05e3"},
-    {file = "protobuf-4.24.3-cp37-abi3-macosx_10_9_universal2.whl", hash = "sha256:6e514e8af0045be2b56e56ae1bb14f43ce7ffa0f68b1c793670ccbe2c4fc7d2b"},
-    {file = "protobuf-4.24.3-cp37-abi3-manylinux2014_aarch64.whl", hash = "sha256:ba53c2f04798a326774f0e53b9c759eaef4f6a568ea7072ec6629851c8435959"},
-    {file = "protobuf-4.24.3-cp37-abi3-manylinux2014_x86_64.whl", hash = "sha256:f6ccbcf027761a2978c1406070c3788f6de4a4b2cc20800cc03d52df716ad675"},
-    {file = "protobuf-4.24.3-cp37-cp37m-win32.whl", hash = "sha256:1b182c7181a2891e8f7f3a1b5242e4ec54d1f42582485a896e4de81aa17540c2"},
-    {file = "protobuf-4.24.3-cp37-cp37m-win_amd64.whl", hash = "sha256:b0271a701e6782880d65a308ba42bc43874dabd1a0a0f41f72d2dac3b57f8e76"},
-    {file = "protobuf-4.24.3-cp38-cp38-win32.whl", hash = "sha256:e29d79c913f17a60cf17c626f1041e5288e9885c8579832580209de8b75f2a52"},
-    {file = "protobuf-4.24.3-cp38-cp38-win_amd64.whl", hash = "sha256:067f750169bc644da2e1ef18c785e85071b7c296f14ac53e0900e605da588719"},
-    {file = "protobuf-4.24.3-cp39-cp39-win32.whl", hash = "sha256:2da777d34b4f4f7613cdf85c70eb9a90b1fbef9d36ae4a0ccfe014b0b07906f1"},
-    {file = "protobuf-4.24.3-cp39-cp39-win_amd64.whl", hash = "sha256:f631bb982c5478e0c1c70eab383af74a84be66945ebf5dd6b06fc90079668d0b"},
-    {file = "protobuf-4.24.3-py3-none-any.whl", hash = "sha256:f6f8dc65625dadaad0c8545319c2e2f0424fede988368893ca3844261342c11a"},
-    {file = "protobuf-4.24.3.tar.gz", hash = "sha256:12e9ad2ec079b833176d2921be2cb24281fa591f0b119b208b788adc48c2561d"},
+    {file = "protobuf-4.24.4-cp310-abi3-win32.whl", hash = "sha256:ec9912d5cb6714a5710e28e592ee1093d68c5ebfeda61983b3f40331da0b1ebb"},
+    {file = "protobuf-4.24.4-cp310-abi3-win_amd64.whl", hash = "sha256:1badab72aa8a3a2b812eacfede5020472e16c6b2212d737cefd685884c191085"},
+    {file = "protobuf-4.24.4-cp37-abi3-macosx_10_9_universal2.whl", hash = "sha256:8e61a27f362369c2f33248a0ff6896c20dcd47b5d48239cb9720134bef6082e4"},
+    {file = "protobuf-4.24.4-cp37-abi3-manylinux2014_aarch64.whl", hash = "sha256:bffa46ad9612e6779d0e51ae586fde768339b791a50610d85eb162daeb23661e"},
+    {file = "protobuf-4.24.4-cp37-abi3-manylinux2014_x86_64.whl", hash = "sha256:b493cb590960ff863743b9ff1452c413c2ee12b782f48beca77c8da3e2ffe9d9"},
+    {file = "protobuf-4.24.4-cp37-cp37m-win32.whl", hash = "sha256:dbbed8a56e56cee8d9d522ce844a1379a72a70f453bde6243e3c86c30c2a3d46"},
+    {file = "protobuf-4.24.4-cp37-cp37m-win_amd64.whl", hash = "sha256:6b7d2e1c753715dcfe9d284a25a52d67818dd43c4932574307daf836f0071e37"},
+    {file = "protobuf-4.24.4-cp38-cp38-win32.whl", hash = "sha256:02212557a76cd99574775a81fefeba8738d0f668d6abd0c6b1d3adcc75503dbe"},
+    {file = "protobuf-4.24.4-cp38-cp38-win_amd64.whl", hash = "sha256:2fa3886dfaae6b4c5ed2730d3bf47c7a38a72b3a1f0acb4d4caf68e6874b947b"},
+    {file = "protobuf-4.24.4-cp39-cp39-win32.whl", hash = "sha256:b77272f3e28bb416e2071186cb39efd4abbf696d682cbb5dc731308ad37fa6dd"},
+    {file = "protobuf-4.24.4-cp39-cp39-win_amd64.whl", hash = "sha256:9fee5e8aa20ef1b84123bb9232b3f4a5114d9897ed89b4b8142d81924e05d79b"},
+    {file = "protobuf-4.24.4-py3-none-any.whl", hash = "sha256:80797ce7424f8c8d2f2547e2d42bfbb6c08230ce5832d6c099a37335c9c90a92"},
+    {file = "protobuf-4.24.4.tar.gz", hash = "sha256:5a70731910cd9104762161719c3d883c960151eea077134458503723b60e3667"},
 ]
 
 [[package]]
@@ -1397,14 +1397,14 @@ pyparsing = ">=2.1.4"
 
 [[package]]
 name = "pylint"
-version = "3.0.0"
+version = "3.0.1"
 description = "python code static checker"
 category = "dev"
 optional = false
 python-versions = ">=3.8.0"
 files = [
-    {file = "pylint-3.0.0-py3-none-any.whl", hash = "sha256:21da8ed1294f88d66c82eb3e624a0993291613548bb17fbccaa220c31c41293b"},
-    {file = "pylint-3.0.0.tar.gz", hash = "sha256:d22816c963816d7810b87afe0bdf5c80009e1078ecbb9c8f2e2a24d4430039b1"},
+    {file = "pylint-3.0.1-py3-none-any.whl", hash = "sha256:9c90b89e2af7809a1697f6f5f93f1d0e518ac566e2ac4d2af881a69c13ad01ea"},
+    {file = "pylint-3.0.1.tar.gz", hash = "sha256:81c6125637be216b4652ae50cc42b9f8208dfb725cdc7e04c48f6902f4dbdf40"},
 ]
 
 [package.dependencies]
@@ -1538,22 +1538,22 @@ files = [
 
 [[package]]
 name = "pytype"
-version = "2023.9.27"
+version = "2023.10.5"
 description = "Python type inferencer"
 category = "dev"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "pytype-2023.9.27-cp310-cp310-macosx_11_0_x86_64.whl", hash = "sha256:3027ab37496776ec8ec10e7d69e7f20a964bc185e0b894f6511def4c50db068e"},
-    {file = "pytype-2023.9.27-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:c0fb5800e946f714bc117352d4010ff08d6fcb4d6423f2c5bc80e0b4c9fea641"},
-    {file = "pytype-2023.9.27-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:29cf0d7c6401c6e9ed71716ffff884cd016b88007813ef1a922153b93d71103f"},
-    {file = "pytype-2023.9.27-cp38-cp38-macosx_11_0_x86_64.whl", hash = "sha256:7d460890f4e0aa1c3e3f440e66c00b7d772aba85ff7f3e8ba4b5e0b7bc352a67"},
-    {file = "pytype-2023.9.27-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:25c217b64e6502a9e40d68ae58d00f7d645100f0c8fbe3df840dbde21533cba5"},
-    {file = "pytype-2023.9.27-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:768b924d54da5add190431037cbe54626c99bd377df8d05fea852eb6bec33be7"},
-    {file = "pytype-2023.9.27-cp39-cp39-macosx_11_0_x86_64.whl", hash = "sha256:2e38df1f0b15a28ba3abb3e0c9a3df85732985ccd1d0155454f0ae44891874fc"},
-    {file = "pytype-2023.9.27-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:1a2ded4ac6ee7dbc073b062c5a6a7dfb71a36e5c82786d47e111c7fe2d3add45"},
-    {file = "pytype-2023.9.27-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:e7b5c2753b2c5f0714c8ab03982a5383f677494e246293665015839e5b0daec2"},
-    {file = "pytype-2023.9.27.tar.gz", hash = "sha256:61ad4801f7f1f810bcd1dc83870c614606078e9c281135438cd03807dc380a6b"},
+    {file = "pytype-2023.10.5-cp310-cp310-macosx_11_0_x86_64.whl", hash = "sha256:6e2a056290985b1c7522da1538dedd3f74a2cd079a901996c9dfdf5de3749825"},
+    {file = "pytype-2023.10.5-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:6d2edfcc738798eae4e96d3fa5426278fa05869e94b1adbc4409bf7c7b4c12a5"},
+    {file = "pytype-2023.10.5-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:2eacd18c52ea508c1d09e4bec15676a2350051b5e15baf032f1b80c4f8695550"},
+    {file = "pytype-2023.10.5-cp38-cp38-macosx_11_0_x86_64.whl", hash = "sha256:947a186947c308cf473cf1c17ba7aeedd57e1721d5ede401854d8d48a273ef6b"},
+    {file = "pytype-2023.10.5-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:89515d7c32343b6e4ee6811b003d6d368efee3b019d06eeb8f777f595b65b488"},
+    {file = "pytype-2023.10.5-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:d19404ee2ef6db0cd5bc154d007e88249e4dd43c3d91d1c518f50ea7b9d5baaa"},
+    {file = "pytype-2023.10.5-cp39-cp39-macosx_11_0_x86_64.whl", hash = "sha256:0539a7fa575cc1098bb449fb191be96728121940c7ae0079fe0dcfdf148ac3b9"},
+    {file = "pytype-2023.10.5-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:951055eb8d61d431ff49b3b23e0dee6bf625371edf1d00712bd5475c53bdf8fc"},
+    {file = "pytype-2023.10.5-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:6b629c3197a3fe5e06cc1cd0965ab316ece874f0064a16f6b993b05556716264"},
+    {file = "pytype-2023.10.5.tar.gz", hash = "sha256:d465ac20807727c6a430bcf72ffc2ed2b6f37c220d3965d8d466042fe25bc1ca"},
 ]
 
 [package.dependencies]
@@ -1740,18 +1740,18 @@ middleware = ["webob"]
 
 [[package]]
 name = "ruamel-yaml"
-version = "0.17.32"
+version = "0.17.35"
 description = "ruamel.yaml is a YAML parser/emitter that supports roundtrip preservation of comments, seq/map flow style, and map key order"
 category = "main"
 optional = false
 python-versions = ">=3"
 files = [
-    {file = "ruamel.yaml-0.17.32-py3-none-any.whl", hash = "sha256:23cd2ed620231677564646b0c6a89d138b6822a0d78656df7abda5879ec4f447"},
-    {file = "ruamel.yaml-0.17.32.tar.gz", hash = "sha256:ec939063761914e14542972a5cba6d33c23b0859ab6342f61cf070cfc600efc2"},
+    {file = "ruamel.yaml-0.17.35-py3-none-any.whl", hash = "sha256:b105e3e6fc15b41fdb201ba1b95162ae566a4ef792b9f884c46b4ccc5513a87a"},
+    {file = "ruamel.yaml-0.17.35.tar.gz", hash = "sha256:801046a9caacb1b43acc118969b49b96b65e8847f29029563b29ac61d02db61b"},
 ]
 
 [package.dependencies]
-"ruamel.yaml.clib" = {version = ">=0.2.7", markers = "platform_python_implementation == \"CPython\" and python_version < \"3.12\""}
+"ruamel.yaml.clib" = {version = ">=0.2.7", markers = "platform_python_implementation == \"CPython\" and python_version < \"3.13\""}
 
 [package.extras]
 docs = ["ryd"]
@@ -2073,4 +2073,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9 <3.12"
-content-hash = "012b03ec656f2fca354a91b5087d3dbd8df900cf30d10102d572133ed4be0a39"
+content-hash = "f4de2e229c7e99a664fb749b21b728dec7feef04f2548c977ff2fde4a60bd97b"
