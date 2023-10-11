@@ -6,7 +6,7 @@ authors = ["Charlie Lewis <clewis@iqt.org>"]
 license = "Apache-2.0"
 
 [tool.poetry.dependencies]
-python = ">=3.9 <3.12"
+python = "<3.13"
 c65faucet = "1.0.62"
 grpcio = "1.59.0"
 grpcio-tools = "1.59.0"
