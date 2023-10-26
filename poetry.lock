@@ -102,25 +102,27 @@ transitions = "*"
 
 [[package]]
 name = "c65faucet"
-version = "1.0.62"
+version = "1.0.64"
 description = "Faucet is an OpenFlow controller that implements a layer 2 and layer 3 switch."
 category = "main"
 optional = false
-python-versions = ">=3.8"
+python-versions = ">=3.9"
 files = [
-    {file = "c65faucet-1.0.62.tar.gz", hash = "sha256:95d4e0812468415f15cc20adf7657c31d611768b28985f34403088c09a66ba51"},
+    {file = "c65faucet-1.0.64.tar.gz", hash = "sha256:6780c81199916dc569856c10062ae43560df35c47376ba530ef9c7f51becac81"},
 ]
 
 [package.dependencies]
 c65beka = "1.0.1"
 c65chewie = "1.0.4"
+eventlet = "*"
 influxdb = ">=2.12.0"
+ncclient = "*"
 networkx = ">=1.9"
 os_ken = "2.7.0"
 pbr = ">=1.9"
 prometheus_client = "0.17.1"
 pytricia = ">=1.0.0"
-"ruamel.yaml" = "0.17.35"
+"ruamel.yaml" = "0.18.2"
 
 [[package]]
 name = "certifi"
@@ -1743,21 +1745,21 @@ middleware = ["webob"]
 
 [[package]]
 name = "ruamel-yaml"
-version = "0.17.35"
+version = "0.18.2"
 description = "ruamel.yaml is a YAML parser/emitter that supports roundtrip preservation of comments, seq/map flow style, and map key order"
 category = "main"
 optional = false
 python-versions = ">=3"
 files = [
-    {file = "ruamel.yaml-0.17.35-py3-none-any.whl", hash = "sha256:b105e3e6fc15b41fdb201ba1b95162ae566a4ef792b9f884c46b4ccc5513a87a"},
-    {file = "ruamel.yaml-0.17.35.tar.gz", hash = "sha256:801046a9caacb1b43acc118969b49b96b65e8847f29029563b29ac61d02db61b"},
+    {file = "ruamel.yaml-0.18.2-py3-none-any.whl", hash = "sha256:92076ac8a83dbf44ca661dbed3c935229c8cbc2f10b05959dd3bd5292d8353d3"},
+    {file = "ruamel.yaml-0.18.2.tar.gz", hash = "sha256:9bce33f7a814cea4c29a9c62fe872d2363d6220b767891d956eacea8fa5e6fe8"},
 ]
 
 [package.dependencies]
 "ruamel.yaml.clib" = {version = ">=0.2.7", markers = "platform_python_implementation == \"CPython\" and python_version < \"3.13\""}
 
 [package.extras]
-docs = ["ryd"]
+docs = ["mercurial (>5.7)", "ryd"]
 jinja2 = ["ruamel.yaml.jinja2 (>=0.2)"]
 
 [[package]]
@@ -2096,4 +2098,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.12"
-content-hash = "249d56fa5831d019864cc088243099f331019348e0f50f19e84ff538b79c02c8"
+content-hash = "cb4a631c89570ce8cd66ee0d0f54c60faa320e9f40fa354d8c61c8001622be42"
