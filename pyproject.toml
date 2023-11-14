@@ -13,7 +13,7 @@ grpcio-tools = "1.59.2"
 protobuf = "4.25.0"
 prometheus_client = "0.18.0"
 pybind11 = "2.11.1"
-os-ken = "<=2.7.0"
+os-ken = "<=2.8.0"
 # dnspython 2.3.0 is not compatible with eventlet
 # https://github.com/eventlet/eventlet/issues/781
 dnspython = "<2.4.3"
