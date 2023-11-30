@@ -102,13 +102,13 @@ transitions = "*"
 
 [[package]]
 name = "c65faucet"
-version = "1.0.65"
+version = "1.0.66"
 description = "Faucet is an OpenFlow controller that implements a layer 2 and layer 3 switch."
 category = "main"
 optional = false
 python-versions = ">=3.9"
 files = [
-    {file = "c65faucet-1.0.65.tar.gz", hash = "sha256:1de376f00aaf08d9ca8e88fcc352d8304d5db83b2b16ec6835c02a0ff925b4f3"},
+    {file = "c65faucet-1.0.66.tar.gz", hash = "sha256:453d0602a18aec800063c1112db44f4544801be3417fc9149621d644475de5de"},
 ]
 
 [package.dependencies]
@@ -118,11 +118,11 @@ eventlet = "*"
 influxdb = ">=2.12.0"
 ncclient = "*"
 networkx = ">=1.9"
-os_ken = "2.7.0"
+os_ken = "2.8.0"
 pbr = ">=1.9"
-prometheus_client = "0.18.0"
+prometheus_client = "0.19.0"
 pytricia = ">=1.0.0"
-"ruamel.yaml" = "0.18.3"
+"ruamel.yaml" = "0.18.5"
 
 [[package]]
 name = "certifi"
@@ -1140,14 +1140,14 @@ test = ["codecov (>=2.0.5)", "coverage (>=4.2)", "flake8 (>=3.0.4)", "pytest (>=
 
 [[package]]
 name = "os-ken"
-version = "2.7.0"
+version = "2.8.0"
 description = "A component-based software defined networking framework for OpenStack."
 category = "main"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "os-ken-2.7.0.tar.gz", hash = "sha256:f92ddeee869818004059cf3b605f4ec552ff7799e6bb014a122ac3215af517b7"},
-    {file = "os_ken-2.7.0-py3-none-any.whl", hash = "sha256:3824357d950c9e3e730f9e1016aafc1e2a0e25346e10a0b5325783541bcd6065"},
+    {file = "os-ken-2.8.0.tar.gz", hash = "sha256:b950114ca6d85834dab7b61fa2688ca50ade3648a9c6bd0dfc9731e012021471"},
+    {file = "os_ken-2.8.0-py3-none-any.whl", hash = "sha256:68b0e3abc62f2a18da8d469f10eb2f7928e411c23302faf88d15026d3e563f67"},
 ]
 
 [package.dependencies]
@@ -1300,14 +1300,14 @@ testing = ["pytest", "pytest-benchmark"]
 
 [[package]]
 name = "prometheus-client"
-version = "0.18.0"
+version = "0.19.0"
 description = "Python client for the Prometheus monitoring system."
 category = "main"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "prometheus_client-0.18.0-py3-none-any.whl", hash = "sha256:8de3ae2755f890826f4b6479e5571d4f74ac17a81345fe69a6778fdb92579184"},
-    {file = "prometheus_client-0.18.0.tar.gz", hash = "sha256:35f7a8c22139e2bb7ca5a698e92d38145bc8dc74c1c0bf56f25cca886a764e17"},
+    {file = "prometheus_client-0.19.0-py3-none-any.whl", hash = "sha256:c88b1e6ecf6b41cd8fb5731c7ae919bf66df6ec6fafa555cd6c0e16ca169ae92"},
+    {file = "prometheus_client-0.19.0.tar.gz", hash = "sha256:4585b0d1223148c27a225b10dbec5ae9bc4c81a99a3fa80774fa6209935324e1"},
 ]
 
 [package.extras]
@@ -1736,14 +1736,14 @@ middleware = ["webob"]
 
 [[package]]
 name = "ruamel-yaml"
-version = "0.18.3"
+version = "0.18.5"
 description = "ruamel.yaml is a YAML parser/emitter that supports roundtrip preservation of comments, seq/map flow style, and map key order"
 category = "main"
 optional = false
-python-versions = ">=3"
+python-versions = ">=3.7"
 files = [
-    {file = "ruamel.yaml-0.18.3-py3-none-any.whl", hash = "sha256:b5d119e1f9678cf90b58f64bbd2a4e78af76860ae39fab3e73323e622b462df9"},
-    {file = "ruamel.yaml-0.18.3.tar.gz", hash = "sha256:36dbbe90390d977f957436570d2bd540bfd600e6ec5a1ea42bcdb9fc7963d802"},
+    {file = "ruamel.yaml-0.18.5-py3-none-any.whl", hash = "sha256:a013ac02f99a69cdd6277d9664689eb1acba07069f912823177c5eced21a6ada"},
+    {file = "ruamel.yaml-0.18.5.tar.gz", hash = "sha256:61917e3a35a569c1133a8f772e1226961bf5a1198bea7e23f06a0841dea1ab0e"},
 ]
 
 [package.dependencies]
@@ -2089,4 +2089,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.12"
-content-hash = "32b97811afe57baa8b2fff247e5191101542bbb5f87a883323b7155cc18ed70e"
+content-hash = "f7eab8627c287d6287c1cf9ada63c5e589d404152067b334d60f4e276441ac7f"
