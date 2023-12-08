@@ -23,7 +23,7 @@ cryptography = "<41.0.8"
 [tool.poetry.dev-dependencies]
 attrs = "23.1.0"
 pylint = "3.0.2"
-pytype = "2023.11.29"
+pytype = "2023.12.7"
 pytest = "7.4.3"
 
 [tool.poetry.scripts]
