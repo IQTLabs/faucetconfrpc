@@ -6,7 +6,7 @@ RUN go install github.com/square/certstrap@latest
 WORKDIR /
 COPY gen_faucetconfrpc_keys.sh gen_faucetconfrpc_keys.sh
 
-FROM alpine:3.18
+FROM alpine:3.19
 
 COPY --from=build /gen_faucetconfrpc_keys.sh /gen_faucetconfrpc_keys.sh
 COPY --from=build /go/bin/certstrap /usr/bin/certstrap
