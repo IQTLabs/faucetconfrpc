@@ -16,7 +16,7 @@ pybind11 = "2.11.1"
 os-ken = "<=2.8.0"
 # dnspython 2.3.0 is not compatible with eventlet
 # https://github.com/eventlet/eventlet/issues/781
-dnspython = "<2.5.1"
+dnspython = "<2.6.2"
 pyopenssl = ">22.1.0"
 cryptography = "<42.0.5"
 
