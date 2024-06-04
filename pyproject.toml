@@ -24,7 +24,7 @@ cryptography = "<42.0.8"
 attrs = "23.2.0"
 pylint = "3.2.2"
 pytype = "2024.4.11"
-pytest = "8.2.1"
+pytest = "8.2.2"
 
 [tool.poetry.scripts]
 faucetconfrpc_server = "faucetconfrpc.faucetconfrpc_server:serve"
