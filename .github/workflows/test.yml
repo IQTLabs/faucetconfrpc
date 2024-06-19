@@ -48,9 +48,9 @@ jobs:
         GO111MODULE: "on"
       run: |
         go install github.com/square/certstrap@latest && \
-        go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.4.0 \
-        go install github.com/golang/protobuf/protoc-gen-go@v1.4.0 && \
-        go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.4.0 && \
+        go install github.com/golang/protobuf/protoc-gen-go@latest && \
+        go install google.golang.org/protobuf/cmd/protoc-gen-go@latest && \
+        go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest && \
         PATH=~/go/bin:$PATH certstrap -v && \
         sudo apt-get update && sudo apt install -y protobuf-compiler && \
         cd src/faucetconfrpc && PATH=~/go/bin:$PATH ./generate_pb_grpc.sh && cd ../..
