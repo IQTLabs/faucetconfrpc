@@ -20,7 +20,7 @@ jobs:
     - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4
     - uses: actions/setup-go@v5
       with:
-        go-version: '>=1.19.1'
+        go-version: '>=1.20.0'
     - run: go version
     - name: shell_test
       run: |
@@ -38,7 +38,7 @@ jobs:
       with:
         virtualenvs-create: false
         virtualenvs-in-project: false
-        version: 1.4.2
+        version: 1.8.1
     - name: poetry install
       run: |
         poetry install
@@ -63,5 +63,6 @@ jobs:
     - name: golang install test
       run: |
         echo "module iqtlabs/faucetconfrpc" > go.mod && \
-        cd tests/gotest && echo -e "module gotest\nrequire (\n\tgithub.com/iqtlabs/faucetconfrpc latest\n\tgoogle.golang.org/grpc latest\n)\nreplace github.com/iqtlabs/faucetconfrpc => ../.." > go.mod && \
-        cat go.mod && go mod download && go get gotest && go build && cd ../..
+        cd tests/gotest && echo -e "module gotest\ngo 1.20\nrequire (\n\tgithub.com/iqtlabs/faucetconfrpc latest\n\tgoogle.golang.org/grpc latest\n)\nreplace github.com/iqtlabs/faucetconfrpc => ../.." > go.mod && \
+        cat go.mod && go mod download && go get gotest
+        # go build
