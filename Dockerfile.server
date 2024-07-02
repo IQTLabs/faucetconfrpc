@@ -1,4 +1,4 @@
-FROM ubuntu:jammy as builder
+FROM ubuntu:noble as builder
 
 ARG PIP_INDEX_URL
 ARG PIP_TRUSTED_HOST
@@ -16,7 +16,7 @@ RUN apt-get update && apt-get install -y curl python3-dev gcc git g++ libc6-dev 
 RUN pip install -U pip
 RUN --mount=type=tmpfs,target=/root/.cargo /bin/bash -c 'curl https://sh.rustup.rs -sSf | bash -s -- -y && source ~/.cargo/env && MAKEFLAGS="-j $(nproc)" pip install . -v'
 
-FROM ubuntu:jammy
+FROM ubuntu:noble
 
 COPY --from=builder /usr/local /usr/local
 
