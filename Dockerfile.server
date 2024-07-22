@@ -1,4 +1,4 @@
-FROM ubuntu:jammy as builder
+FROM ubuntu:noble AS builder
 
 ARG PIP_INDEX_URL
 ARG PIP_TRUSTED_HOST
@@ -13,10 +13,9 @@ WORKDIR /faucetconfrpc
 
 RUN apt-get update && apt-get install -y curl python3-dev gcc git g++ libc6-dev libyaml-dev libffi-dev libxml2-dev libxslt-dev make python3-pip libssl-dev openssl pkg-config
 
-RUN pip install -U pip
-RUN --mount=type=tmpfs,target=/root/.cargo /bin/bash -c 'curl https://sh.rustup.rs -sSf | bash -s -- -y && source ~/.cargo/env && MAKEFLAGS="-j $(nproc)" pip install . -v'
+RUN --mount=type=tmpfs,target=/root/.cargo /bin/bash -c 'curl https://sh.rustup.rs -sSf | bash -s -- -y && source ~/.cargo/env && MAKEFLAGS="-j $(nproc)" pip install --break-system-packages . -v'
 
-FROM ubuntu:jammy
+FROM ubuntu:noble
 
 COPY --from=builder /usr/local /usr/local
 
