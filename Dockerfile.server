@@ -17,10 +17,9 @@ RUN --mount=type=tmpfs,target=/root/.cargo /bin/bash -c 'curl https://sh.rustup.
 
 FROM ubuntu:noble
 
+RUN apt-get update && apt-get install -y python3 iproute2 libatomic1 libssl1* openssl
+
 COPY --from=builder /usr/local /usr/local
-
-RUN apt-get update && apt-get install -y python3 iproute2 libatomic1 libssl1.1 openssl
-
 RUN python3 -c "from faucetconfrpc.faucetconfrpc_client_lib import FaucetConfRpcClient"
 RUN faucetconfrpc_client --help
 RUN faucetconfrpc_server --help
