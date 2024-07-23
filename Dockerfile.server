@@ -19,7 +19,7 @@ FROM ubuntu:noble
 
 COPY --from=builder /usr/local /usr/local
 
-RUN apt-get update && apt-get install -y python3 iproute2 libatomic1 libssl openssl
+RUN apt-get update && apt-get install -y python3 iproute2 libatomic1 libssl1.1 openssl
 
 RUN python3 -c "from faucetconfrpc.faucetconfrpc_client_lib import FaucetConfRpcClient"
 RUN faucetconfrpc_client --help
