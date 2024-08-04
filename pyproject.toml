@@ -18,7 +18,7 @@ os-ken = "<=2.9.0"
 # https://github.com/eventlet/eventlet/issues/781
 dnspython = "<2.6.2"
 pyopenssl = ">22.1.0"
-cryptography = "<43.0.1"
+cryptography = "43.0.0"
 
 [tool.poetry.dev-dependencies]
 attrs = "24.1.0"
