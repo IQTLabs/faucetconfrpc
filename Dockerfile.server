@@ -1,4 +1,4 @@
-FROM ubuntu:jammy as builder
+FROM ubuntu:noble AS builder
 
 ARG PIP_INDEX_URL
 ARG PIP_TRUSTED_HOST
@@ -6,22 +6,20 @@ ENV PIP_INDEX_URL=${PIP_INDEX_URL}
 ENV PIP_TRUSTED_HOST=${PIP_TRUSTED_HOST}
 
 # TODO: use piwheels for armv7l specifically until/if ever mainline wheels available.
-RUN if [ "$(uname -m)" = "armv7l" ] ; then echo "using piwheels" ; /bin/echo -e "[global]\nextra-index-url=https://www.piwheels.org/simple\n" > /etc/pip.conf ; fi
+# TODO: can't use with latest cryptography
+# RUN if [ "$(uname -m)" = "armv7l" ] ; then echo "using piwheels" ; /bin/echo -e "[global]\nextra-index-url=https://www.piwheels.org/simple\n" > /etc/pip.conf ; fi
 
 COPY . /faucetconfrpc
 WORKDIR /faucetconfrpc
 
 RUN apt-get update && apt-get install -y curl python3-dev gcc git g++ libc6-dev libyaml-dev libffi-dev libxml2-dev libxslt-dev make python3-pip libssl-dev openssl pkg-config
+RUN --mount=type=tmpfs,target=/root/.cargo /bin/bash -c 'curl https://sh.rustup.rs -sSf | bash -s -- -y && source ~/.cargo/env && MAKEFLAGS="-j $(nproc)" pip install . --break-system-packages -v'
 
-RUN pip install -U pip
-RUN --mount=type=tmpfs,target=/root/.cargo /bin/bash -c 'curl https://sh.rustup.rs -sSf | bash -s -- -y && source ~/.cargo/env && MAKEFLAGS="-j $(nproc)" pip install . -v'
+FROM ubuntu:noble
 
-FROM ubuntu:jammy
+RUN apt-get update && apt-get install -y python3 iproute2 libatomic1 libssl1* openssl
 
 COPY --from=builder /usr/local /usr/local
-
-RUN apt-get update && apt-get install -y python3 iproute2 libatomic1
-
 RUN python3 -c "from faucetconfrpc.faucetconfrpc_client_lib import FaucetConfRpcClient"
 RUN faucetconfrpc_client --help
 RUN faucetconfrpc_server --help
