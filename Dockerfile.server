@@ -6,7 +6,8 @@ ENV PIP_INDEX_URL=${PIP_INDEX_URL}
 ENV PIP_TRUSTED_HOST=${PIP_TRUSTED_HOST}
 
 # TODO: use piwheels for armv7l specifically until/if ever mainline wheels available.
-RUN if [ "$(uname -m)" = "armv7l" ] ; then echo "using piwheels" ; /bin/echo -e "[global]\nextra-index-url=https://www.piwheels.org/simple\n" > /etc/pip.conf ; fi
+# TODO: can't use with latest cryptography
+# RUN if [ "$(uname -m)" = "armv7l" ] ; then echo "using piwheels" ; /bin/echo -e "[global]\nextra-index-url=https://www.piwheels.org/simple\n" > /etc/pip.conf ; fi
 
 COPY . /faucetconfrpc
 WORKDIR /faucetconfrpc
@@ -16,7 +17,7 @@ RUN --mount=type=tmpfs,target=/root/.cargo /bin/bash -c 'curl https://sh.rustup.
 
 FROM ubuntu:noble
 
-RUN apt-get update && apt-get install -y python3 iproute2 libatomic1 libssl-dev openssl
+RUN apt-get update && apt-get install -y python3 iproute2 libatomic1 libssl1* openssl
 
 COPY --from=builder /usr/local /usr/local
 RUN python3 -c "from faucetconfrpc.faucetconfrpc_client_lib import FaucetConfRpcClient"
