@@ -12,8 +12,8 @@ COPY . /faucetconfrpc
 WORKDIR /faucetconfrpc
 
 RUN apt-get update && apt-get install -y curl python3-dev gcc git g++ libc6-dev libyaml-dev libffi-dev libxml2-dev libxslt-dev make python3-pip libssl-dev openssl pkg-config
-
-RUN --mount=type=tmpfs,target=/root/.cargo /bin/bash -c 'curl https://sh.rustup.rs -sSf | bash -s -- -y && source ~/.cargo/env && MAKEFLAGS="-j $(nproc)" pip install --break-system-packages . -v'
+RUN --security=insecure mkdir -p /root/.cargo && chmod 777 /root/.cargo && mount -t tmpfs none /root/.cargo && pip3 install --no-cache-dir "cryptography"=="$(grep cryptography pyproject.toml | grep -Eo '\"[0-9\.]+' | sed 's/\"//g')"
+RUN MAKEFLAGS="-j $(nproc)" pip install --break-system-packages . -v
 
 FROM ubuntu:noble
 
