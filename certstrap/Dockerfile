@@ -1,4 +1,4 @@
-FROM golang:1.22-alpine AS build
+FROM golang:1.23-alpine AS build
 
 ENV GO111MODULE="on"
 RUN go install github.com/square/certstrap@latest
