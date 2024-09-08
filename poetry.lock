@@ -104,12 +104,12 @@ transitions = "*"
 
 [[package]]
 name = "c65faucet"
-version = "1.0.76"
+version = "1.0.77"
 description = "Faucet is an OpenFlow controller that implements a layer 2 and layer 3 switch."
 optional = false
 python-versions = ">=3.9"
 files = [
-    {file = "c65faucet-1.0.76.tar.gz", hash = "sha256:b812e083074379572f4ea5dc2f69956fc4cf64a18d9be02e63d43c12f7b82d49"},
+    {file = "c65faucet-1.0.77.tar.gz", hash = "sha256:59628a57af0695594d77ec4c8b56f04439fd6d2add5e62deaa0a5b436dad4a6f"},
 ]
 
 [package.dependencies]
@@ -118,7 +118,7 @@ c65chewie = "1.0.5"
 eventlet = {version = ">=0.34.3", markers = "python_version >= \"3.12\""}
 ncclient = "*"
 networkx = ">=1.9"
-os_ken = "2.9.0"
+os_ken = "2.10.0"
 pbr = ">=1.9"
 prometheus_client = "0.20.0"
 pytricia = ">=1.0.0"
@@ -1178,13 +1178,13 @@ test = ["codecov (>=2.0.5)", "coverage (>=4.2)", "flake8 (>=3.0.4)", "pytest (>=
 
 [[package]]
 name = "os-ken"
-version = "2.9.0"
+version = "2.10.0"
 description = "A component-based software defined networking framework for OpenStack."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "os-ken-2.9.0.tar.gz", hash = "sha256:023b91c34d90ff797be9a14d8df089fb22ef58b5c79fa0da60d0809bf619d237"},
-    {file = "os_ken-2.9.0-py3-none-any.whl", hash = "sha256:ae576780268dca65b24e4ff79e67994a21e06a85c3a32cd29dda279db4673aef"},
+    {file = "os-ken-2.10.0.tar.gz", hash = "sha256:cbb30656d0647a1cb363436478a62538f65f1167be69bfb3945d04d6c2b915b9"},
+    {file = "os_ken-2.10.0-py3-none-any.whl", hash = "sha256:86ea8c5f7967370e4479af21166db3e280215a8fc97e4937694487e4645100aa"},
 ]
 
 [package.dependencies]
@@ -2047,4 +2047,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.13"
-content-hash = "b7c87f42f1cf8a3dd193b87ae972afa6a368c2e6e720415daec9ef5ddebe8c1a"
+content-hash = "936dd01cfc87d1b3a5385dd0f3f3686bf763d8516a75bf2e5dc297182c841822"
