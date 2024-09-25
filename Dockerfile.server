@@ -5,10 +5,6 @@ ARG PIP_TRUSTED_HOST
 ENV PIP_INDEX_URL=${PIP_INDEX_URL}
 ENV PIP_TRUSTED_HOST=${PIP_TRUSTED_HOST}
 
-# TODO: use piwheels for armv7l specifically until/if ever mainline wheels available.
-# TODO: can't use with latest cryptography
-# RUN if [ "$(uname -m)" = "armv7l" ] ; then echo "using piwheels" ; /bin/echo -e "[global]\nextra-index-url=https://www.piwheels.org/simple\n" > /etc/pip.conf ; fi
-
 COPY . /faucetconfrpc
 WORKDIR /faucetconfrpc
 
