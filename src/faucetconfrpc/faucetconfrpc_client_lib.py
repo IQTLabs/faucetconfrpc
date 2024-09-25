@@ -140,7 +140,7 @@ class FaucetConfRpcClient:
             dp_request.name = dp_name
         return self._call(self._stub.DelDps, request)
 
-    def set_remote_mirror_port(self, dp_name='', port_no=0, tunnel_vid=0,  # pylint: disable=too-many-arguments
+    def set_remote_mirror_port(self, dp_name='', port_no=0, tunnel_vid=0,  # pylint: disable=too-many-arguments,disable=too-many-positional-arguments
                                remote_dp_name='', remote_port_no=''):
         """Set a port to be a remote mirror via tunnel."""
         request = faucetconfrpc_pb2.SetRemoteMirrorPortRequest()   # pylint: disable=no-member,disable=line-too-long # pytype: disable=module-attr
