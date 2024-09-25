@@ -7,7 +7,7 @@ license = "Apache-2.0"
 
 [tool.poetry.dependencies]
 python = ">=3.9,<3.13"
-c65faucet = "1.0.77"
+c65faucet = "1.0.78"
 grpcio = "1.66.1"
 grpcio-tools = "1.66.1"
 protobuf = "5.28.1"
