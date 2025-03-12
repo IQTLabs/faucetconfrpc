@@ -21,7 +21,7 @@ pyopenssl = ">22.1.0"
 cryptography = "44.0.2"
 
 [tool.poetry.dev-dependencies]
-attrs = "25.1.0"
+attrs = "25.2.0"
 pylint = "3.3.5"
 pytype = "2024.10.11"
 pytest = "8.3.5"
