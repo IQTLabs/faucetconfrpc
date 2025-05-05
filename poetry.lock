@@ -1515,13 +1515,13 @@ tests = ["chardet", "parameterized", "pytest", "pytest-cov", "pytest-xdist[psuti
 
 [[package]]
 name = "pylint"
-version = "3.3.6"
+version = "3.3.7"
 description = "python code static checker"
 optional = false
 python-versions = ">=3.9.0"
 files = [
-    {file = "pylint-3.3.6-py3-none-any.whl", hash = "sha256:8b7c2d3e86ae3f94fb27703d521dd0b9b6b378775991f504d7c3a6275aa0a6a6"},
-    {file = "pylint-3.3.6.tar.gz", hash = "sha256:b634a041aac33706d56a0d217e6587228c66427e20ec21a019bc4cdee48c040a"},
+    {file = "pylint-3.3.7-py3-none-any.whl", hash = "sha256:43860aafefce92fca4cf6b61fe199cdc5ae54ea28f9bf4cd49de267b5195803d"},
+    {file = "pylint-3.3.7.tar.gz", hash = "sha256:2b11de8bde49f9c5059452e0c310c079c746a0a8eeaa789e5aa966ecc23e4559"},
 ]
 
 [package.dependencies]
@@ -2142,4 +2142,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.11,<3.14"
-content-hash = "eabd91e39fde5845983e4aa5e0d65ab496733833c767c2990961c5786a9e68f7"
+content-hash = "9fb954a4637f723831c6c7c621387e062588a084907d4fabf13bafe7beb63607"
