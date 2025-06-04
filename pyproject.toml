@@ -7,9 +7,9 @@ license = "Apache-2.0"
 
 [tool.poetry.dependencies]
 python = ">=3.11,<3.14"
-c65faucet = "1.0.86"
+c65faucet = "1.0.87"
 grpcio = "1.72.1"
-grpcio-tools = "1.72.0"
+grpcio-tools = "1.72.1"
 protobuf = "6.31.1"
 prometheus_client = "0.22.1"
 pybind11 = "2.13.6"
