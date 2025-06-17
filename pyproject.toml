@@ -7,24 +7,24 @@ license = "Apache-2.0"
 
 [tool.poetry.dependencies]
 python = ">=3.11,<3.14"
-c65faucet = "1.0.86"
-grpcio = "1.72.1"
-grpcio-tools = "1.72.1"
+c65faucet = "1.0.87"
+grpcio = "1.73.0"
+grpcio-tools = "1.73.0"
 protobuf = "6.31.1"
-prometheus_client = "0.22.0"
+prometheus_client = "0.22.1"
 pybind11 = "2.13.6"
 os-ken = "3.0.1"
 # dnspython 2.3.0 is not compatible with eventlet
 # https://github.com/eventlet/eventlet/issues/781
 dnspython = "<2.7.1"
 pyopenssl = ">22.1.0"
-cryptography = "45.0.3"
+cryptography = "45.0.4"
 
 [tool.poetry.dev-dependencies]
 attrs = "25.3.0"
 pylint = "3.3.7"
 pytype = "2024.10.11"
-pytest = "8.3.5"
+pytest = "8.4.0"
 
 [tool.poetry.scripts]
 faucetconfrpc_server = "faucetconfrpc.faucetconfrpc_server:serve"
