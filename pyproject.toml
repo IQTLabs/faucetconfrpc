@@ -22,7 +22,7 @@ cryptography = "45.0.6"
 
 [tool.poetry.dev-dependencies]
 attrs = "25.3.0"
-pylint = "3.3.7"
+pylint = "3.3.8"
 pytype = "2024.10.11"
 pytest = "8.4.1"
 
