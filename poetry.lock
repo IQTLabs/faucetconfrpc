@@ -125,12 +125,12 @@ transitions = "*"
 
 [[package]]
 name = "c65faucet"
-version = "1.0.88"
+version = "1.0.89"
 description = "Faucet is an OpenFlow controller that implements a layer 2 and layer 3 switch."
 optional = false
 python-versions = ">=3.9"
 files = [
-    {file = "c65faucet-1.0.88.tar.gz", hash = "sha256:2bbbeb6491b074069ed387eb5eccbce521b39fb19928c7a3a501bc60157cd018"},
+    {file = "c65faucet-1.0.89.tar.gz", hash = "sha256:6f88eae53fe6f4ca3da75a512b33eea341f6903e22e6e996072a132a9ce2736e"},
 ]
 
 [package.dependencies]
@@ -139,11 +139,11 @@ c65chewie = "1.0.5"
 eventlet = ">=0.34.3"
 ncclient = "*"
 networkx = ">=1.9"
-os_ken = "3.1.0"
+os_ken = "3.1.1"
 pbr = ">=1.9"
 prometheus_client = "0.22.1"
 pytricia = ">=1.0.0"
-"ruamel.yaml" = "0.18.14"
+"ruamel.yaml" = "0.18.15"
 
 [[package]]
 name = "certifi"
@@ -1260,13 +1260,13 @@ files = [
 
 [[package]]
 name = "os-ken"
-version = "3.1.0"
+version = "3.1.1"
 description = "A component-based software defined networking framework for OpenStack."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "os_ken-3.1.0-py3-none-any.whl", hash = "sha256:c5d299552bf6d673bad869e430e88c96627812082df0fbd459227f20b7e7cf05"},
-    {file = "os_ken-3.1.0.tar.gz", hash = "sha256:9a1611aac816294d9ab72f5b20de6e455207989a306d50fe92c776b9bace10f3"},
+    {file = "os_ken-3.1.1-py3-none-any.whl", hash = "sha256:a2aae47e20b5ca8d96ed2afa926c54f89d8f1180bbd2fcb5e2cb66382dd95f60"},
+    {file = "os_ken-3.1.1.tar.gz", hash = "sha256:2a41f13a63b48326f177a9b09b6e94d6f0ee9fa27066fd73f9d31283eb72efb5"},
 ]
 
 [package.dependencies]
@@ -1854,13 +1854,13 @@ middleware = ["webob"]
 
 [[package]]
 name = "ruamel-yaml"
-version = "0.18.14"
+version = "0.18.15"
 description = "ruamel.yaml is a YAML parser/emitter that supports roundtrip preservation of comments, seq/map flow style, and map key order"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "ruamel.yaml-0.18.14-py3-none-any.whl", hash = "sha256:710ff198bb53da66718c7db27eec4fbcc9aa6ca7204e4c1df2f282b6fe5eb6b2"},
-    {file = "ruamel.yaml-0.18.14.tar.gz", hash = "sha256:7227b76aaec364df15936730efbf7d72b30c0b79b1d578bbb8e3dcb2d81f52b7"},
+    {file = "ruamel.yaml-0.18.15-py3-none-any.whl", hash = "sha256:148f6488d698b7a5eded5ea793a025308b25eca97208181b6a026037f391f701"},
+    {file = "ruamel.yaml-0.18.15.tar.gz", hash = "sha256:dbfca74b018c4c3fba0b9cc9ee33e53c371194a9000e694995e620490fd40700"},
 ]
 
 [package.dependencies]
@@ -2172,4 +2172,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.11,<3.14"
-content-hash = "609b7a0da09853952889ddf84034923512a287e154fba4328abe790b8935712f"
+content-hash = "e1505b76dce9abb66d443599a78447299ad77d8a23aee3d0fec053cbf02d93e7"
