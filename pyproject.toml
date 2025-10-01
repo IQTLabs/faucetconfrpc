@@ -18,7 +18,7 @@ pybind11 = "3.0.1"
 os-ken = ">=3.0.1"
 dnspython = "<2.8.1"
 pyopenssl = ">22.1.0"
-cryptography = "46.0.1"
+cryptography = "46.0.2"
 
 [tool.poetry.dev-dependencies]
 attrs = "25.3.0"
