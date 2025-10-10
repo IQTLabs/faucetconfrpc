@@ -117,12 +117,12 @@ transitions = "*"
 
 [[package]]
 name = "c65faucet"
-version = "1.0.90"
+version = "1.0.91"
 description = "Faucet is an OpenFlow controller that implements a layer 2 and layer 3 switch."
 optional = false
 python-versions = ">=3.9"
 files = [
-    {file = "c65faucet-1.0.90.tar.gz", hash = "sha256:1441cd7e423615560123c8160b6fac050553bacc7818e77b109fb08a799321eb"},
+    {file = "c65faucet-1.0.91.tar.gz", hash = "sha256:1d4bb249ed02a92f7eb44ecfae715e533749a0921a1fb46179df310bacceb397"},
 ]
 
 [package.dependencies]
@@ -2221,4 +2221,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.11,<3.14"
-content-hash = "a913a4ad8b7f84c5f5b97692d414c927c2a0a3054fab970f1197dd4ab97e1453"
+content-hash = "e2aa7f9ec7bb98316257e124b1897cb9355a883a3011ed41c4544defe370c24c"
