@@ -7,11 +7,11 @@ license = "Apache-2.0"
 
 [tool.poetry.dependencies]
 python = ">=3.11,<3.14"
-c65faucet = "1.0.97"
+c65faucet = "1.0.98"
 grpcio = "1.76.0"
 grpcio-tools = "1.76.0"
 protobuf = "6.33.4"
-prometheus_client = "0.23.1"
+prometheus_client = "0.24.1"
 pybind11 = "3.0.1"
 # dnspython 2.3.0 is not compatible with eventlet
 # https://github.com/eventlet/eventlet/issues/781
