@@ -876,7 +876,6 @@ files = [
 ]
 
 [package.dependencies]
-pyyaml = {version = ">=5.2", markers = "python_version < \"3.13\""}
 pyyaml-ft = {version = ">=8.0.0", markers = "python_version >= \"3.13\""}
 
 [[package]]
@@ -1579,10 +1578,7 @@ files = [
 [package.dependencies]
 astroid = ">=4.0.2,<=4.1.dev0"
 colorama = {version = ">=0.4.5", markers = "sys_platform == \"win32\""}
-dill = [
-    {version = ">=0.3.7", markers = "python_version >= \"3.12\""},
-    {version = ">=0.3.6", markers = "python_version >= \"3.11\" and python_version < \"3.12\""},
-]
+dill = {version = ">=0.3.7", markers = "python_version >= \"3.12\""}
 isort = ">=5,<5.13 || >5.13,<9"
 mccabe = ">=0.6,<0.8"
 platformdirs = ">=2.2"
@@ -1646,7 +1642,6 @@ files = [
 
 [package.dependencies]
 cryptography = ">=45.0.7,<47"
-typing-extensions = {version = ">=4.9", markers = "python_version < \"3.13\" and python_version >= \"3.8\""}
 
 [package.extras]
 docs = ["sphinx (!=5.2.0,!=5.2.0.post0,!=7.2.5)", "sphinx_rtd_theme"]
@@ -2177,5 +2172,5 @@ files = [
 
 [metadata]
 lock-version = "2.0"
-python-versions = ">=3.11,<3.14"
-content-hash = "1d0b6a8c2a8d8b92f2527e7e407b63c63a229c2fb69993a2727c682420faa4b5"
+python-versions = ">=3.14,<3.15"
+content-hash = "279e7be82d29fdd98a8947a25da6a21dd3156a81d7e433c49437893c142a1de6"
