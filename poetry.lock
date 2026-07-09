@@ -118,51 +118,51 @@ pbr = ">=1.9"
 
 [[package]]
 name = "c65beka"
-version = "1.0.3"
+version = "1.0.4"
 description = "A bare-bones BGP speaker"
 optional = false
-python-versions = ">=3.8"
+python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "c65beka-1.0.3.tar.gz", hash = "sha256:158412bf6400537eb5b88e31dbec01279cef66234add64f786c0db9c74c54a15"},
+    {file = "c65beka-1.0.4.tar.gz", hash = "sha256:05f48b397808e93fbf6cbfe868f4aeec9adf4d008dedd0e837178951f77e1ee1"},
 ]
 
 [package.dependencies]
-pbr = ">=1.9"
+pbr = ">=7.0.3"
 
 [[package]]
 name = "c65chewie"
-version = "1.0.6"
+version = "1.0.7"
 description = "A bare-bones EAPOL/802.1x implementation"
 optional = false
-python-versions = ">=3.9"
+python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "c65chewie-1.0.6.tar.gz", hash = "sha256:af452ff68c088a2f975a7abd9f038b5f031241d763e623b56e4f38dc1c975876"},
+    {file = "c65chewie-1.0.7.tar.gz", hash = "sha256:2945c2c6070ae77545f9e8e24b2505e1070adc19ab6f59ec288cb48620503917"},
 ]
 
 [package.dependencies]
-pbr = ">=1.9"
+pbr = ">=7.0.3"
 transitions = "*"
 
 [[package]]
 name = "c65faucet"
-version = "1.0.102"
+version = "1.0.103"
 description = "Faucet is an OpenFlow controller that implements a layer 2 and layer 3 switch."
 optional = false
 python-versions = ">=3.11"
 groups = ["main"]
 files = [
-    {file = "c65faucet-1.0.102.tar.gz", hash = "sha256:cf8c277ce36c616bd43ac80e4a18ee292daab5a335cfde9f8f50a4e24056db94"},
+    {file = "c65faucet-1.0.103.tar.gz", hash = "sha256:b9e005e8da665e1496554e7c4df18eae25c92e38efb55fc17821ca4f7f95a3ef"},
 ]
 
 [package.dependencies]
 beka = "0.4.2"
-c65beka = "1.0.3"
-c65chewie = "1.0.6"
+c65beka = "1.0.4"
+c65chewie = "1.0.7"
 ncclient = "*"
 networkx = ">=3.6.1"
-os_ken = ">=4.1.1"
+os_ken = ">=4.2.1"
 pbr = ">=7.0.3"
 prometheus_client = "0.25.0"
 pytricia = ">=1.3.0"
@@ -2283,4 +2283,4 @@ testing = ["coverage", "pytest (>=3.1.0)", "pytest-cov", "pytest-xdist"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.11,<3.14"
-content-hash = "656144c90145be45079e3275ce0510325c718fa095f5e27fff0f2e2b42062be1"
+content-hash = "a66d48b39904a53f9989a1737d881529a099c02ca8d4530a9b9d1e9f809e11b6"
