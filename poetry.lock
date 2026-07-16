@@ -102,21 +102,6 @@ tests = ["pytest (>=3.2.1,!=3.3.0)"]
 typecheck = ["mypy"]
 
 [[package]]
-name = "beka"
-version = "0.4.2"
-description = "A bare-bones BGP speaker"
-optional = false
-python-versions = ">=3.8"
-groups = ["main"]
-files = [
-    {file = "beka-0.4.2.tar.gz", hash = "sha256:4bef33926dd4503b0c6cfa0f0682c2a589f68c82b3c87e62c912483132f5e886"},
-]
-
-[package.dependencies]
-eventlet = ">=0.33.3"
-pbr = ">=1.9"
-
-[[package]]
 name = "c65beka"
 version = "1.0.4"
 description = "A bare-bones BGP speaker"
@@ -147,17 +132,16 @@ transitions = "*"
 
 [[package]]
 name = "c65faucet"
-version = "1.0.103"
+version = "1.0.104"
 description = "Faucet is an OpenFlow controller that implements a layer 2 and layer 3 switch."
 optional = false
 python-versions = ">=3.11"
 groups = ["main"]
 files = [
-    {file = "c65faucet-1.0.103.tar.gz", hash = "sha256:b9e005e8da665e1496554e7c4df18eae25c92e38efb55fc17821ca4f7f95a3ef"},
+    {file = "c65faucet-1.0.104.tar.gz", hash = "sha256:c82f404089426717243adab6e73463d005c0c54140b1581afaaf450738e11f02"},
 ]
 
 [package.dependencies]
-beka = "0.4.2"
 c65beka = "1.0.4"
 c65chewie = "1.0.7"
 ncclient = "*"
@@ -2283,4 +2267,4 @@ testing = ["coverage", "pytest (>=3.1.0)", "pytest-cov", "pytest-xdist"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.11,<3.14"
-content-hash = "c00e8b5fbc4f1a408c8ffa8410c2ac22d8ec77d3d1b5a641acd25c1fb4369548"
+content-hash = "16368bb14164f7ce80dc1456742426629b79b1ac035f7500fb7b321d6878cb29"
