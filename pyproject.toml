@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "faucetconfrpc-ng"
-version = "1.0.1"
+version = "1.0.2"
 description = "utility to manage FAUCET config files via RPC (anarkiwi fork)"
 authors = ["Charlie Lewis <clewis@iqt.org>"]
 license = "Apache-2.0"
